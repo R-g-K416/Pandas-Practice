@@ -2183,6 +2183,9 @@ const STORAGE_KEY=
 const QUIZ_NUMBER_KEY=
     "PANDAS_MASTER_QUIZ_NUMBERS_V5";
 
+const QUIZ_HISTORY_KEY=
+    "PANDAS_MASTER_QUIZ_HISTORY_V2";
+
 
 function loadQuizNumbers(){
 
@@ -2231,6 +2234,57 @@ function saveQuizNumbers(){
 
 loadQuizNumbers();
 
+
+let quizHistory={Basics:[],Important:[],Advanced:[],All:[]};
+let quizAnswerHistory={Basics:[],Important:[],Advanced:[],All:[]};
+
+function loadQuizHistory(){
+    try{
+        const saved=JSON.parse(
+            localStorage.getItem(QUIZ_HISTORY_KEY)
+        );
+
+        if(saved){
+            quizHistory={
+                ...quizHistory,
+                ...(saved.quizHistory || {})
+            };
+
+            quizAnswerHistory={
+                ...quizAnswerHistory,
+                ...(saved.quizAnswerHistory || {})
+            };
+        }
+    }
+    catch{
+        quizHistory={Basics:[],Important:[],Advanced:[],All:[]};
+        quizAnswerHistory={Basics:[],Important:[],Advanced:[],All:[]};
+    }
+}
+
+function saveQuizHistory(){
+    localStorage.setItem(
+        QUIZ_HISTORY_KEY,
+        JSON.stringify({quizHistory,quizAnswerHistory})
+    );
+}
+
+loadQuizHistory();
+
+// Keep quiz number and quiz history synchronized.
+// If an older saved session has a quiz number but no matching history,
+// reset that category so Previous Quiz can always work correctly.
+Object.keys(quizNumbers).forEach(category=>{
+    const n=quizNumbers[category] || 0;
+    const history=quizHistory[category] || [];
+    if(n > 0 && history.length < n){
+        quizNumbers[category]=0;
+        quizHistory[category]=[];
+        quizAnswerHistory[category]=[];
+    }
+});
+saveQuizNumbers();
+saveQuizHistory();
 
 
 function getUsed(){
@@ -2381,6 +2435,9 @@ function startQuiz(category){
 
         quizNumbers[category]=0;
 
+        quizHistory[category]=[];
+        quizAnswerHistory[category]=[];
+        saveQuizHistory();
         saveQuizNumbers();
 
     }
@@ -2395,24 +2452,41 @@ function startQuiz(category){
                      MAKE QUIZ
 ===================================================== */
 
-let quizHistory={Basics:[],Important:[],Advanced:[],All:[]};
-let quizAnswerHistory={Basics:[],Important:[],Advanced:[],All:[]};
-
 function saveCurrentQuizState(){
     if(wrongPractice || !currentQuiz.length) return;
+
     const i=quizNumbers[currentCategory]-1;
+
+    if(i < 0) return;
+
     quizHistory[currentCategory][i]=[...currentQuiz];
     quizAnswerHistory[currentCategory][i]=[...answers];
+
+    saveQuizHistory();
 }
 
 function loadQuiz(number){
     const i=number-1;
-    if(!quizHistory[currentCategory][i]) return false;
+
+    if(
+        i < 0 ||
+        !quizHistory[currentCategory][i]
+    ){
+        return false;
+    }
+
     currentQuiz=[...quizHistory[currentCategory][i]];
-    answers=quizAnswerHistory[currentCategory][i] || new Array(currentQuiz.length).fill(null);
+
+    answers =
+        quizAnswerHistory[currentCategory][i]
+        ? [...quizAnswerHistory[currentCategory][i]]
+        : new Array(currentQuiz.length).fill(null);
+
     currentIndex=0;
+
     showScreen("quizScreen");
     renderQuestion();
+
     return true;
 }
 
@@ -2498,6 +2572,8 @@ function makeQuiz(){
     const historyIndex=quizNumbers[currentCategory]-1;
     quizHistory[currentCategory][historyIndex]=[...currentQuiz];
     quizAnswerHistory[currentCategory][historyIndex]=new Array(currentQuiz.length).fill(null);
+    saveQuizHistory();
+    saveQuizHistory();
 
 
     /*
@@ -3286,36 +3362,73 @@ function retryQuiz(){
 ===================================================== */
 
 function previousQuiz(){
-    if(wrongPractice) return;
+
+    if(wrongPractice){
+        return;
+    }
+
     const current=quizNumbers[currentCategory];
-    if(current<=1) return;
+
+    // Quiz 1 has no previous quiz.
+    if(current <= 1){
+        updateQuizInformation();
+        return;
+    }
+
+    // Save the quiz we are currently viewing before moving back.
     saveCurrentQuizState();
+
     const previous=current-1;
-    if(!quizHistory[currentCategory][previous-1]) return;
+    const historyIndex=previous-1;
+
+    // Previous quiz must exist in history.
+    if(!quizHistory[currentCategory] ||
+       !quizHistory[currentCategory][historyIndex]){
+        console.warn('Previous quiz history is missing.');
+        return;
+    }
+
     quizNumbers[currentCategory]=previous;
     saveQuizNumbers();
+
     loadQuiz(previous);
 }
 
+
+
 function nextQuiz(){
+
     if(wrongPractice){
+
         wrongPractice=false;
         currentIndex=0;
         answers=new Array(currentQuiz.length).fill(null);
         renderQuestion();
         return;
     }
+
     const current=quizNumbers[currentCategory];
     const max=MAX_QUIZZES[currentCategory];
-    if(current>=max) return;
+
+    if(current>=max){
+        return;
+    }
+
+    /* Save the quiz before moving forward. */
     saveCurrentQuizState();
+
     const next=current+1;
+
+    /* If this quiz was already created, reopen it. */
     if(quizHistory[currentCategory][next-1]){
+
         quizNumbers[currentCategory]=next;
         saveQuizNumbers();
         loadQuiz(next);
         return;
     }
+
+    /* Otherwise create the next quiz normally. */
     makeQuiz();
 }
 
