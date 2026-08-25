@@ -1,0 +1,3101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pandas Master Quiz</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#172033;
+}
+
+button{
+    font-family:inherit;
+    cursor:pointer;
+}
+
+.header{
+    height:68px;
+    background:#111827;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 5%;
+}
+
+.logo{
+    font-size:25px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#60a5fa;
+}
+
+.container{
+    width:92%;
+    max-width:1050px;
+    margin:30px auto;
+}
+
+.screen{
+    display:none;
+}
+
+.screen.active{
+    display:block;
+}
+
+/* ================= HOME ================= */
+
+.home-title{
+    text-align:center;
+    margin-bottom:32px;
+}
+
+.home-title h1{
+    font-size:40px;
+    margin:0 0 10px;
+}
+
+.home-title p{
+    color:#64748b;
+    font-size:17px;
+}
+
+.categories{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+}
+
+.category{
+    background:white;
+    border:1px solid #e2e8f0;
+    border-radius:18px;
+    padding:25px;
+    min-height:205px;
+    transition:.2s;
+}
+
+.category:hover{
+    transform:translateY(-5px);
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+
+.category .icon{
+    font-size:38px;
+}
+
+.category h2{
+    margin:12px 0 8px;
+}
+
+.category p{
+    color:#64748b;
+    line-height:1.5;
+    min-height:48px;
+}
+
+.start-btn{
+    width:100%;
+    padding:11px;
+    border:0;
+    border-radius:9px;
+    background:#2563eb;
+    color:white;
+    font-weight:700;
+    margin-top:10px;
+}
+
+.start-btn:hover{
+    background:#1d4ed8;
+}
+
+/* ================= QUIZ TOP ================= */
+
+.quiz-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.top-btn{
+    border:1px solid #dbe2ea;
+    background:white;
+    padding:10px 15px;
+    border-radius:9px;
+    font-weight:700;
+}
+
+.top-btn:hover{
+    background:#eef2ff;
+}
+
+.quiz-meta{
+    display:flex;
+    justify-content:space-between;
+    color:#475569;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+.progress-bg{
+    height:7px;
+    background:#e2e8f0;
+    border-radius:20px;
+    overflow:hidden;
+    margin-bottom:22px;
+}
+
+.progress{
+    height:100%;
+    width:0%;
+    background:#2563eb;
+    transition:.3s;
+}
+
+/* ================= QUESTION ================= */
+
+.question-card{
+    background:white;
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 8px 25px rgba(0,0,0,.05);
+}
+
+.question-number{
+    color:#2563eb;
+    font-weight:800;
+    margin-bottom:12px;
+}
+
+.question{
+    font-size:22px;
+    line-height:1.55;
+    margin-bottom:23px;
+}
+
+.code-box{
+    background:#111827;
+    color:#e5e7eb;
+    padding:15px;
+    border-radius:10px;
+    margin:12px 0 20px;
+    overflow-x:auto;
+    font-family:Consolas,monospace;
+    white-space:pre-wrap;
+}
+
+/* ================= OPTIONS ================= */
+
+.options{
+    display:grid;
+    gap:11px;
+}
+
+.option{
+    width:100%;
+    text-align:left;
+    padding:15px;
+    border:2px solid #e2e8f0;
+    border-radius:12px;
+    background:#f8fafc;
+    font-size:16px;
+    transition:.15s;
+}
+
+.option:hover:not(.disabled){
+    border-color:#2563eb;
+    background:#eff6ff;
+}
+
+.option.correct{
+    background:#dcfce7;
+    border-color:#22c55e;
+}
+
+.option.wrong{
+    background:#fee2e2;
+    border-color:#ef4444;
+}
+
+.option.disabled{
+    cursor:not-allowed;
+}
+
+/* =====================================================
+   IMPORTANT LAYOUT
+
+   QUESTION
+        ↓
+   OPTIONS
+        ↓
+   PREVIOUS / NEXT
+        ↓
+   REASON
+        ↓
+   CORRECT / INCORRECT
+===================================================== */
+
+/* ================= NAVIGATION ================= */
+
+.navigation{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:20px;
+}
+
+.previous-btn,
+.next-btn{
+    border:0;
+    border-radius:9px;
+    padding:12px 20px;
+    font-weight:700;
+    font-size:15px;
+}
+
+.previous-btn{
+    background:#e2e8f0;
+    color:#172033;
+}
+
+.previous-btn:hover:not(:disabled){
+    background:#cbd5e1;
+}
+
+.previous-btn:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+}
+
+.next-btn{
+    background:#2563eb;
+    color:white;
+}
+
+.next-btn:hover{
+    background:#1d4ed8;
+}
+
+/* ================= EXPLANATION ================= */
+
+.feedback{
+    display:none;
+    margin-top:18px;
+    padding:18px;
+    border-radius:13px;
+    line-height:1.65;
+}
+
+.feedback.show{
+    display:block;
+}
+
+.feedback.correct-box{
+    background:#ecfdf5;
+    border:1px solid #86efac;
+}
+
+.feedback.wrong-box{
+    background:#fff1f2;
+    border:1px solid #fda4af;
+}
+
+.feedback h3{
+    margin-top:0;
+}
+
+/* ================= STATUS ================= */
+
+.answer-status{
+    text-align:center;
+    min-height:25px;
+    margin-top:15px;
+    font-weight:800;
+}
+
+.answer-status.wait{
+    color:#64748b;
+}
+
+.answer-status.correct{
+    color:#16a34a;
+}
+
+.answer-status.incorrect{
+    color:#dc2626;
+}
+
+/* ================= RESULT ================= */
+
+.result-card{
+    background:white;
+    border-radius:20px;
+    padding:35px;
+    text-align:center;
+    box-shadow:0 8px 25px rgba(0,0,0,.05);
+}
+
+.score{
+    font-size:58px;
+    font-weight:800;
+    color:#2563eb;
+    margin:15px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin:25px 0;
+}
+
+.stat{
+    background:#f8fafc;
+    padding:18px;
+    border-radius:12px;
+}
+
+.stat-value{
+    display:block;
+    font-size:28px;
+    font-weight:800;
+    margin-top:7px;
+}
+
+.result-buttons{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.primary-btn{
+    border:0;
+    padding:12px 18px;
+    border-radius:9px;
+    background:#2563eb;
+    color:white;
+    font-weight:700;
+}
+
+.primary-btn:hover{
+    background:#1d4ed8;
+}
+
+.review{
+    text-align:left;
+    margin-top:30px;
+}
+
+.review-item{
+    background:#f8fafc;
+    border-left:5px solid #ef4444;
+    border-radius:10px;
+    padding:16px;
+    margin:12px 0;
+    line-height:1.6;
+}
+
+.review-item.correct-review{
+    border-left-color:#22c55e;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:850px){
+
+    .categories{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:560px){
+
+    .container{
+        width:94%;
+        margin-top:20px;
+    }
+
+    .header{
+        padding:0 4%;
+    }
+
+    .logo{
+        font-size:21px;
+    }
+
+    .home-title h1{
+        font-size:31px;
+    }
+
+    .categories{
+        grid-template-columns:1fr;
+    }
+
+    .question-card{
+        padding:20px;
+    }
+
+    .question{
+        font-size:19px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .top-btn{
+        padding:9px 11px;
+        font-size:13px;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+        Pandas<span>Master</span>
+    </div>
+
+</header>
+
+
+<div class="container">
+
+<!-- =====================================================
+                         HOME
+====================================================== -->
+
+<section id="homeScreen" class="screen active">
+
+    <div class="home-title">
+
+        <h1>Master Pandas 📊</h1>
+
+        <p>
+            Practice Pandas with tricky and concept-based MCQs
+        </p>
+
+    </div>
+
+
+    <div class="categories">
+
+        <!-- BASICS -->
+
+        <div class="category">
+
+            <div class="icon">🟢</div>
+
+            <h2>Basics</h2>
+
+            <p>
+                Fundamental Pandas concepts
+                and syntax.
+            </p>
+
+            <button
+                class="start-btn"
+                onclick="startQuiz('Basics')"
+            >
+                Start Quiz
+            </button>
+
+        </div>
+
+
+        <!-- IMPORTANT -->
+
+        <div class="category">
+
+            <div class="icon">⭐</div>
+
+            <h2>Important</h2>
+
+            <p>
+                Frequently used Pandas
+                concepts and operations.
+            </p>
+
+            <button
+                class="start-btn"
+                onclick="startQuiz('Important')"
+            >
+                Start Quiz
+            </button>
+
+        </div>
+
+
+        <!-- ADVANCED -->
+
+        <div class="category">
+
+            <div class="icon">🔥</div>
+
+            <h2>Advanced</h2>
+
+            <p>
+                Tricky questions using
+                multiple concepts.
+            </p>
+
+            <button
+                class="start-btn"
+                onclick="startQuiz('Advanced')"
+            >
+                Start Quiz
+            </button>
+
+        </div>
+
+
+        <!-- ALL -->
+
+        <div class="category">
+
+            <div class="icon">📚</div>
+
+            <h2>All Questions</h2>
+
+            <p>
+                Complete Pandas question
+                bank with mixed difficulty.
+            </p>
+
+            <button
+                class="start-btn"
+                onclick="startQuiz('All')"
+            >
+                Start Quiz
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+                         QUIZ
+====================================================== -->
+
+<section id="quizScreen" class="screen">
+
+    <div class="quiz-top">
+
+        <button
+            class="top-btn"
+            onclick="goHome()"
+        >
+            🏠 Home
+        </button>
+
+
+        <button
+            class="top-btn"
+            onclick="nextQuiz()"
+        >
+            Next Quiz →
+        </button>
+
+    </div>
+
+
+    <div class="quiz-meta">
+
+        <span id="categoryName">
+            Basics
+        </span>
+
+        <span id="questionCounter">
+            1 / 10
+        </span>
+
+    </div>
+
+
+    <div class="progress-bg">
+
+        <div
+            id="progress"
+            class="progress"
+        ></div>
+
+    </div>
+
+
+    <div class="question-card">
+
+        <div
+            id="questionNumber"
+            class="question-number"
+        ></div>
+
+
+        <div
+            id="questionText"
+            class="question"
+        ></div>
+
+
+        <div
+            id="codeBox"
+            class="code-box"
+            style="display:none"
+        ></div>
+
+
+        <!-- OPTIONS -->
+
+        <div
+            id="options"
+            class="options"
+        ></div>
+
+
+        <!-- PREVIOUS / NEXT -->
+
+        <div class="navigation">
+
+            <button
+                id="previousBtn"
+                class="previous-btn"
+                onclick="previousQuestion()"
+            >
+                ← Previous
+            </button>
+
+
+            <button
+                id="nextBtn"
+                class="next-btn"
+                onclick="nextQuestion()"
+            >
+                Next →
+            </button>
+
+        </div>
+
+
+        <!-- REASON -->
+
+        <div
+            id="feedback"
+            class="feedback"
+        >
+
+            <h3 id="feedbackTitle">
+                Explanation
+            </h3>
+
+
+            <p>
+
+                <strong>
+                    Your Answer:
+                </strong>
+
+                <span id="yourAnswer"></span>
+
+            </p>
+
+
+            <p>
+
+                <strong>
+                    Correct Answer:
+                </strong>
+
+                <span id="correctAnswer"></span>
+
+            </p>
+
+
+            <p id="wrongReasonRow">
+
+                <strong>
+                    Why your answer is wrong:
+                </strong>
+
+                <span id="wrongReason"></span>
+
+            </p>
+
+
+            <p>
+
+                <strong>
+                    Why the correct answer is correct:
+                </strong>
+
+                <span id="correctReason"></span>
+
+            </p>
+
+
+            <p>
+
+                <strong>
+                    💡 Concept:
+                </strong>
+
+                <span id="concept"></span>
+
+            </p>
+
+        </div>
+
+
+        <!-- CORRECT / INCORRECT -->
+
+        <div
+            id="answerStatus"
+            class="answer-status wait"
+        >
+            Select an answer
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+                         RESULT
+====================================================== -->
+
+<section id="resultScreen" class="screen">
+
+    <div class="result-card">
+
+        <h1>
+            Quiz Complete 🎉
+        </h1>
+
+
+        <div
+            id="finalScore"
+            class="score"
+        >
+            0 / 10
+        </div>
+
+
+        <p id="performance"></p>
+
+
+        <div class="stats">
+
+            <div class="stat">
+
+                Correct
+
+                <span
+                    id="correctCount"
+                    class="stat-value"
+                >
+                    0
+                </span>
+
+            </div>
+
+
+            <div class="stat">
+
+                Wrong
+
+                <span
+                    id="wrongCount"
+                    class="stat-value"
+                >
+                    0
+                </span>
+
+            </div>
+
+
+            <div class="stat">
+
+                Accuracy
+
+                <span
+                    id="accuracy"
+                    class="stat-value"
+                >
+                    0%
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="result-buttons">
+
+            <button
+                id="retryBtn"
+                class="primary-btn"
+                onclick="retryQuiz()"
+            >
+                🔄 Retry
+            </button>
+
+
+            <button
+                id="wrongBtn"
+                class="primary-btn"
+                onclick="practiceWrong()"
+            >
+                ❌ Practice Wrong
+            </button>
+
+
+            <button
+                class="primary-btn"
+                onclick="nextQuiz()"
+            >
+                Next Quiz →
+            </button>
+
+
+            <button
+                class="primary-btn"
+                onclick="goHome()"
+            >
+                🏠 Home
+            </button>
+
+        </div>
+
+
+        <div class="review">
+
+            <h2>
+                Revision
+            </h2>
+
+            <div id="reviewContainer"></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+                    QUESTION BANK
+======================================================
+
+IMPORTANT:
+
+Questions are intentionally varied.
+Same concept can appear again with:
+- different wording
+- different values
+- different code
+- different options
+
+Advanced questions use MAXIMUM 4 concepts.
+====================================================== */
+
+
+const QUESTION_BANK = [
+
+/* =====================================================
+                         BASICS
+====================================================== */
+
+{
+id:"B001",
+category:"Basics",
+question:"Which Pandas object is one-dimensional and labeled?",
+options:["DataFrame","Series","Index","GroupBy"],
+answer:1,
+reason:"A DataFrame is two-dimensional, while a Series is one-dimensional.",
+correctReason:"A Series represents a one-dimensional labeled array.",
+concepts:["Series"]
+},
+
+{
+id:"B002",
+category:"Basics",
+question:"What does df.shape return?",
+options:[
+"The number of elements",
+"The data types",
+"A tuple containing rows and columns",
+"Only the number of rows"
+],
+answer:2,
+reason:"df.shape does not return the total number of elements.",
+correctReason:"shape returns (number of rows, number of columns).",
+concepts:["shape"]
+},
+
+{
+id:"B003",
+category:"Basics",
+question:"What is the default index of pd.Series([5,10,15])?",
+options:[
+"[1,2,3]",
+"[0,1,2]",
+"['0','1','2']",
+"[5,10,15]"
+],
+answer:1,
+reason:"Pandas normally starts its default integer index from zero.",
+correctReason:"The default index is 0, 1 and 2.",
+concepts:["Series","Index"]
+},
+
+{
+id:"B004",
+category:"Basics",
+question:"Which method displays the first five rows by default?",
+options:[
+"tail()",
+"head()",
+"first()",
+"top()"
+],
+answer:1,
+reason:"tail() works from the end of the object.",
+correctReason:"head() returns the first five rows when no argument is supplied.",
+concepts:["head"]
+},
+
+{
+id:"B005",
+category:"Basics",
+question:"Which method displays the last five rows by default?",
+options:[
+"last()",
+"end()",
+"tail()",
+"bottom()"
+],
+answer:2,
+reason:"tail() is the standard Pandas method for retrieving rows from the end.",
+correctReason:"tail() returns the last five rows by default.",
+concepts:["tail"]
+},
+
+{
+id:"B006",
+category:"Basics",
+question:"Which Pandas function reads a CSV file?",
+options:[
+"pd.csv()",
+"pd.load_csv()",
+"pd.read_csv()",
+"pd.open_csv()"
+],
+answer:2,
+reason:"The other functions are not standard Pandas CSV readers.",
+correctReason:"pd.read_csv() reads CSV data into a DataFrame.",
+concepts:["read_csv"]
+},
+
+{
+id:"B007",
+category:"Basics",
+question:"Which constructor creates a DataFrame?",
+options:[
+"pd.Series()",
+"pd.DataFrame()",
+"pd.Table()",
+"pd.array2d()"
+],
+answer:1,
+reason:"pd.Series() creates a Series rather than a DataFrame.",
+correctReason:"pd.DataFrame() is the constructor for a DataFrame.",
+concepts:["DataFrame"]
+},
+
+{
+id:"B008",
+category:"Basics",
+question:"If df has 4 rows and 3 columns, what is df.size?",
+options:[
+"3",
+"4",
+"7",
+"12"
+],
+answer:3,
+reason:"size counts elements, not dimensions separately.",
+correctReason:"size = rows × columns = 4 × 3 = 12.",
+concepts:["size","shape"]
+},
+
+{
+id:"B009",
+category:"Basics",
+question:"Which attribute gives the number of dimensions?",
+options:[
+"shape",
+"size",
+"ndim",
+"dimension"
+],
+answer:2,
+reason:"shape gives the dimensions themselves, not the number of dimensions.",
+correctReason:"ndim returns the number of axes.",
+concepts:["ndim"]
+},
+
+{
+id:"B010",
+category:"Basics",
+question:"What does df['Marks'] normally return?",
+options:[
+"A DataFrame",
+"A Series",
+"A list",
+"A scalar"
+],
+answer:1,
+reason:"Selecting a single column with one pair of brackets returns a Series.",
+correctReason:"df['Marks'] returns the Marks column as a Series.",
+concepts:["DataFrame","Series"]
+},
+
+{
+id:"B011",
+category:"Basics",
+question:"Which attribute contains the column labels of a DataFrame?",
+options:[
+"df.labels",
+"df.names",
+"df.columns",
+"df.headers"
+],
+answer:2,
+reason:"columns is the official Pandas attribute for column labels.",
+correctReason:"df.columns contains the DataFrame's column labels.",
+concepts:["columns"]
+},
+
+{
+id:"B012",
+category:"Basics",
+question:"Which method changes the data type of a Series?",
+options:[
+"astype()",
+"dtype()",
+"change_type()",
+"convert()"
+],
+answer:0,
+reason:"dtype describes the type; astype performs a conversion.",
+correctReason:"astype() casts values to the requested dtype.",
+concepts:["astype","dtype"]
+},
+
+{
+id:"B013",
+category:"Basics",
+question:"Which attribute shows the data type of each DataFrame column?",
+options:[
+"df.types",
+"df.dtype",
+"df.dtypes",
+"df.datatypes"
+],
+answer:2,
+reason:"dtype is commonly used for a Series; DataFrame uses dtypes.",
+correctReason:"df.dtypes returns the dtype of each column.",
+concepts:["dtypes"]
+},
+
+{
+id:"B014",
+category:"Basics",
+question:"What does df.index represent?",
+options:[
+"Column names",
+"Row labels",
+"Data types",
+"Number of columns"
+],
+answer:1,
+reason:"Column names are stored in df.columns.",
+correctReason:"df.index represents the row labels.",
+concepts:["Index"]
+},
+
+{
+id:"B015",
+category:"Basics",
+question:"Which function creates a Series from a Python list?",
+options:[
+"pd.Series()",
+"pd.List()",
+"pd.ArraySeries()",
+"pd.CreateSeries()"
+],
+answer:0,
+reason:"pd.Series() is the standard constructor.",
+correctReason:"pd.Series(list) creates a Series.",
+concepts:["Series"]
+},
+
+{
+id:"B016",
+category:"Basics",
+question:"If df has 5 rows and 6 columns, what is df.shape?",
+options:[
+"(5,6)",
+"(6,5)",
+"30",
+"5 × 6"
+],
+answer:0,
+reason:"shape stores rows first and columns second.",
+correctReason:"df.shape is (5, 6).",
+concepts:["shape"]
+},
+
+{
+id:"B017",
+category:"Basics",
+question:"Which method gives a concise summary of DataFrame information and dtypes?",
+options:[
+"info()",
+"summary()",
+"details()",
+"describe()"
+],
+answer:0,
+reason:"describe() provides statistical summaries, while info() gives structural information.",
+correctReason:"info() displays column information, non-null counts and dtypes.",
+concepts:["info","dtypes"]
+},
+
+{
+id:"B018",
+category:"Basics",
+question:"Which method provides descriptive statistics for numeric columns?",
+options:[
+"info()",
+"describe()",
+"stats()",
+"summary()"
+],
+answer:1,
+reason:"info() focuses on structure rather than statistical summaries.",
+correctReason:"describe() provides statistics such as count, mean and quartiles.",
+concepts:["describe"]
+},
+
+/* =====================================================
+                       IMPORTANT
+====================================================== */
+
+{
+id:"I001",
+category:"Important",
+question:"Which accessor selects data using integer positions?",
+options:["loc","iloc","at","label"],
+answer:1,
+reason:"loc is label-based.",
+correctReason:"iloc performs integer-position based selection.",
+concepts:["iloc"]
+},
+
+{
+id:"I002",
+category:"Important",
+question:"Which accessor is primarily label-based?",
+options:["iloc","loc","position","iat"],
+answer:1,
+reason:"iloc is integer-position based.",
+correctReason:"loc selects rows and columns using labels.",
+concepts:["loc"]
+},
+
+{
+id:"I003",
+category:"Important",
+question:"If df has index labels [10,20,30], what does df.loc[20] select?",
+options:[
+"The first row",
+"The row with label 20",
+"The row at position 20",
+"The column named 20"
+],
+answer:1,
+reason:"loc uses labels rather than zero-based positions.",
+correctReason:"loc[20] selects the row whose index label is 20.",
+concepts:["loc","Index"]
+},
+
+{
+id:"I004",
+category:"Important",
+question:"If df has three rows, what does df.iloc[1] select?",
+options:[
+"The first row",
+"The second row",
+"The row labeled 1 only",
+"The last row"
+],
+answer:1,
+reason:"iloc is zero-based positional indexing.",
+correctReason:"Position 1 is the second row.",
+concepts:["iloc","Index"]
+},
+
+{
+id:"I005",
+category:"Important",
+question:"Which method detects missing values?",
+options:["isna()","missing()","checkna()","find_null()"],
+answer:0,
+reason:"The other names are not standard Pandas methods.",
+correctReason:"isna() returns a Boolean mask identifying missing values.",
+concepts:["isna"]
+},
+
+{
+id:"I006",
+category:"Important",
+question:"Which method replaces missing values?",
+options:["dropna()","fillna()","replace_missing()","fixna()"],
+answer:1,
+reason:"dropna() removes missing data instead of replacing it.",
+correctReason:"fillna() is used to fill missing values.",
+concepts:["fillna","isna"]
+},
+
+{
+id:"I007",
+category:"Important",
+question:"What does df.dropna() do by default?",
+options:[
+"Fills NaN with zero",
+"Drops rows containing missing values",
+"Drops duplicate rows",
+"Sorts missing values"
+],
+answer:1,
+reason:"dropna() removes rows or columns with missing data depending on axis.",
+correctReason:"With default axis behavior, rows containing missing values are removed.",
+concepts:["dropna"]
+},
+
+{
+id:"I008",
+category:"Important",
+question:"Which method removes duplicate rows?",
+options:[
+"unique()",
+"drop_duplicates()",
+"remove_duplicates()",
+"deduplicate()"
+],
+answer:1,
+reason:"unique() returns unique values rather than removing duplicate rows.",
+correctReason:"drop_duplicates() removes duplicate rows.",
+concepts:["drop_duplicates"]
+},
+
+{
+id:"I009",
+category:"Important",
+question:"Which method sorts rows by column values?",
+options:[
+"sort_values()",
+"order_values()",
+"arrange()",
+"sort_rows()"
+],
+answer:0,
+reason:"sort_values() is the standard Pandas method.",
+correctReason:"sort_values() sorts rows according to selected column values.",
+concepts:["sort_values"]
+},
+
+{
+id:"I010",
+category:"Important",
+question:"What does df['City'].value_counts() return?",
+options:[
+"The unique city names only",
+"The frequency of each city",
+"The number of columns",
+"The average city value"
+],
+answer:1,
+reason:"value_counts() counts occurrences of each distinct value.",
+correctReason:"It returns how frequently each city occurs.",
+concepts:["value_counts","Series"]
+},
+
+{
+id:"I011",
+category:"Important",
+question:"Which method counts the number of distinct values?",
+options:[
+"unique()",
+"nunique()",
+"distinct()",
+"value_count()"
+],
+answer:1,
+reason:"unique() returns the actual unique values.",
+correctReason:"nunique() returns their count.",
+concepts:["nunique","unique"]
+},
+
+{
+id:"I012",
+category:"Important",
+question:"Which method renames DataFrame columns?",
+options:[
+"rename()",
+"change_columns()",
+"rename_columns_only()",
+"set_names()"
+],
+answer:0,
+reason:"rename() is the standard Pandas label-renaming method.",
+correctReason:"rename() can rename columns and index labels.",
+concepts:["rename","columns"]
+},
+
+{
+id:"I013",
+category:"Important",
+question:"What does df.reset_index() normally do?",
+options:[
+"Deletes all indexes",
+"Creates a default integer index",
+"Sorts the DataFrame",
+"Removes all columns"
+],
+answer:1,
+reason:"reset_index() resets the row index.",
+correctReason:"It creates the default integer index unless configured otherwise.",
+concepts:["reset_index","Index"]
+},
+
+{
+id:"I014",
+category:"Important",
+question:"Which function returns the arithmetic average?",
+options:["avg()","mean()","average()","middle()"],
+answer:1,
+reason:"mean() is the standard Pandas aggregation.",
+correctReason:"mean() calculates the arithmetic average.",
+concepts:["mean"]
+},
+
+{
+id:"I015",
+category:"Important",
+question:"Which function returns the largest value in a Series?",
+options:["highest()","max()","large()","top()"],
+answer:1,
+reason:"max() is the standard aggregation.",
+correctReason:"max() returns the maximum value.",
+concepts:["max"]
+},
+
+{
+id:"I016",
+category:"Important",
+question:"Which function returns the smallest value?",
+options:["minimum()","min()","smallest()","bottom()"],
+answer:1,
+reason:"min() is the standard Pandas aggregation.",
+correctReason:"min() returns the minimum value.",
+concepts:["min"]
+},
+
+{
+id:"I017",
+category:"Important",
+question:"What does df.sort_values('Marks', ascending=False) do?",
+options:[
+"Sorts Marks from smallest to largest",
+"Sorts Marks from largest to smallest",
+"Deletes Marks",
+"Sorts columns alphabetically"
+],
+answer:1,
+reason:"ascending=False means descending order.",
+correctReason:"The highest Marks values appear first.",
+concepts:["sort_values"]
+},
+
+{
+id:"I018",
+category:"Important",
+question:"Which operation selects rows where Marks are greater than 80?",
+options:[
+"df[df['Marks'] > 80]",
+"df['Marks'] > 80",
+"df.loc['Marks' > 80]",
+"df.select(80)"
+],
+answer:0,
+reason:"A Boolean Series must be used inside df[] to filter rows.",
+correctReason:"df[df['Marks'] > 80] performs Boolean row filtering.",
+concepts:["Boolean filtering","Series"]
+},
+
+{
+id:"I019",
+category:"Important",
+question:"What does df['A'].sum() calculate?",
+options:[
+"The average of A",
+"The total of A",
+"The number of columns",
+"The maximum of A"
+],
+answer:1,
+reason:"sum() adds the values.",
+correctReason:"sum() calculates the total of the values.",
+concepts:["sum"]
+},
+
+{
+id:"I020",
+category:"Important",
+question:"Which method can replace a specific value throughout a Series?",
+options:["replace()","change()","swap()","edit()"],
+answer:0,
+reason:"replace() is the standard value replacement method.",
+correctReason:"replace() substitutes specified values.",
+concepts:["replace"]
+},
+
+/* =====================================================
+                        ADVANCED
+   MAX 4 CONCEPTS PER QUESTION
+====================================================== */
+
+{
+id:"A001",
+category:"Advanced",
+question:"Consider the following operation:",
+code:`df.dropna(subset=['Marks'])
+  .sort_values('Marks', ascending=False)
+  .head(3)`,
+options:[
+"Removes all rows",
+"Returns the 3 highest non-missing Marks rows",
+"Returns the 3 lowest Marks rows",
+"Fills missing Marks and sorts them"
+],
+answer:1,
+reason:"dropna removes rows with missing Marks, sort_values orders descending, and head(3) takes the first three.",
+correctReason:"The chain keeps valid Marks, sorts highest first, then selects three rows.",
+concepts:["dropna","sort_values","head"]
+},
+
+{
+id:"A002",
+category:"Advanced",
+question:"What is the main result of this expression?",
+code:`df.groupby('Branch')['Marks'].mean()`,
+options:[
+"Mean Marks for each Branch",
+"Mean Branch for each Marks value",
+"Total rows only",
+"Sorted Marks values"
+],
+answer:0,
+reason:"groupby creates groups and mean aggregates each group's Marks.",
+correctReason:"Each Branch gets its average Marks.",
+concepts:["groupby","mean"]
+},
+
+{
+id:"A003",
+category:"Advanced",
+question:"What does this produce?",
+code:`df.groupby('City')['Salary']
+  .agg(['mean','max'])`,
+options:[
+"One salary value",
+"Mean and maximum salary for each city",
+"Only maximum salary overall",
+"Duplicate rows"
+],
+answer:1,
+reason:"agg applies both requested aggregations to each group.",
+correctReason:"Each city receives its mean and maximum Salary.",
+concepts:["groupby","agg","mean","max"]
+},
+
+{
+id:"A004",
+category:"Advanced",
+question:"What happens here?",
+code:`df.loc[df['Marks'] > 80, ['Name','Marks']]`,
+options:[
+"Selects columns only",
+"Filters rows and selects two columns",
+"Sorts Marks",
+"Drops rows below 80 permanently"
+],
+answer:1,
+reason:"The first part creates a Boolean row filter and the second selects columns.",
+correctReason:"It returns Name and Marks for rows where Marks > 80.",
+concepts:["loc","Boolean filtering","columns"]
+},
+
+{
+id:"A005",
+category:"Advanced",
+question:"What is returned?",
+code:`df.sort_values('Marks', ascending=False)
+  .drop_duplicates('Name')`,
+options:[
+"One row for every duplicate Name only",
+"Highest-ranked occurrence of each Name after sorting",
+"All rows sorted ascending",
+"Only duplicate rows"
+],
+answer:1,
+reason:"Rows are sorted highest-first before duplicates are removed.",
+correctReason:"The first occurrence of each Name is therefore its highest Marks row.",
+concepts:["sort_values","drop_duplicates"]
+},
+
+{
+id:"A006",
+category:"Advanced",
+question:"What does this expression do?",
+code:`df.groupby('Department', as_index=False)['Salary'].mean()`,
+options:[
+"Creates Department as the index",
+"Returns average Salary with Department as a column",
+"Deletes Department",
+"Calculates the overall salary average only"
+],
+answer:1,
+reason:"as_index=False keeps the grouping key as a normal column.",
+correctReason:"The result contains Department and its average Salary.",
+concepts:["groupby","as_index","mean"]
+},
+
+{
+id:"A007",
+category:"Advanced",
+question:"What is the effect of this operation?",
+code:`df.fillna({'Age': df['Age'].mean()})`,
+options:[
+"Removes Age",
+"Fills missing Age values with the Age mean",
+"Fills every column with zero",
+"Calculates mean of every column"
+],
+answer:1,
+reason:"The dictionary targets only Age and supplies its mean as the fill value.",
+correctReason:"Missing Age entries are replaced with the mean Age.",
+concepts:["fillna","mean"]
+},
+
+{
+id:"A008",
+category:"Advanced",
+question:"Suppose df has columns A and B. What does this return?",
+code:`df[['A','B']].dropna().shape`,
+options:[
+"The original shape always",
+"Rows and columns after removing rows with missing A or B",
+"Only the number of missing values",
+"Only the number of columns"
+],
+answer:1,
+reason:"The selected columns are taken first and rows containing missing values are removed.",
+correctReason:"shape reports the dimensions of the resulting DataFrame.",
+concepts:["column selection","dropna","shape"]
+},
+
+{
+id:"A009",
+category:"Advanced",
+question:"What does this calculate?",
+code:`df.groupby('Team')['Score']
+  .agg(['sum','count'])`,
+options:[
+"Total and number of scores for each Team",
+"Only total score",
+"Only number of teams",
+"Average score for each Team"
+],
+answer:0,
+reason:"sum adds scores while count counts non-missing scores.",
+correctReason:"Each Team gets both its total Score and count.",
+concepts:["groupby","agg","sum","count"]
+},
+
+{
+id:"A010",
+category:"Advanced",
+question:"What will this expression return?",
+code:`df.loc[df['Age'].between(18,25), 'Name']`,
+options:[
+"Names of rows with Age from 18 through 25",
+"All names except ages 18 and 25",
+"Only the Age column",
+"A Boolean DataFrame"
+],
+answer:0,
+reason:"between() creates a Boolean condition and loc selects the Name column.",
+correctReason:"It returns Name values whose Age falls in the specified inclusive range.",
+concepts:["loc","between","Boolean filtering"]
+},
+
+{
+id:"A011",
+category:"Advanced",
+question:"What is the result?",
+code:`df['City'].value_counts()
+  .head(2)`,
+options:[
+"The two least common cities",
+"The two most frequent cities",
+"Two random cities",
+"Two unique city names without counts"
+],
+answer:1,
+reason:"value_counts sorts frequencies from highest to lowest by default.",
+correctReason:"head(2) therefore gives the two most frequent cities.",
+concepts:["value_counts","head"]
+},
+
+{
+id:"A012",
+category:"Advanced",
+question:"What does this chain produce?",
+code:`df.dropna()
+  .groupby('Branch')['Marks']
+  .mean()`,
+options:[
+"Mean Marks for each Branch after removing rows containing missing values",
+"Mean of missing values",
+"Only the first branch",
+"Sorted complete DataFrame"
+],
+answer:0,
+reason:"dropna removes incomplete rows before groupby and mean are applied.",
+correctReason:"The average Marks is calculated per Branch using remaining rows.",
+concepts:["dropna","groupby","mean"]
+},
+
+{
+id:"A013",
+category:"Advanced",
+question:"What is the purpose of this operation?",
+code:`pd.merge(students, marks, on='ID', how='inner')`,
+options:[
+"Combines rows with matching ID values",
+"Adds all rows regardless of ID",
+"Sorts both DataFrames",
+"Deletes the ID column"
+],
+answer:0,
+reason:"An inner merge retains matching keys from both DataFrames.",
+correctReason:"Rows whose ID exists in both DataFrames are combined.",
+concepts:["merge","inner join"]
+},
+
+{
+id:"A014",
+category:"Advanced",
+question:"What does this do?",
+code:`pd.concat([df1, df2], axis=0, ignore_index=True)`,
+options:[
+"Combines columns side by side",
+"Stacks rows and creates a fresh integer index",
+"Only compares the DataFrames",
+"Deletes duplicate columns"
+],
+answer:1,
+reason:"axis=0 concatenates vertically and ignore_index resets the resulting index.",
+correctReason:"Rows are stacked and the resulting index becomes 0,1,2,...",
+concepts:["concat","axis","ignore_index"]
+},
+
+{
+id:"A015",
+category:"Advanced",
+question:"What does this expression return?",
+code:`df.groupby('Dept')['Salary']
+  .transform('mean')`,
+options:[
+"One row per department",
+"A Series aligned with the original rows containing group means",
+"Only the overall mean",
+"A sorted DataFrame"
+],
+answer:1,
+reason:"transform returns group-level results aligned back to the original index.",
+correctReason:"Each employee receives the mean Salary of their department.",
+concepts:["groupby","transform","mean"]
+},
+
+{
+id:"A016",
+category:"Advanced",
+question:"What does this produce?",
+code:`df.sort_values('Score', ascending=False)
+  .groupby('Team')
+  .head(2)`,
+options:[
+"Two highest-scoring rows per Team",
+"Two lowest rows overall",
+"Two Teams only",
+"Mean score per Team"
+],
+answer:0,
+reason:"The descending sort puts high scores first, and groupby().head(2) takes two rows per group.",
+correctReason:"The result contains the top two Score rows within each Team.",
+concepts:["sort_values","groupby","head"]
+},
+
+{
+id:"A017",
+category:"Advanced",
+question:"What does this expression count?",
+code:`df.groupby('City')['Name'].nunique()`,
+options:[
+"All rows",
+"Distinct names in each city",
+"Number of cities only",
+"Duplicate names only"
+],
+answer:1,
+reason:"nunique counts distinct values within each group.",
+correctReason:"It returns the number of unique Name values per City.",
+concepts:["groupby","nunique"]
+},
+
+{
+id:"A018",
+category:"Advanced",
+question:"What does this operation do?",
+code:`df.query("Marks > 80 and Age < 25")`,
+options:[
+"Filters rows satisfying both conditions",
+"Filters columns named Marks and Age",
+"Sorts by Marks",
+"Changes Marks"
+],
+answer:0,
+reason:"query evaluates the Boolean condition for each row.",
+correctReason:"Only rows where both conditions are true are returned.",
+concepts:["query","Boolean filtering"]
+},
+
+/* =====================================================
+                    EXTRA IMPORTANT
+====================================================== */
+
+{
+id:"I021",
+category:"Important",
+question:"Which function combines DataFrames row-wise or column-wise?",
+options:["pd.concat()","pd.combine()","pd.stack_all()","pd.join_all()"],
+answer:0,
+reason:"pd.concat() is the general concatenation function.",
+correctReason:"pd.concat() combines Pandas objects along an axis.",
+concepts:["concat"]
+},
+
+{
+id:"I022",
+category:"Important",
+question:"Which function is commonly used for database-style joins?",
+options:["merge()","concat()","stack()","pivot()"],
+answer:0,
+reason:"concat combines objects while merge performs key-based joins.",
+correctReason:"merge() joins DataFrames using common keys or indexes.",
+concepts:["merge"]
+},
+
+{
+id:"I023",
+category:"Important",
+question:"Which parameter of groupby keeps grouping columns as ordinary columns?",
+options:["as_index=False","index=False","keep=False","columns=True"],
+answer:0,
+reason:"as_index controls whether group keys become the index.",
+correctReason:"as_index=False keeps group keys as normal columns.",
+concepts:["groupby","as_index"]
+},
+
+{
+id:"I024",
+category:"Important",
+question:"Which method creates a pivot table?",
+options:["pivot_table()","make_pivot()","summary_pivot()","table()"],
+answer:0,
+reason:"pivot_table() is the standard Pandas method.",
+correctReason:"pivot_table() creates spreadsheet-style summarized tables.",
+concepts:["pivot_table"]
+},
+
+{
+id:"I025",
+category:"Important",
+question:"Which method applies a function to Series values element by element?",
+options:["map()","apply_rows()","transform_one()","each()"],
+answer:0,
+reason:"Series.map() performs element-wise mapping.",
+correctReason:"map() applies a mapping or function to individual Series values.",
+concepts:["map"]
+},
+
+{
+id:"I026",
+category:"Important",
+question:"Which method can apply a function along DataFrame rows or columns?",
+options:["apply()","map_all()","run()","function()"],
+answer:0,
+reason:"apply() supports row-wise or column-wise function application.",
+correctReason:"DataFrame.apply() applies a function along an axis.",
+concepts:["apply"]
+},
+
+{
+id:"I027",
+category:"Important",
+question:"Which method returns a Boolean mask for duplicated rows?",
+options:["duplicated()","isduplicate()","duplicate_mask()","has_duplicates()"],
+answer:0,
+reason:"duplicated() identifies duplicate entries with Boolean values.",
+correctReason:"duplicated() returns True for rows considered duplicates.",
+concepts:["duplicated"]
+},
+
+{
+id:"I028",
+category:"Important",
+question:"What does df.columns.tolist() return?",
+options:[
+"A Python list of column labels",
+"A Series of data",
+"The number of columns",
+"A DataFrame"
+],
+answer:0,
+reason:"tolist() converts the Index object into a Python list.",
+correctReason:"It returns the column labels as a list.",
+concepts:["columns","tolist"]
+},
+
+{
+id:"I029",
+category:"Important",
+question:"Which method converts a DataFrame into a NumPy array?",
+options:["to_numpy()","to_array()","numpy()","as_numpy_array()"],
+answer:0,
+reason:"to_numpy() is the standard Pandas conversion method.",
+correctReason:"to_numpy() returns the DataFrame data as a NumPy ndarray.",
+concepts:["to_numpy"]
+},
+
+{
+id:"I030",
+category:"Important",
+question:"Which method removes selected rows or columns by label?",
+options:["drop()","remove()","delete()","erase()"],
+answer:0,
+reason:"drop() is the standard Pandas method.",
+correctReason:"drop() removes specified labels from rows or columns.",
+concepts:["drop"]
+},
+
+/* =====================================================
+                     EXTRA ADVANCED
+====================================================== */
+
+{
+id:"A019",
+category:"Advanced",
+question:"What does this return?",
+code:`df.groupby('Category')['Price'].agg(['min','max','mean'])`,
+options:[
+"Three statistics for Price in each Category",
+"Only the global minimum",
+"Only the global maximum",
+"Three rows total"
+],
+answer:0,
+reason:"agg applies all three requested functions independently to each group.",
+correctReason:"Every Category gets its minimum, maximum and mean Price.",
+concepts:["groupby","agg","min","max"]
+},
+
+{
+id:"A020",
+category:"Advanced",
+question:"What happens here?",
+code:`df.loc[df['Score'].isna(), 'Score'] = 0`,
+options:[
+"Missing Score values are replaced with zero",
+"All Score values become missing",
+"Rows with missing Score are deleted",
+"Only the index changes"
+],
+answer:0,
+reason:"isna() identifies missing Score entries and loc targets them for assignment.",
+correctReason:"Only missing Score values receive 0.",
+concepts:["loc","isna","assignment"]
+},
+
+{
+id:"A021",
+category:"Advanced",
+question:"What does this return?",
+code:`df.groupby('Team')['Score'].sum().sort_values(ascending=False)`,
+options:[
+"Teams ordered by total Score from high to low",
+"Individual scores sorted",
+"Teams ordered alphabetically",
+"Only the highest score"
+],
+answer:0,
+reason:"sum calculates each team's total and sort_values orders those totals descending.",
+correctReason:"The teams appear according to their total Score, highest first.",
+concepts:["groupby","sum","sort_values"]
+},
+
+{
+id:"A022",
+category:"Advanced",
+question:"What does this operation achieve?",
+code:`df.assign(
+    Total=df['Math'] + df['Science']
+).sort_values('Total', ascending=False)`,
+options:[
+"Creates Total and sorts by it descending",
+"Deletes Math and Science",
+"Only sorts Math",
+"Groups rows by Total"
+],
+answer:0,
+reason:"assign creates the new column, then sort_values orders by it.",
+correctReason:"A Total column is created and rows are sorted from highest Total to lowest.",
+concepts:["assign","sort_values"]
+},
+
+{
+id:"A023",
+category:"Advanced",
+question:"What does this produce?",
+code:`df.groupby('Dept', as_index=False)
+  .agg(AvgSalary=('Salary','mean'))`,
+options:[
+"A grouped DataFrame with AvgSalary for each Dept",
+"Only the overall salary mean",
+"A Series indexed by Salary",
+"Original rows with Salary changed"
+],
+answer:0,
+reason:"Named aggregation creates AvgSalary while as_index=False keeps Dept as a column.",
+correctReason:"The result has one row per Dept with its average Salary.",
+concepts:["groupby","agg","as_index","mean"]
+},
+
+{
+id:"A024",
+category:"Advanced",
+question:"What is the effect of this expression?",
+code:`df[['Name','Marks']]
+  .sort_values('Marks')
+  .tail(3)`,
+options:[
+"The three highest Marks rows with Name and Marks",
+"The three lowest Marks rows",
+"Three random rows",
+"Only the Marks column"
+],
+answer:0,
+reason:"Sorting ascending places the highest values at the end, so tail(3) selects them.",
+correctReason:"The final three rows are the three highest Marks values.",
+concepts:["column selection","sort_values","tail"]
+},
+
+{
+id:"A025",
+category:"Advanced",
+question:"What does this return?",
+code:`df[df['City'].isin(['Delhi','Jaipur'])]`,
+options:[
+"Rows whose City is Delhi or Jaipur",
+"Only Delhi rows",
+"Rows where City is neither",
+"Column names Delhi and Jaipur"
+],
+answer:0,
+reason:"isin() checks membership in the supplied list.",
+correctReason:"Rows matching either listed city are retained.",
+concepts:["Boolean filtering","isin"]
+},
+
+{
+id:"A026",
+category:"Advanced",
+question:"What happens here?",
+code:`df['Marks'].fillna(0).astype(int)`,
+options:[
+"Missing Marks become 0 and values are converted to integers",
+"Only missing rows are removed",
+"Marks become strings",
+"Only the dtype changes without filling missing values"
+],
+answer:0,
+reason:"fillna executes first and astype(int) executes on the resulting Series.",
+correctReason:"Missing values are filled with zero and then the Series is cast to int.",
+concepts:["fillna","astype"]
+},
+
+{
+id:"A027",
+category:"Advanced",
+question:"What does this return?",
+code:`df.groupby('Branch')['Marks']
+  .agg(['count','mean'])
+  .sort_values('mean', ascending=False)`,
+options:[
+"Branches sorted by their average Marks from high to low",
+"Rows sorted by count only",
+"Only the branch with highest mean",
+"Original DataFrame sorted"
+],
+answer:0,
+reason:"The grouping creates statistics per Branch, then the result is sorted by mean.",
+correctReason:"The grouped result is ordered by average Marks descending.",
+concepts:["groupby","agg","mean","sort_values"]
+},
+
+{
+id:"A028",
+category:"Advanced",
+question:"What is the purpose of this?",
+code:`df.merge(
+    salary,
+    on='EmployeeID',
+    how='left'
+)`,
+options:[
+"Keep all rows from df and add matching salary information",
+"Keep only matching rows",
+"Keep only salary rows",
+"Concatenate columns by position"
+],
+answer:0,
+reason:"A left merge preserves every row from the left DataFrame.",
+correctReason:"All df rows remain, with matching salary data where available.",
+concepts:["merge","left join"]
+},
+
+{
+id:"A029",
+category:"Advanced",
+question:"What does this expression do?",
+code:`df['Name'].str.upper().str.strip()`,
+options:[
+"Converts names to uppercase and removes surrounding whitespace",
+"Removes all spaces inside names",
+"Sorts names",
+"Converts names to integers"
+],
+answer:0,
+reason:"upper() changes case and strip() removes surrounding whitespace.",
+correctReason:"Both string operations are applied sequentially to the Series.",
+concepts:["str.upper","str.strip"]
+},
+
+{
+id:"A030",
+category:"Advanced",
+question:"What does this produce?",
+code:`df.groupby('City')['Salary']
+  .transform('mean')`,
+options:[
+"A mean Salary value aligned with every original row",
+"One row per City",
+"Only the overall Salary mean",
+"A sorted DataFrame"
+],
+answer:0,
+reason:"transform broadcasts group-level results back to the original rows.",
+correctReason:"Each row receives the mean Salary of its City.",
+concepts:["groupby","transform","mean"]
+}
+
+];
+
+
+/* =====================================================
+                    QUIZ STATE
+====================================================== */
+
+let currentCategory="Basics";
+let currentQuiz=[];
+let currentIndex=0;
+let answers=[];
+let wrongQuestions=[];
+let wrongPractice=false;
+
+
+/* =====================================================
+               USED QUESTION STORAGE
+====================================================== */
+
+const STORAGE_KEY="PANDAS_MASTER_USED_V4";
+
+
+function getUsed(){
+
+    try{
+
+        const saved=
+            JSON.parse(
+                localStorage.getItem(STORAGE_KEY)
+            );
+
+        return saved || {};
+
+    }
+    catch{
+
+        return {};
+
+    }
+
+}
+
+
+let used=getUsed();
+
+
+function saveUsed(){
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(used)
+    );
+
+}
+
+
+/* =====================================================
+                    SHUFFLE
+====================================================== */
+
+function shuffle(array){
+
+    const arr=[...array];
+
+    for(
+        let i=arr.length-1;
+        i>0;
+        i--
+    ){
+
+        const j=
+            Math.floor(
+                Math.random()*(i+1)
+            );
+
+        [
+            arr[i],
+            arr[j]
+        ]=[
+            arr[j],
+            arr[i]
+        ];
+
+    }
+
+    return arr;
+
+}
+
+
+/* =====================================================
+                  SHOW SCREEN
+====================================================== */
+
+function showScreen(id){
+
+    document
+    .querySelectorAll(".screen")
+    .forEach(
+        screen=>{
+            screen.classList.remove("active");
+        }
+    );
+
+    document
+    .getElementById(id)
+    .classList.add("active");
+
+    window.scrollTo(0,0);
+
+}
+
+
+/* =====================================================
+                  GET CATEGORY POOL
+====================================================== */
+
+function getPool(category){
+
+    if(category==="All"){
+
+        return [...QUESTION_BANK];
+
+    }
+
+    return QUESTION_BANK.filter(
+        q=>q.category===category
+    );
+
+}
+
+
+/* =====================================================
+                     START QUIZ
+====================================================== */
+
+function startQuiz(category){
+
+    currentCategory=category;
+
+    wrongPractice=false;
+
+    makeQuiz();
+
+}
+
+
+/* =====================================================
+                  MAKE NEW QUIZ
+====================================================== */
+
+function makeQuiz(){
+
+    let pool=getPool(currentCategory);
+
+
+    /*
+       For each category, remember question IDs
+       already used in the current cycle.
+    */
+
+    if(!used[currentCategory]){
+
+        used[currentCategory]=[];
+
+    }
+
+
+    let available=
+        pool.filter(
+            q=>
+            !used[currentCategory]
+            .includes(q.id)
+        );
+
+
+    /*
+       If the whole pool has been used,
+       start another cycle.
+
+       Therefore questions can eventually
+       repeat, but not immediately.
+    */
+
+    if(available.length<10){
+
+        /*
+           Keep some unused questions if available.
+           If fewer than 10 remain, combine them with
+           previously used questions and shuffle.
+        */
+
+        if(available.length===0){
+
+            used[currentCategory]=[];
+
+            available=[...pool];
+
+        }
+        else{
+
+            const old=
+                pool.filter(
+                    q=>
+                    used[currentCategory]
+                    .includes(q.id)
+                );
+
+            available=[
+                ...available,
+                ...shuffle(old)
+            ];
+
+        }
+
+    }
+
+
+    currentQuiz=
+        shuffle(available)
+        .slice(0,10);
+
+
+    /*
+       Mark selected questions as used.
+    */
+
+    currentQuiz.forEach(q=>{
+
+        if(
+            !used[currentCategory]
+            .includes(q.id)
+        ){
+
+            used[currentCategory].push(q.id);
+
+        }
+
+    });
+
+
+    saveUsed();
+
+
+    currentIndex=0;
+
+    answers=
+        new Array(
+            currentQuiz.length
+        ).fill(null);
+
+
+    wrongQuestions=[];
+
+
+    showScreen("quizScreen");
+
+    renderQuestion();
+
+}
+
+
+/* =====================================================
+                   RENDER QUESTION
+====================================================== */
+
+function renderQuestion(){
+
+    const q=
+        currentQuiz[currentIndex];
+
+
+    document.getElementById(
+        "categoryName"
+    ).textContent=
+        wrongPractice
+        ?"Wrong Questions"
+        :currentCategory;
+
+
+    document.getElementById(
+        "questionCounter"
+    ).textContent=
+        `${currentIndex+1} / ${currentQuiz.length}`;
+
+
+    document.getElementById(
+        "questionNumber"
+    ).textContent=
+        `Question ${currentIndex+1}`;
+
+
+    document.getElementById(
+        "questionText"
+    ).textContent=
+        q.question;
+
+
+    const codeBox=
+        document.getElementById("codeBox");
+
+
+    if(q.code){
+
+        codeBox.style.display="block";
+
+        codeBox.textContent=q.code;
+
+    }
+    else{
+
+        codeBox.style.display="none";
+
+        codeBox.textContent="";
+
+    }
+
+
+    document.getElementById(
+        "progress"
+    ).style.width=
+        `${
+            ((currentIndex+1)/
+            currentQuiz.length)*100
+        }%`;
+
+
+    const options=
+        document.getElementById("options");
+
+
+    options.innerHTML="";
+
+
+    q.options.forEach(
+        (text,index)=>{
+
+            const button=
+                document.createElement("button");
+
+            button.className="option";
+
+            button.textContent=
+                `${String.fromCharCode(65+index)}. ${text}`;
+
+
+            button.onclick=()=>{
+                selectAnswer(index);
+            };
+
+
+            options.appendChild(button);
+
+        }
+    );
+
+
+    resetFeedback();
+
+    updateNavigation();
+
+
+    /*
+       If the question was already answered,
+       show its result again.
+    */
+
+    if(
+        answers[currentIndex]!==null
+    ){
+
+        showAnswer(
+            answers[currentIndex]
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+                  SELECT ANSWER
+====================================================== */
+
+function selectAnswer(index){
+
+    if(
+        answers[currentIndex]!==null
+    ){
+
+        return;
+
+    }
+
+
+    answers[currentIndex]=index;
+
+    showAnswer(index);
+
+}
+
+
+/* =====================================================
+                    SHOW ANSWER
+====================================================== */
+
+function showAnswer(selected){
+
+    const q=
+        currentQuiz[currentIndex];
+
+
+    const correct=
+        selected===q.answer;
+
+
+    const buttons=
+        document.querySelectorAll(".option");
+
+
+    buttons.forEach(
+        (button,index)=>{
+
+            button.classList.add("disabled");
+
+
+            if(index===q.answer){
+
+                button.classList.add("correct");
+
+            }
+
+
+            if(
+                index===selected &&
+                !correct
+            ){
+
+                button.classList.add("wrong");
+
+            }
+
+        }
+    );
+
+
+    /* ================= FEEDBACK ================= */
+
+    const feedback=
+        document.getElementById("feedback");
+
+
+    feedback.className=
+        correct
+        ?"feedback show correct-box"
+        :"feedback show wrong-box";
+
+
+    document.getElementById(
+        "yourAnswer"
+    ).textContent=
+        q.options[selected];
+
+
+    document.getElementById(
+        "correctAnswer"
+    ).textContent=
+        q.options[q.answer];
+
+
+    document.getElementById(
+        "wrongReason"
+    ).textContent=
+        q.reason;
+
+
+    document.getElementById(
+        "correctReason"
+    ).textContent=
+        q.correctReason;
+
+
+    document.getElementById(
+        "concept"
+    ).textContent=
+        q.concepts.join(", ");
+
+
+    document.getElementById(
+        "wrongReasonRow"
+    ).style.display=
+        correct
+        ?"none"
+        :"block";
+
+
+    /* ================= STATUS ================= */
+
+    const status=
+        document.getElementById(
+            "answerStatus"
+        );
+
+
+    status.className=
+        correct
+        ?"answer-status correct"
+        :"answer-status incorrect";
+
+
+    status.textContent=
+        correct
+        ?"✅ Correct"
+        :"❌ Incorrect";
+
+}
+
+
+/* =====================================================
+                 RESET FEEDBACK
+====================================================== */
+
+function resetFeedback(){
+
+    document.getElementById(
+        "feedback"
+    ).className="feedback";
+
+
+    document.getElementById(
+        "answerStatus"
+    ).className=
+        "answer-status wait";
+
+
+    document.getElementById(
+        "answerStatus"
+    ).textContent=
+        "Select an answer";
+
+
+    document.getElementById(
+        "wrongReasonRow"
+    ).style.display="block";
+
+}
+
+
+/* =====================================================
+                 NAVIGATION BUTTONS
+====================================================== */
+
+function updateNavigation(){
+
+    document.getElementById(
+        "previousBtn"
+    ).disabled=
+        currentIndex===0;
+
+
+    document.getElementById(
+        "nextBtn"
+    ).textContent=
+        currentIndex===
+        currentQuiz.length-1
+        ?"Finish ✓"
+        :"Next →";
+
+}
+
+
+function nextQuestion(){
+
+    if(
+        answers[currentIndex]===null
+    ){
+
+        alert(
+            "Please select an answer first."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        currentIndex<
+        currentQuiz.length-1
+    ){
+
+        currentIndex++;
+
+        renderQuestion();
+
+    }
+    else{
+
+        finishQuiz();
+
+    }
+
+}
+
+
+function previousQuestion(){
+
+    if(currentIndex>0){
+
+        currentIndex--;
+
+        renderQuestion();
+
+    }
+
+}
+
+
+/* =====================================================
+                    FINISH QUIZ
+====================================================== */
+
+function finishQuiz(){
+
+    let correct=0;
+
+
+    wrongQuestions=[];
+
+
+    currentQuiz.forEach(
+        (q,index)=>{
+
+            if(
+                answers[index]===q.answer
+            ){
+
+                correct++;
+
+            }
+            else{
+
+                wrongQuestions.push({
+                    question:q,
+                    selected:answers[index]
+                });
+
+            }
+
+        }
+    );
+
+
+    const total=currentQuiz.length;
+
+    const wrong=
+        total-correct;
+
+
+    const accuracy=
+        Math.round(
+            correct/total*100
+        );
+
+
+    document.getElementById(
+        "finalScore"
+    ).textContent=
+        `${correct} / ${total}`;
+
+
+    document.getElementById(
+        "correctCount"
+    ).textContent=
+        correct;
+
+
+    document.getElementById(
+        "wrongCount"
+    ).textContent=
+        wrong;
+
+
+    document.getElementById(
+        "accuracy"
+    ).textContent=
+        `${accuracy}%`;
+
+
+    let message;
+
+
+    if(accuracy>=90){
+
+        message="Excellent! 🔥";
+
+    }
+    else if(accuracy>=75){
+
+        message="Great work! Keep going.";
+
+    }
+    else if(accuracy>=50){
+
+        message="Good attempt. Revise your mistakes.";
+
+    }
+    else{
+
+        message="Keep practicing. You will improve.";
+
+    }
+
+
+    document.getElementById(
+        "performance"
+    ).textContent=
+        message;
+
+
+    document.getElementById(
+        "wrongBtn"
+    ).style.display=
+        wrong>0
+        ?"inline-block"
+        :"none";
+
+
+    createReview();
+
+
+    showScreen("resultScreen");
+
+}
+
+
+/* =====================================================
+                     REVIEW
+====================================================== */
+
+function createReview(){
+
+    const container=
+        document.getElementById(
+            "reviewContainer"
+        );
+
+
+    container.innerHTML="";
+
+
+    currentQuiz.forEach(
+        (q,index)=>{
+
+            const selected=
+                answers[index];
+
+
+            const correct=
+                selected===q.answer;
+
+
+            const div=
+                document.createElement("div");
+
+
+            div.className=
+                correct
+                ?"review-item correct-review"
+                :"review-item";
+
+
+            div.innerHTML=`
+
+                <strong>
+                    ${correct?"✅":"❌"}
+                    Q${index+1}. ${q.question}
+                </strong>
+
+                ${
+                    q.code
+                    ?`
+                    <div class="code-box">
+                        ${escapeHTML(q.code)}
+                    </div>
+                    `
+                    :""
+                }
+
+                <p>
+                    <strong>Your Answer:</strong>
+                    ${q.options[selected]}
+                </p>
+
+                <p>
+                    <strong>Correct Answer:</strong>
+                    ${q.options[q.answer]}
+                </p>
+
+                ${
+                    !correct
+                    ?`
+                    <p>
+                        <strong>
+                            Why your answer is wrong:
+                        </strong>
+                        ${q.reason}
+                    </p>
+                    `
+                    :""
+                }
+
+                <p>
+                    <strong>
+                        Explanation:
+                    </strong>
+                    ${q.correctReason}
+                </p>
+
+            `;
+
+
+            container.appendChild(div);
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+                    WRONG PRACTICE
+====================================================== */
+
+function practiceWrong(){
+
+    if(wrongQuestions.length===0){
+
+        alert(
+            "Excellent! There are no wrong questions."
+        );
+
+        return;
+
+    }
+
+
+    wrongPractice=true;
+
+
+    currentQuiz=
+        shuffle(
+            wrongQuestions.map(
+                item=>item.question
+            )
+        );
+
+
+    currentIndex=0;
+
+
+    answers=
+        new Array(
+            currentQuiz.length
+        ).fill(null);
+
+
+    showScreen("quizScreen");
+
+    renderQuestion();
+
+}
+
+
+/* =====================================================
+                       RETRY
+====================================================== */
+
+function retryQuiz(){
+
+    wrongPractice=false;
+
+
+    currentIndex=0;
+
+
+    answers=
+        new Array(
+            currentQuiz.length
+        ).fill(null);
+
+
+    showScreen("quizScreen");
+
+    renderQuestion();
+
+}
+
+
+/* =====================================================
+                     NEXT QUIZ
+====================================================== */
+
+function nextQuiz(){
+
+    wrongPractice=false;
+
+    makeQuiz();
+
+}
+
+
+/* =====================================================
+                        HOME
+====================================================== */
+
+function goHome(){
+
+    showScreen("homeScreen");
+
+}
+
+
+/* =====================================================
+                   HTML ESCAPE
+====================================================== */
+
+function escapeHTML(text){
+
+    return text
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;");
+
+}
+
+</script>
+
+</body>
+</html>
