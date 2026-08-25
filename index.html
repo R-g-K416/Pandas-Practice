@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Pandas Master Quiz</title>
 
 <style>
+
 *{
     box-sizing:border-box;
 }
@@ -26,9 +28,11 @@ button{
     height:68px;
     background:#111827;
     color:white;
+
     display:flex;
     align-items:center;
     justify-content:space-between;
+
     padding:0 5%;
 }
 
@@ -44,6 +48,7 @@ button{
 .container{
     width:92%;
     max-width:1050px;
+
     margin:30px auto;
 }
 
@@ -55,7 +60,10 @@ button{
     display:block;
 }
 
-/* ================= HOME ================= */
+
+/* =====================================================
+                        HOME
+===================================================== */
 
 .home-title{
     text-align:center;
@@ -80,16 +88,22 @@ button{
 
 .category{
     background:white;
+
     border:1px solid #e2e8f0;
     border-radius:18px;
+
     padding:25px;
+
     min-height:205px;
+
     transition:.2s;
 }
 
 .category:hover{
     transform:translateY(-5px);
-    box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+    box-shadow:
+        0 12px 30px rgba(0,0,0,.08);
 }
 
 .category .icon{
@@ -103,17 +117,23 @@ button{
 .category p{
     color:#64748b;
     line-height:1.5;
+
     min-height:48px;
 }
 
 .start-btn{
     width:100%;
+
     padding:11px;
+
     border:0;
     border-radius:9px;
+
     background:#2563eb;
     color:white;
+
     font-weight:700;
+
     margin-top:10px;
 }
 
@@ -121,20 +141,29 @@ button{
     background:#1d4ed8;
 }
 
-/* ================= QUIZ TOP ================= */
+
+/* =====================================================
+                      QUIZ TOP
+===================================================== */
 
 .quiz-top{
     display:flex;
+
     justify-content:space-between;
     align-items:center;
+
     margin-bottom:15px;
 }
 
 .top-btn{
     border:1px solid #dbe2ea;
+
     background:white;
+
     padding:10px 15px;
+
     border-radius:9px;
+
     font-weight:700;
 }
 
@@ -142,91 +171,149 @@ button{
     background:#eef2ff;
 }
 
+
+/* =====================================================
+                    QUIZ INFORMATION
+===================================================== */
+
 .quiz-meta{
     display:flex;
+
     justify-content:space-between;
+    align-items:center;
+
     color:#475569;
+
     font-weight:700;
+
     margin-bottom:8px;
 }
 
+#quizInfo{
+    font-size:16px;
+}
+
+#questionCounter{
+    font-size:15px;
+}
+
+
 .progress-bg{
     height:7px;
+
     background:#e2e8f0;
+
     border-radius:20px;
+
     overflow:hidden;
+
     margin-bottom:22px;
 }
 
 .progress{
     height:100%;
+
     width:0%;
+
     background:#2563eb;
+
     transition:.3s;
 }
 
-/* ================= QUESTION ================= */
+
+/* =====================================================
+                      QUESTION
+===================================================== */
 
 .question-card{
     background:white;
+
     border-radius:20px;
+
     padding:30px;
-    box-shadow:0 8px 25px rgba(0,0,0,.05);
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.05);
 }
 
 .question-number{
     color:#2563eb;
+
     font-weight:800;
+
     margin-bottom:12px;
 }
 
 .question{
     font-size:22px;
+
     line-height:1.55;
+
     margin-bottom:23px;
 }
 
 .code-box{
     background:#111827;
+
     color:#e5e7eb;
+
     padding:15px;
+
     border-radius:10px;
+
     margin:12px 0 20px;
+
     overflow-x:auto;
+
     font-family:Consolas,monospace;
+
     white-space:pre-wrap;
 }
 
-/* ================= OPTIONS ================= */
+
+/* =====================================================
+                        OPTIONS
+===================================================== */
 
 .options{
     display:grid;
+
     gap:11px;
 }
 
 .option{
     width:100%;
+
     text-align:left;
+
     padding:15px;
+
     border:2px solid #e2e8f0;
+
     border-radius:12px;
+
     background:#f8fafc;
+
     font-size:16px;
+
     transition:.15s;
 }
 
 .option:hover:not(.disabled){
     border-color:#2563eb;
+
     background:#eff6ff;
 }
 
 .option.correct{
     background:#dcfce7;
+
     border-color:#22c55e;
 }
 
 .option.wrong{
     background:#fee2e2;
+
     border-color:#ef4444;
 }
 
@@ -234,41 +321,39 @@ button{
     cursor:not-allowed;
 }
 
+
 /* =====================================================
-   IMPORTANT LAYOUT
-
-   QUESTION
-        ↓
-   OPTIONS
-        ↓
-   PREVIOUS / NEXT
-        ↓
-   REASON
-        ↓
-   CORRECT / INCORRECT
+                    PREVIOUS / NEXT
 ===================================================== */
-
-/* ================= NAVIGATION ================= */
 
 .navigation{
     width:100%;
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
+
     margin-top:20px;
 }
 
 .previous-btn,
 .next-btn{
     border:0;
+
     border-radius:9px;
+
     padding:12px 20px;
+
     font-weight:700;
+
     font-size:15px;
 }
 
 .previous-btn{
     background:#e2e8f0;
+
     color:#172033;
 }
 
@@ -278,11 +363,13 @@ button{
 
 .previous-btn:disabled{
     opacity:.45;
+
     cursor:not-allowed;
 }
 
 .next-btn{
     background:#2563eb;
+
     color:white;
 }
 
@@ -290,13 +377,36 @@ button{
     background:#1d4ed8;
 }
 
-/* ================= EXPLANATION ================= */
+
+/*
+   IMPORTANT:
+   Last quiz button will NOT blink.
+*/
+
+.next-btn.last-quiz{
+    background:#64748b;
+
+    cursor:default;
+}
+
+.next-btn.last-quiz:hover{
+    background:#64748b;
+}
+
+
+/* =====================================================
+                     EXPLANATION
+===================================================== */
 
 .feedback{
     display:none;
+
     margin-top:18px;
+
     padding:18px;
+
     border-radius:13px;
+
     line-height:1.65;
 }
 
@@ -306,11 +416,13 @@ button{
 
 .feedback.correct-box{
     background:#ecfdf5;
+
     border:1px solid #86efac;
 }
 
 .feedback.wrong-box{
     background:#fff1f2;
+
     border:1px solid #fda4af;
 }
 
@@ -318,12 +430,18 @@ button{
     margin-top:0;
 }
 
-/* ================= STATUS ================= */
+
+/* =====================================================
+                     STATUS
+===================================================== */
 
 .answer-status{
     text-align:center;
+
     min-height:25px;
+
     margin-top:15px;
+
     font-weight:800;
 }
 
@@ -339,56 +457,83 @@ button{
     color:#dc2626;
 }
 
-/* ================= RESULT ================= */
+
+/* =====================================================
+                       RESULT
+===================================================== */
 
 .result-card{
     background:white;
+
     border-radius:20px;
+
     padding:35px;
+
     text-align:center;
-    box-shadow:0 8px 25px rgba(0,0,0,.05);
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.05);
 }
 
 .score{
     font-size:58px;
+
     font-weight:800;
+
     color:#2563eb;
+
     margin:15px;
 }
 
 .stats{
     display:grid;
+
     grid-template-columns:repeat(3,1fr);
+
     gap:15px;
+
     margin:25px 0;
 }
 
 .stat{
     background:#f8fafc;
+
     padding:18px;
+
     border-radius:12px;
 }
 
 .stat-value{
     display:block;
+
     font-size:28px;
+
     font-weight:800;
+
     margin-top:7px;
 }
 
 .result-buttons{
     display:flex;
+
     justify-content:center;
+
     flex-wrap:wrap;
+
     gap:10px;
 }
 
 .primary-btn{
     border:0;
+
     padding:12px 18px;
+
     border-radius:9px;
+
     background:#2563eb;
+
     color:white;
+
     font-weight:700;
 }
 
@@ -396,17 +541,28 @@ button{
     background:#1d4ed8;
 }
 
+
+/* =====================================================
+                        REVIEW
+===================================================== */
+
 .review{
     text-align:left;
+
     margin-top:30px;
 }
 
 .review-item{
     background:#f8fafc;
+
     border-left:5px solid #ef4444;
+
     border-radius:10px;
+
     padding:16px;
+
     margin:12px 0;
+
     line-height:1.6;
 }
 
@@ -414,7 +570,10 @@ button{
     border-left-color:#22c55e;
 }
 
-/* ================= MOBILE ================= */
+
+/* =====================================================
+                        MOBILE
+===================================================== */
 
 @media(max-width:850px){
 
@@ -424,10 +583,12 @@ button{
 
 }
 
+
 @media(max-width:560px){
 
     .container{
         width:94%;
+
         margin-top:20px;
     }
 
@@ -461,14 +622,30 @@ button{
 
     .top-btn{
         padding:9px 11px;
+
+        font-size:13px;
+    }
+
+    .quiz-meta{
+        gap:10px;
+    }
+
+    #quizInfo{
+        font-size:14px;
+    }
+
+    #questionCounter{
         font-size:13px;
     }
 
 }
+
 </style>
 </head>
 
+
 <body>
+
 
 <header class="header">
 
@@ -481,15 +658,18 @@ button{
 
 <div class="container">
 
+
 <!-- =====================================================
                          HOME
-====================================================== -->
+===================================================== -->
 
 <section id="homeScreen" class="screen active">
 
     <div class="home-title">
 
-        <h1>Master Pandas 📊</h1>
+        <h1>
+            Master Pandas 📊
+        </h1>
 
         <p>
             Practice Pandas with tricky and concept-based MCQs
@@ -500,13 +680,16 @@ button{
 
     <div class="categories">
 
-        <!-- BASICS -->
 
         <div class="category">
 
-            <div class="icon">🟢</div>
+            <div class="icon">
+                🟢
+            </div>
 
-            <h2>Basics</h2>
+            <h2>
+                Basics
+            </h2>
 
             <p>
                 Fundamental Pandas concepts
@@ -523,13 +706,16 @@ button{
         </div>
 
 
-        <!-- IMPORTANT -->
 
         <div class="category">
 
-            <div class="icon">⭐</div>
+            <div class="icon">
+                ⭐
+            </div>
 
-            <h2>Important</h2>
+            <h2>
+                Important
+            </h2>
 
             <p>
                 Frequently used Pandas
@@ -546,13 +732,16 @@ button{
         </div>
 
 
-        <!-- ADVANCED -->
 
         <div class="category">
 
-            <div class="icon">🔥</div>
+            <div class="icon">
+                🔥
+            </div>
 
-            <h2>Advanced</h2>
+            <h2>
+                Advanced
+            </h2>
 
             <p>
                 Tricky questions using
@@ -569,13 +758,16 @@ button{
         </div>
 
 
-        <!-- ALL -->
 
         <div class="category">
 
-            <div class="icon">📚</div>
+            <div class="icon">
+                📚
+            </div>
 
-            <h2>All Questions</h2>
+            <h2>
+                All Questions
+            </h2>
 
             <p>
                 Complete Pandas question
@@ -591,18 +783,22 @@ button{
 
         </div>
 
+
     </div>
 
 </section>
 
 
+
 <!-- =====================================================
                          QUIZ
-====================================================== -->
+===================================================== -->
 
 <section id="quizScreen" class="screen">
 
+
     <div class="quiz-top">
+
 
         <button
             class="top-btn"
@@ -613,26 +809,33 @@ button{
 
 
         <button
+            id="topNextQuizBtn"
             class="top-btn"
             onclick="nextQuiz()"
         >
             Next Quiz →
         </button>
 
+
     </div>
+
 
 
     <div class="quiz-meta">
 
-        <span id="categoryName">
-            Basics
+
+        <span id="quizInfo">
+            🟢 Basics • Quiz 1
         </span>
+
 
         <span id="questionCounter">
-            1 / 10
+            Question 1 / 10
         </span>
 
+
     </div>
+
 
 
     <div class="progress-bg">
@@ -645,7 +848,9 @@ button{
     </div>
 
 
+
     <div class="question-card">
+
 
         <div
             id="questionNumber"
@@ -666,17 +871,16 @@ button{
         ></div>
 
 
-        <!-- OPTIONS -->
-
         <div
             id="options"
             class="options"
         ></div>
 
 
-        <!-- PREVIOUS / NEXT -->
+        <!-- Previous / Next -->
 
         <div class="navigation">
+
 
             <button
                 id="previousBtn"
@@ -695,15 +899,17 @@ button{
                 Next →
             </button>
 
+
         </div>
 
 
-        <!-- REASON -->
+        <!-- Reason -->
 
         <div
             id="feedback"
             class="feedback"
         >
+
 
             <h3 id="feedbackTitle">
                 Explanation
@@ -764,10 +970,11 @@ button{
 
             </p>
 
+
         </div>
 
 
-        <!-- CORRECT / INCORRECT -->
+        <!-- Correct / Incorrect -->
 
         <div
             id="answerStatus"
@@ -776,18 +983,23 @@ button{
             Select an answer
         </div>
 
+
     </div>
+
 
 </section>
 
 
+
 <!-- =====================================================
                          RESULT
-====================================================== -->
+===================================================== -->
 
 <section id="resultScreen" class="screen">
 
+
     <div class="result-card">
+
 
         <h1>
             Quiz Complete 🎉
@@ -806,6 +1018,7 @@ button{
 
 
         <div class="stats">
+
 
             <div class="stat">
 
@@ -848,10 +1061,13 @@ button{
 
             </div>
 
+
         </div>
 
 
+
         <div class="result-buttons">
+
 
             <button
                 id="retryBtn"
@@ -872,6 +1088,7 @@ button{
 
 
             <button
+                id="resultNextQuizBtn"
                 class="primary-btn"
                 onclick="nextQuiz()"
             >
@@ -886,7 +1103,9 @@ button{
                 🏠 Home
             </button>
 
+
         </div>
+
 
 
         <div class="review">
@@ -895,41 +1114,74 @@ button{
                 Revision
             </h2>
 
-            <div id="reviewContainer"></div>
+            <div
+                id="reviewContainer"
+            ></div>
 
         </div>
 
+
     </div>
 
+
 </section>
+
 
 </div>
 
 
+
 <script>
+
 
 /* =====================================================
                     QUESTION BANK
-======================================================
+=====================================================
+
+PASTE YOUR EXISTING QUESTION BANK HERE.
 
 IMPORTANT:
+Question objects should have this structure:
 
-Questions are intentionally varied.
-Same concept can appear again with:
-- different wording
-- different values
-- different code
-- different options
+{
+    id:"B001",
+    category:"Basics",
 
-Advanced questions use MAXIMUM 4 concepts.
-====================================================== */
+    question:"Your question",
+
+    options:[
+        "Option A",
+        "Option B",
+        "Option C",
+        "Option D"
+    ],
+
+    answer:1,
+
+    reason:"Why the selected wrong answer is wrong.",
+
+    correctReason:
+        "Why the correct answer is correct.",
+
+    concepts:[
+        "Series"
+    ]
+}
+
+For Advanced:
+MAXIMUM 4 concepts per question.
+===================================================== */
+
+
+/*
+   The complete question bank from the previous version
+   is kept here.
+*/
 
 
 const QUESTION_BANK = [
 
-/* =====================================================
-                         BASICS
-====================================================== */
+/* ================= BASICS ================= */
 
 {
 id:"B001",
@@ -1214,15 +1466,19 @@ correctReason:"describe() provides statistics such as count, mean and quartiles.
 concepts:["describe"]
 },
 
-/* =====================================================
-                       IMPORTANT
-====================================================== */
+
+/* ================= IMPORTANT ================= */
 
 {
 id:"I001",
 category:"Important",
 question:"Which accessor selects data using integer positions?",
-options:["loc","iloc","at","label"],
+options:[
+"loc",
+"iloc",
+"at",
+"label"
+],
 answer:1,
 reason:"loc is label-based.",
 correctReason:"iloc performs integer-position based selection.",
@@ -1233,7 +1489,12 @@ concepts:["iloc"]
 id:"I002",
 category:"Important",
 question:"Which accessor is primarily label-based?",
-options:["iloc","loc","position","iat"],
+options:[
+"iloc",
+"loc",
+"position",
+"iat"
+],
 answer:1,
 reason:"iloc is integer-position based.",
 correctReason:"loc selects rows and columns using labels.",
@@ -1276,7 +1537,12 @@ concepts:["iloc","Index"]
 id:"I005",
 category:"Important",
 question:"Which method detects missing values?",
-options:["isna()","missing()","checkna()","find_null()"],
+options:[
+"isna()",
+"missing()",
+"checkna()",
+"find_null()"
+],
 answer:0,
 reason:"The other names are not standard Pandas methods.",
 correctReason:"isna() returns a Boolean mask identifying missing values.",
@@ -1287,7 +1553,12 @@ concepts:["isna"]
 id:"I006",
 category:"Important",
 question:"Which method replaces missing values?",
-options:["dropna()","fillna()","replace_missing()","fixna()"],
+options:[
+"dropna()",
+"fillna()",
+"replace_missing()",
+"fixna()"
+],
 answer:1,
 reason:"dropna() removes missing data instead of replacing it.",
 correctReason:"fillna() is used to fill missing values.",
@@ -1410,7 +1681,12 @@ concepts:["reset_index","Index"]
 id:"I014",
 category:"Important",
 question:"Which function returns the arithmetic average?",
-options:["avg()","mean()","average()","middle()"],
+options:[
+"avg()",
+"mean()",
+"average()",
+"middle()"
+],
 answer:1,
 reason:"mean() is the standard Pandas aggregation.",
 correctReason:"mean() calculates the arithmetic average.",
@@ -1421,7 +1697,12 @@ concepts:["mean"]
 id:"I015",
 category:"Important",
 question:"Which function returns the largest value in a Series?",
-options:["highest()","max()","large()","top()"],
+options:[
+"highest()",
+"max()",
+"large()",
+"top()"
+],
 answer:1,
 reason:"max() is the standard aggregation.",
 correctReason:"max() returns the maximum value.",
@@ -1432,7 +1713,12 @@ concepts:["max"]
 id:"I016",
 category:"Important",
 question:"Which function returns the smallest value?",
-options:["minimum()","min()","smallest()","bottom()"],
+options:[
+"minimum()",
+"min()",
+"smallest()",
+"bottom()"
+],
 answer:1,
 reason:"min() is the standard Pandas aggregation.",
 correctReason:"min() returns the minimum value.",
@@ -1491,17 +1777,20 @@ concepts:["sum"]
 id:"I020",
 category:"Important",
 question:"Which method can replace a specific value throughout a Series?",
-options:["replace()","change()","swap()","edit()"],
+options:[
+"replace()",
+"change()",
+"swap()",
+"edit()"
+],
 answer:0,
 reason:"replace() is the standard value replacement method.",
 correctReason:"replace() substitutes specified values.",
 concepts:["replace"]
 },
 
-/* =====================================================
-                        ADVANCED
-   MAX 4 CONCEPTS PER QUESTION
-====================================================== */
+
+/* ================= ADVANCED ================= */
 
 {
 id:"A001",
@@ -1752,7 +2041,7 @@ concepts:["concat","axis","ignore_index"]
 {
 id:"A015",
 category:"Advanced",
-question:"What does this expression return?",
+question:"What does this operation return?",
 code:`df.groupby('Dept')['Salary']
   .transform('mean')`,
 options:[
@@ -1806,7 +2095,7 @@ concepts:["groupby","nunique"]
 {
 id:"A018",
 category:"Advanced",
-question:"What does this operation do?",
+question:"What does this expression do?",
 code:`df.query("Marks > 80 and Age < 25")`,
 options:[
 "Filters rows satisfying both conditions",
@@ -1818,367 +2107,129 @@ answer:0,
 reason:"query evaluates the Boolean condition for each row.",
 correctReason:"Only rows where both conditions are true are returned.",
 concepts:["query","Boolean filtering"]
-},
-
-/* =====================================================
-                    EXTRA IMPORTANT
-====================================================== */
-
-{
-id:"I021",
-category:"Important",
-question:"Which function combines DataFrames row-wise or column-wise?",
-options:["pd.concat()","pd.combine()","pd.stack_all()","pd.join_all()"],
-answer:0,
-reason:"pd.concat() is the general concatenation function.",
-correctReason:"pd.concat() combines Pandas objects along an axis.",
-concepts:["concat"]
-},
-
-{
-id:"I022",
-category:"Important",
-question:"Which function is commonly used for database-style joins?",
-options:["merge()","concat()","stack()","pivot()"],
-answer:0,
-reason:"concat combines objects while merge performs key-based joins.",
-correctReason:"merge() joins DataFrames using common keys or indexes.",
-concepts:["merge"]
-},
-
-{
-id:"I023",
-category:"Important",
-question:"Which parameter of groupby keeps grouping columns as ordinary columns?",
-options:["as_index=False","index=False","keep=False","columns=True"],
-answer:0,
-reason:"as_index controls whether group keys become the index.",
-correctReason:"as_index=False keeps group keys as normal columns.",
-concepts:["groupby","as_index"]
-},
-
-{
-id:"I024",
-category:"Important",
-question:"Which method creates a pivot table?",
-options:["pivot_table()","make_pivot()","summary_pivot()","table()"],
-answer:0,
-reason:"pivot_table() is the standard Pandas method.",
-correctReason:"pivot_table() creates spreadsheet-style summarized tables.",
-concepts:["pivot_table"]
-},
-
-{
-id:"I025",
-category:"Important",
-question:"Which method applies a function to Series values element by element?",
-options:["map()","apply_rows()","transform_one()","each()"],
-answer:0,
-reason:"Series.map() performs element-wise mapping.",
-correctReason:"map() applies a mapping or function to individual Series values.",
-concepts:["map"]
-},
-
-{
-id:"I026",
-category:"Important",
-question:"Which method can apply a function along DataFrame rows or columns?",
-options:["apply()","map_all()","run()","function()"],
-answer:0,
-reason:"apply() supports row-wise or column-wise function application.",
-correctReason:"DataFrame.apply() applies a function along an axis.",
-concepts:["apply"]
-},
-
-{
-id:"I027",
-category:"Important",
-question:"Which method returns a Boolean mask for duplicated rows?",
-options:["duplicated()","isduplicate()","duplicate_mask()","has_duplicates()"],
-answer:0,
-reason:"duplicated() identifies duplicate entries with Boolean values.",
-correctReason:"duplicated() returns True for rows considered duplicates.",
-concepts:["duplicated"]
-},
-
-{
-id:"I028",
-category:"Important",
-question:"What does df.columns.tolist() return?",
-options:[
-"A Python list of column labels",
-"A Series of data",
-"The number of columns",
-"A DataFrame"
-],
-answer:0,
-reason:"tolist() converts the Index object into a Python list.",
-correctReason:"It returns the column labels as a list.",
-concepts:["columns","tolist"]
-},
-
-{
-id:"I029",
-category:"Important",
-question:"Which method converts a DataFrame into a NumPy array?",
-options:["to_numpy()","to_array()","numpy()","as_numpy_array()"],
-answer:0,
-reason:"to_numpy() is the standard Pandas conversion method.",
-correctReason:"to_numpy() returns the DataFrame data as a NumPy ndarray.",
-concepts:["to_numpy"]
-},
-
-{
-id:"I030",
-category:"Important",
-question:"Which method removes selected rows or columns by label?",
-options:["drop()","remove()","delete()","erase()"],
-answer:0,
-reason:"drop() is the standard Pandas method.",
-correctReason:"drop() removes specified labels from rows or columns.",
-concepts:["drop"]
-},
-
-/* =====================================================
-                     EXTRA ADVANCED
-====================================================== */
-
-{
-id:"A019",
-category:"Advanced",
-question:"What does this return?",
-code:`df.groupby('Category')['Price'].agg(['min','max','mean'])`,
-options:[
-"Three statistics for Price in each Category",
-"Only the global minimum",
-"Only the global maximum",
-"Three rows total"
-],
-answer:0,
-reason:"agg applies all three requested functions independently to each group.",
-correctReason:"Every Category gets its minimum, maximum and mean Price.",
-concepts:["groupby","agg","min","max"]
-},
-
-{
-id:"A020",
-category:"Advanced",
-question:"What happens here?",
-code:`df.loc[df['Score'].isna(), 'Score'] = 0`,
-options:[
-"Missing Score values are replaced with zero",
-"All Score values become missing",
-"Rows with missing Score are deleted",
-"Only the index changes"
-],
-answer:0,
-reason:"isna() identifies missing Score entries and loc targets them for assignment.",
-correctReason:"Only missing Score values receive 0.",
-concepts:["loc","isna","assignment"]
-},
-
-{
-id:"A021",
-category:"Advanced",
-question:"What does this return?",
-code:`df.groupby('Team')['Score'].sum().sort_values(ascending=False)`,
-options:[
-"Teams ordered by total Score from high to low",
-"Individual scores sorted",
-"Teams ordered alphabetically",
-"Only the highest score"
-],
-answer:0,
-reason:"sum calculates each team's total and sort_values orders those totals descending.",
-correctReason:"The teams appear according to their total Score, highest first.",
-concepts:["groupby","sum","sort_values"]
-},
-
-{
-id:"A022",
-category:"Advanced",
-question:"What does this operation achieve?",
-code:`df.assign(
-    Total=df['Math'] + df['Science']
-).sort_values('Total', ascending=False)`,
-options:[
-"Creates Total and sorts by it descending",
-"Deletes Math and Science",
-"Only sorts Math",
-"Groups rows by Total"
-],
-answer:0,
-reason:"assign creates the new column, then sort_values orders by it.",
-correctReason:"A Total column is created and rows are sorted from highest Total to lowest.",
-concepts:["assign","sort_values"]
-},
-
-{
-id:"A023",
-category:"Advanced",
-question:"What does this produce?",
-code:`df.groupby('Dept', as_index=False)
-  .agg(AvgSalary=('Salary','mean'))`,
-options:[
-"A grouped DataFrame with AvgSalary for each Dept",
-"Only the overall salary mean",
-"A Series indexed by Salary",
-"Original rows with Salary changed"
-],
-answer:0,
-reason:"Named aggregation creates AvgSalary while as_index=False keeps Dept as a column.",
-correctReason:"The result has one row per Dept with its average Salary.",
-concepts:["groupby","agg","as_index","mean"]
-},
-
-{
-id:"A024",
-category:"Advanced",
-question:"What is the effect of this expression?",
-code:`df[['Name','Marks']]
-  .sort_values('Marks')
-  .tail(3)`,
-options:[
-"The three highest Marks rows with Name and Marks",
-"The three lowest Marks rows",
-"Three random rows",
-"Only the Marks column"
-],
-answer:0,
-reason:"Sorting ascending places the highest values at the end, so tail(3) selects them.",
-correctReason:"The final three rows are the three highest Marks values.",
-concepts:["column selection","sort_values","tail"]
-},
-
-{
-id:"A025",
-category:"Advanced",
-question:"What does this return?",
-code:`df[df['City'].isin(['Delhi','Jaipur'])]`,
-options:[
-"Rows whose City is Delhi or Jaipur",
-"Only Delhi rows",
-"Rows where City is neither",
-"Column names Delhi and Jaipur"
-],
-answer:0,
-reason:"isin() checks membership in the supplied list.",
-correctReason:"Rows matching either listed city are retained.",
-concepts:["Boolean filtering","isin"]
-},
-
-{
-id:"A026",
-category:"Advanced",
-question:"What happens here?",
-code:`df['Marks'].fillna(0).astype(int)`,
-options:[
-"Missing Marks become 0 and values are converted to integers",
-"Only missing rows are removed",
-"Marks become strings",
-"Only the dtype changes without filling missing values"
-],
-answer:0,
-reason:"fillna executes first and astype(int) executes on the resulting Series.",
-correctReason:"Missing values are filled with zero and then the Series is cast to int.",
-concepts:["fillna","astype"]
-},
-
-{
-id:"A027",
-category:"Advanced",
-question:"What does this return?",
-code:`df.groupby('Branch')['Marks']
-  .agg(['count','mean'])
-  .sort_values('mean', ascending=False)`,
-options:[
-"Branches sorted by their average Marks from high to low",
-"Rows sorted by count only",
-"Only the branch with highest mean",
-"Original DataFrame sorted"
-],
-answer:0,
-reason:"The grouping creates statistics per Branch, then the result is sorted by mean.",
-correctReason:"The grouped result is ordered by average Marks descending.",
-concepts:["groupby","agg","mean","sort_values"]
-},
-
-{
-id:"A028",
-category:"Advanced",
-question:"What is the purpose of this?",
-code:`df.merge(
-    salary,
-    on='EmployeeID',
-    how='left'
-)`,
-options:[
-"Keep all rows from df and add matching salary information",
-"Keep only matching rows",
-"Keep only salary rows",
-"Concatenate columns by position"
-],
-answer:0,
-reason:"A left merge preserves every row from the left DataFrame.",
-correctReason:"All df rows remain, with matching salary data where available.",
-concepts:["merge","left join"]
-},
-
-{
-id:"A029",
-category:"Advanced",
-question:"What does this expression do?",
-code:`df['Name'].str.upper().str.strip()`,
-options:[
-"Converts names to uppercase and removes surrounding whitespace",
-"Removes all spaces inside names",
-"Sorts names",
-"Converts names to integers"
-],
-answer:0,
-reason:"upper() changes case and strip() removes surrounding whitespace.",
-correctReason:"Both string operations are applied sequentially to the Series.",
-concepts:["str.upper","str.strip"]
-},
-
-{
-id:"A030",
-category:"Advanced",
-question:"What does this produce?",
-code:`df.groupby('City')['Salary']
-  .transform('mean')`,
-options:[
-"A mean Salary value aligned with every original row",
-"One row per City",
-"Only the overall Salary mean",
-"A sorted DataFrame"
-],
-answer:0,
-reason:"transform broadcasts group-level results back to the original rows.",
-correctReason:"Each row receives the mean Salary of its City.",
-concepts:["groupby","transform","mean"]
 }
 
 ];
 
 
+
+/* =====================================================
+                    QUIZ SETTINGS
+===================================================== */
+
+
+/*
+   EXACT NUMBER OF QUIZZES
+*/
+
+const MAX_QUIZZES = {
+
+    Basics:3,
+
+    Important:5,
+
+    Advanced:6,
+
+    All:10
+
+};
+
+
+
 /* =====================================================
                     QUIZ STATE
-====================================================== */
+===================================================== */
 
 let currentCategory="Basics";
+
 let currentQuiz=[];
+
 let currentIndex=0;
+
 let answers=[];
+
 let wrongQuestions=[];
+
 let wrongPractice=false;
 
 
-/* =====================================================
-               USED QUESTION STORAGE
-====================================================== */
+/*
+   This stores the current quiz number
+   for each category.
+*/
 
-const STORAGE_KEY="PANDAS_MASTER_USED_V4";
+let quizNumbers={
+
+    Basics:0,
+
+    Important:0,
+
+    Advanced:0,
+
+    All:0
+
+};
+
+
+/* =====================================================
+                  LOCAL STORAGE
+===================================================== */
+
+const STORAGE_KEY=
+    "PANDAS_MASTER_USED_V5";
+
+
+const QUIZ_NUMBER_KEY=
+    "PANDAS_MASTER_QUIZ_NUMBERS_V5";
+
+
+function loadQuizNumbers(){
+
+    try{
+
+        const saved=
+            JSON.parse(
+                localStorage.getItem(
+                    QUIZ_NUMBER_KEY
+                )
+            );
+
+        if(saved){
+
+            quizNumbers={
+                ...quizNumbers,
+                ...saved
+            };
+
+        }
+
+    }
+    catch{
+
+        quizNumbers={
+            Basics:0,
+            Important:0,
+            Advanced:0,
+            All:0
+        };
+
+    }
+
+}
+
+
+function saveQuizNumbers(){
+
+    localStorage.setItem(
+        QUIZ_NUMBER_KEY,
+        JSON.stringify(quizNumbers)
+    );
+
+}
+
+
+loadQuizNumbers();
+
 
 
 function getUsed(){
@@ -2187,7 +2238,9 @@ function getUsed(){
 
         const saved=
             JSON.parse(
-                localStorage.getItem(STORAGE_KEY)
+                localStorage.getItem(
+                    STORAGE_KEY
+                )
             );
 
         return saved || {};
@@ -2216,8 +2269,8 @@ function saveUsed(){
 
 
 /* =====================================================
-                    SHUFFLE
-====================================================== */
+                        SHUFFLE
+===================================================== */
 
 function shuffle(array){
 
@@ -2250,8 +2303,8 @@ function shuffle(array){
 
 
 /* =====================================================
-                  SHOW SCREEN
-====================================================== */
+                     SHOW SCREEN
+===================================================== */
 
 function showScreen(id){
 
@@ -2263,9 +2316,11 @@ function showScreen(id){
         }
     );
 
+
     document
     .getElementById(id)
     .classList.add("active");
+
 
     window.scrollTo(0,0);
 
@@ -2273,16 +2328,19 @@ function showScreen(id){
 
 
 /* =====================================================
-                  GET CATEGORY POOL
-====================================================== */
+                    GET QUESTION POOL
+===================================================== */
 
 function getPool(category){
 
     if(category==="All"){
 
-        return [...QUESTION_BANK];
+        return [
+            ...QUESTION_BANK
+        ];
 
     }
+
 
     return QUESTION_BANK.filter(
         q=>q.category===category
@@ -2292,8 +2350,8 @@ function getPool(category){
 
 
 /* =====================================================
-                     START QUIZ
-====================================================== */
+                    START QUIZ
+===================================================== */
 
 function startQuiz(category){
 
@@ -2301,24 +2359,56 @@ function startQuiz(category){
 
     wrongPractice=false;
 
+
+    /*
+       Starting a fresh category
+       always begins from Quiz 1
+       if no quiz was previously completed.
+
+       If already played, continue with next quiz.
+    */
+
+    if(
+        quizNumbers[category] >=
+        MAX_QUIZZES[category]
+    ){
+
+        /*
+           Category already completed.
+           Start again from Quiz 1.
+        */
+
+        quizNumbers[category]=0;
+
+        saveQuizNumbers();
+
+    }
+
+
     makeQuiz();
 
 }
 
 
 /* =====================================================
-                  MAKE NEW QUIZ
-====================================================== */
+                     MAKE QUIZ
+===================================================== */
 
 function makeQuiz(){
 
-    let pool=getPool(currentCategory);
-
 
     /*
-       For each category, remember question IDs
-       already used in the current cycle.
+       Increase quiz number
     */
+
+    quizNumbers[currentCategory]++;
+
+    saveQuizNumbers();
+
+
+    let pool=
+        getPool(currentCategory);
+
 
     if(!used[currentCategory]){
 
@@ -2336,43 +2426,45 @@ function makeQuiz(){
 
 
     /*
-       If the whole pool has been used,
-       start another cycle.
+       Avoid immediate repetition.
 
-       Therefore questions can eventually
-       repeat, but not immediately.
+       If enough unused questions exist,
+       use only unused questions.
+
+       If not enough remain,
+       complete the quiz using old questions.
     */
 
-    if(available.length<10){
+    if(available.length < 10){
 
-        /*
-           Keep some unused questions if available.
-           If fewer than 10 remain, combine them with
-           previously used questions and shuffle.
-        */
+        const oldQuestions=
+            pool.filter(
+                q=>
+                used[currentCategory]
+                .includes(q.id)
+            );
 
-        if(available.length===0){
 
-            used[currentCategory]=[];
+        available=[
+            ...available,
+            ...shuffle(oldQuestions)
+        ];
 
-            available=[...pool];
+    }
 
-        }
-        else{
 
-            const old=
-                pool.filter(
-                    q=>
-                    used[currentCategory]
-                    .includes(q.id)
-                );
+    /*
+       If everything has been used,
+       begin a new question cycle.
+    */
 
-            available=[
-                ...available,
-                ...shuffle(old)
-            ];
+    if(available.length===0){
 
-        }
+        used[currentCategory]=[];
+
+        available=[
+            ...pool
+        ];
 
     }
 
@@ -2383,7 +2475,7 @@ function makeQuiz(){
 
 
     /*
-       Mark selected questions as used.
+       Mark these questions as used.
     */
 
     currentQuiz.forEach(q=>{
@@ -2405,6 +2497,7 @@ function makeQuiz(){
 
     currentIndex=0;
 
+
     answers=
         new Array(
             currentQuiz.length
@@ -2416,14 +2509,123 @@ function makeQuiz(){
 
     showScreen("quizScreen");
 
+
     renderQuestion();
 
 }
 
 
 /* =====================================================
-                   RENDER QUESTION
-====================================================== */
+                    QUIZ INFORMATION
+===================================================== */
+
+function updateQuizInformation(){
+
+    const quizNumber=
+        quizNumbers[currentCategory];
+
+
+    const maxQuiz=
+        MAX_QUIZZES[currentCategory];
+
+
+    let icon="📚";
+
+
+    if(currentCategory==="Basics"){
+
+        icon="🟢";
+
+    }
+    else if(currentCategory==="Important"){
+
+        icon="⭐";
+
+    }
+    else if(currentCategory==="Advanced"){
+
+        icon="🔥";
+
+    }
+
+
+    document.getElementById(
+        "quizInfo"
+    ).textContent=
+        `${icon} ${currentCategory} • Quiz ${quizNumber} / ${maxQuiz}`;
+
+
+    /*
+       TOP RIGHT NEXT QUIZ BUTTON
+    */
+
+    const topNext=
+        document.getElementById(
+            "topNextQuizBtn"
+        );
+
+
+    if(
+        quizNumber>=maxQuiz
+    ){
+
+        topNext.textContent=
+            "Last Quiz ✓";
+
+        topNext.classList.add(
+            "last-quiz"
+        );
+
+    }
+    else{
+
+        topNext.textContent=
+            "Next Quiz →";
+
+        topNext.classList.remove(
+            "last-quiz"
+        );
+
+    }
+
+
+    /*
+       RESULT SCREEN BUTTON
+    */
+
+    const resultNext=
+        document.getElementById(
+            "resultNextQuizBtn"
+        );
+
+
+    if(
+        quizNumber>=maxQuiz
+    ){
+
+        resultNext.textContent=
+            "Last Quiz ✓";
+
+        resultNext.style.background=
+            "#64748b";
+
+    }
+    else{
+
+        resultNext.textContent=
+            "Next Quiz →";
+
+        resultNext.style.background=
+            "#2563eb";
+
+    }
+
+}
+
+
+/* =====================================================
+                    RENDER QUESTION
+===================================================== */
 
 function renderQuestion(){
 
@@ -2431,18 +2633,13 @@ function renderQuestion(){
         currentQuiz[currentIndex];
 
 
-    document.getElementById(
-        "categoryName"
-    ).textContent=
-        wrongPractice
-        ?"Wrong Questions"
-        :currentCategory;
+    updateQuizInformation();
 
 
     document.getElementById(
         "questionCounter"
     ).textContent=
-        `${currentIndex+1} / ${currentQuiz.length}`;
+        `Question ${currentIndex+1} / ${currentQuiz.length}`;
 
 
     document.getElementById(
@@ -2458,19 +2655,24 @@ function renderQuestion(){
 
 
     const codeBox=
-        document.getElementById("codeBox");
+        document.getElementById(
+            "codeBox"
+        );
 
 
     if(q.code){
 
-        codeBox.style.display="block";
+        codeBox.style.display=
+            "block";
 
-        codeBox.textContent=q.code;
+        codeBox.textContent=
+            q.code;
 
     }
     else{
 
-        codeBox.style.display="none";
+        codeBox.style.display=
+            "none";
 
         codeBox.textContent="";
 
@@ -2487,7 +2689,9 @@ function renderQuestion(){
 
 
     const options=
-        document.getElementById("options");
+        document.getElementById(
+            "options"
+        );
 
 
     options.innerHTML="";
@@ -2497,9 +2701,14 @@ function renderQuestion(){
         (text,index)=>{
 
             const button=
-                document.createElement("button");
+                document.createElement(
+                    "button"
+                );
 
-            button.className="option";
+
+            button.className=
+                "option";
+
 
             button.textContent=
                 `${String.fromCharCode(65+index)}. ${text}`;
@@ -2510,7 +2719,9 @@ function renderQuestion(){
             };
 
 
-            options.appendChild(button);
+            options.appendChild(
+                button
+            );
 
         }
     );
@@ -2518,12 +2729,13 @@ function renderQuestion(){
 
     resetFeedback();
 
+
     updateNavigation();
 
 
     /*
-       If the question was already answered,
-       show its result again.
+       If already answered,
+       show the previous answer.
     */
 
     if(
@@ -2540,8 +2752,8 @@ function renderQuestion(){
 
 
 /* =====================================================
-                  SELECT ANSWER
-====================================================== */
+                    SELECT ANSWER
+===================================================== */
 
 function selectAnswer(index){
 
@@ -2556,6 +2768,7 @@ function selectAnswer(index){
 
     answers[currentIndex]=index;
 
+
     showAnswer(index);
 
 }
@@ -2563,7 +2776,7 @@ function selectAnswer(index){
 
 /* =====================================================
                     SHOW ANSWER
-====================================================== */
+===================================================== */
 
 function showAnswer(selected){
 
@@ -2576,18 +2789,26 @@ function showAnswer(selected){
 
 
     const buttons=
-        document.querySelectorAll(".option");
+        document.querySelectorAll(
+            ".option"
+        );
 
 
     buttons.forEach(
         (button,index)=>{
 
-            button.classList.add("disabled");
+            button.classList.add(
+                "disabled"
+            );
 
 
-            if(index===q.answer){
+            if(
+                index===q.answer
+            ){
 
-                button.classList.add("correct");
+                button.classList.add(
+                    "correct"
+                );
 
             }
 
@@ -2597,7 +2818,9 @@ function showAnswer(selected){
                 !correct
             ){
 
-                button.classList.add("wrong");
+                button.classList.add(
+                    "wrong"
+                );
 
             }
 
@@ -2605,10 +2828,10 @@ function showAnswer(selected){
     );
 
 
-    /* ================= FEEDBACK ================= */
-
     const feedback=
-        document.getElementById("feedback");
+        document.getElementById(
+            "feedback"
+        );
 
 
     feedback.className=
@@ -2655,8 +2878,6 @@ function showAnswer(selected){
         :"block";
 
 
-    /* ================= STATUS ================= */
-
     const status=
         document.getElementById(
             "answerStatus"
@@ -2678,14 +2899,15 @@ function showAnswer(selected){
 
 
 /* =====================================================
-                 RESET FEEDBACK
-====================================================== */
+                  RESET FEEDBACK
+===================================================== */
 
 function resetFeedback(){
 
     document.getElementById(
         "feedback"
-    ).className="feedback";
+    ).className=
+        "feedback";
 
 
     document.getElementById(
@@ -2702,14 +2924,15 @@ function resetFeedback(){
 
     document.getElementById(
         "wrongReasonRow"
-    ).style.display="block";
+    ).style.display=
+        "block";
 
 }
 
 
 /* =====================================================
-                 NAVIGATION BUTTONS
-====================================================== */
+                  NAVIGATION
+===================================================== */
 
 function updateNavigation(){
 
@@ -2719,9 +2942,13 @@ function updateNavigation(){
         currentIndex===0;
 
 
-    document.getElementById(
-        "nextBtn"
-    ).textContent=
+    const nextBtn=
+        document.getElementById(
+            "nextBtn"
+        );
+
+
+    nextBtn.textContent=
         currentIndex===
         currentQuiz.length-1
         ?"Finish ✓"
@@ -2729,6 +2956,10 @@ function updateNavigation(){
 
 }
 
+
+/* =====================================================
+                     NEXT QUESTION
+===================================================== */
 
 function nextQuestion(){
 
@@ -2764,9 +2995,15 @@ function nextQuestion(){
 }
 
 
+/* =====================================================
+                  PREVIOUS QUESTION
+===================================================== */
+
 function previousQuestion(){
 
-    if(currentIndex>0){
+    if(
+        currentIndex>0
+    ){
 
         currentIndex--;
 
@@ -2778,8 +3015,8 @@ function previousQuestion(){
 
 
 /* =====================================================
-                    FINISH QUIZ
-====================================================== */
+                     FINISH QUIZ
+===================================================== */
 
 function finishQuiz(){
 
@@ -2793,7 +3030,8 @@ function finishQuiz(){
         (q,index)=>{
 
             if(
-                answers[index]===q.answer
+                answers[index]===
+                q.answer
             ){
 
                 correct++;
@@ -2802,8 +3040,12 @@ function finishQuiz(){
             else{
 
                 wrongQuestions.push({
+
                     question:q,
-                    selected:answers[index]
+
+                    selected:
+                        answers[index]
+
                 });
 
             }
@@ -2812,7 +3054,9 @@ function finishQuiz(){
     );
 
 
-    const total=currentQuiz.length;
+    const total=
+        currentQuiz.length;
+
 
     const wrong=
         total-correct;
@@ -2853,22 +3097,26 @@ function finishQuiz(){
 
     if(accuracy>=90){
 
-        message="Excellent! 🔥";
+        message=
+            "Excellent! 🔥";
 
     }
     else if(accuracy>=75){
 
-        message="Great work! Keep going.";
+        message=
+            "Great work! Keep going.";
 
     }
     else if(accuracy>=50){
 
-        message="Good attempt. Revise your mistakes.";
+        message=
+            "Good attempt. Revise your mistakes.";
 
     }
     else{
 
-        message="Keep practicing. You will improve.";
+        message=
+            "Keep practicing. You will improve.";
 
     }
 
@@ -2887,17 +3135,22 @@ function finishQuiz(){
         :"none";
 
 
+    updateQuizInformation();
+
+
     createReview();
 
 
-    showScreen("resultScreen");
+    showScreen(
+        "resultScreen"
+    );
 
 }
 
 
 /* =====================================================
-                     REVIEW
-====================================================== */
+                       REVIEW
+===================================================== */
 
 function createReview(){
 
@@ -2918,11 +3171,14 @@ function createReview(){
 
 
             const correct=
-                selected===q.answer;
+                selected===
+                q.answer;
 
 
             const div=
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
 
             div.className=
@@ -2949,12 +3205,18 @@ function createReview(){
                 }
 
                 <p>
-                    <strong>Your Answer:</strong>
+                    <strong>
+                        Your Answer:
+                    </strong>
+
                     ${q.options[selected]}
                 </p>
 
                 <p>
-                    <strong>Correct Answer:</strong>
+                    <strong>
+                        Correct Answer:
+                    </strong>
+
                     ${q.options[q.answer]}
                 </p>
 
@@ -2965,6 +3227,7 @@ function createReview(){
                         <strong>
                             Why your answer is wrong:
                         </strong>
+
                         ${q.reason}
                     </p>
                     `
@@ -2975,13 +3238,16 @@ function createReview(){
                     <strong>
                         Explanation:
                     </strong>
+
                     ${q.correctReason}
                 </p>
 
             `;
 
 
-            container.appendChild(div);
+            container.appendChild(
+                div
+            );
 
         }
     );
@@ -2990,12 +3256,14 @@ function createReview(){
 
 
 /* =====================================================
-                    WRONG PRACTICE
-====================================================== */
+                  PRACTICE WRONG
+===================================================== */
 
 function practiceWrong(){
 
-    if(wrongQuestions.length===0){
+    if(
+        wrongQuestions.length===0
+    ){
 
         alert(
             "Excellent! There are no wrong questions."
@@ -3012,7 +3280,8 @@ function practiceWrong(){
     currentQuiz=
         shuffle(
             wrongQuestions.map(
-                item=>item.question
+                item=>
+                    item.question
             )
         );
 
@@ -3026,7 +3295,22 @@ function practiceWrong(){
         ).fill(null);
 
 
-    showScreen("quizScreen");
+    document.getElementById(
+        "quizInfo"
+    ).textContent=
+        "❌ Wrong Questions Revision";
+
+
+    document.getElementById(
+        "topNextQuizBtn"
+    ).textContent=
+        "Back to Quiz";
+
+
+    showScreen(
+        "quizScreen"
+    );
+
 
     renderQuestion();
 
@@ -3035,7 +3319,7 @@ function practiceWrong(){
 
 /* =====================================================
                        RETRY
-====================================================== */
+===================================================== */
 
 function retryQuiz(){
 
@@ -3051,7 +3335,10 @@ function retryQuiz(){
         ).fill(null);
 
 
-    showScreen("quizScreen");
+    showScreen(
+        "quizScreen"
+    );
+
 
     renderQuestion();
 
@@ -3059,12 +3346,49 @@ function retryQuiz(){
 
 
 /* =====================================================
-                     NEXT QUIZ
-====================================================== */
+                      NEXT QUIZ
+===================================================== */
 
 function nextQuiz(){
 
-    wrongPractice=false;
+    /*
+       If we are in wrong-question revision,
+       return to the current quiz.
+    */
+
+    if(wrongPractice){
+
+        wrongPractice=false;
+
+        currentIndex=0;
+
+        answers=
+            new Array(
+                currentQuiz.length
+            ).fill(null);
+
+        renderQuestion();
+
+        return;
+
+    }
+
+
+    /*
+       VERY IMPORTANT:
+       If this is the last quiz,
+       do NOT create another quiz.
+    */
+
+    if(
+        quizNumbers[currentCategory]>=
+        MAX_QUIZZES[currentCategory]
+    ){
+
+        return;
+
+    }
+
 
     makeQuiz();
 
@@ -3073,18 +3397,20 @@ function nextQuiz(){
 
 /* =====================================================
                         HOME
-====================================================== */
+===================================================== */
 
 function goHome(){
 
-    showScreen("homeScreen");
+    showScreen(
+        "homeScreen"
+    );
 
 }
 
 
 /* =====================================================
-                   HTML ESCAPE
-====================================================== */
+                    ESCAPE HTML
+===================================================== */
 
 function escapeHTML(text){
 
@@ -3094,6 +3420,13 @@ function escapeHTML(text){
         .replace(/>/g,"&gt;");
 
 }
+
+
+/* =====================================================
+                   INITIAL STATE
+===================================================== */
+
+updateQuizInformation();
 
 </script>
 
