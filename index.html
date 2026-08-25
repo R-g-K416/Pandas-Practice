@@ -2193,7 +2193,7 @@ function loadQuizNumbers(){
 
         const saved=
             JSON.parse(
-                localStorage.getItem(
+                sessionStorage.getItem(
                     QUIZ_NUMBER_KEY
                 )
             );
@@ -2224,7 +2224,7 @@ function loadQuizNumbers(){
 
 function saveQuizNumbers(){
 
-    localStorage.setItem(
+    sessionStorage.setItem(
         QUIZ_NUMBER_KEY,
         JSON.stringify(quizNumbers)
     );
@@ -2241,7 +2241,7 @@ let quizAnswerHistory={Basics:[],Important:[],Advanced:[],All:[]};
 function loadQuizHistory(){
     try{
         const saved=JSON.parse(
-            localStorage.getItem(QUIZ_HISTORY_KEY)
+            sessionStorage.getItem(QUIZ_HISTORY_KEY)
         );
 
         if(saved){
@@ -2263,7 +2263,7 @@ function loadQuizHistory(){
 }
 
 function saveQuizHistory(){
-    localStorage.setItem(
+    sessionStorage.setItem(
         QUIZ_HISTORY_KEY,
         JSON.stringify({quizHistory,quizAnswerHistory})
     );
@@ -2293,7 +2293,7 @@ function getUsed(){
 
         const saved=
             JSON.parse(
-                localStorage.getItem(
+                sessionStorage.getItem(
                     STORAGE_KEY
                 )
             );
@@ -2315,7 +2315,7 @@ let used=getUsed();
 
 function saveUsed(){
 
-    localStorage.setItem(
+    sessionStorage.setItem(
         STORAGE_KEY,
         JSON.stringify(used)
     );
