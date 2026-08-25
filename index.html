@@ -171,6 +171,10 @@ button{
     background:#eef2ff;
 }
 
+.quiz-navigation{display:flex;gap:10px;}
+.top-btn:disabled{opacity:.35;cursor:not-allowed;}
+.top-btn:disabled:hover{background:white;}
+
 
 /* =====================================================
                     QUIZ INFORMATION
@@ -808,13 +812,10 @@ button{
         </button>
 
 
-        <button
-            id="topNextQuizBtn"
-            class="top-btn"
-            onclick="nextQuiz()"
-        >
-            Next Quiz →
-        </button>
+        <div class="quiz-navigation">
+            <button id="topPreviousQuizBtn" class="top-btn" onclick="previousQuiz()">← Previous Quiz</button>
+            <button id="topNextQuizBtn" class="top-btn" onclick="nextQuiz()">Next Quiz →</button>
+        </div>
 
 
     </div>
@@ -903,6 +904,16 @@ button{
         </div>
 
 
+        <!-- Correct / Incorrect -->
+
+        <div
+            id="answerStatus"
+            class="answer-status wait"
+        >
+            Select an answer
+        </div>
+
+
         <!-- Reason -->
 
         <div
@@ -971,16 +982,6 @@ button{
             </p>
 
 
-        </div>
-
-
-        <!-- Correct / Incorrect -->
-
-        <div
-            id="answerStatus"
-            class="answer-status wait"
-        >
-            Select an answer
         </div>
 
 
@@ -2394,6 +2395,27 @@ function startQuiz(category){
                      MAKE QUIZ
 ===================================================== */
 
+let quizHistory={Basics:[],Important:[],Advanced:[],All:[]};
+let quizAnswerHistory={Basics:[],Important:[],Advanced:[],All:[]};
+
+function saveCurrentQuizState(){
+    if(wrongPractice || !currentQuiz.length) return;
+    const i=quizNumbers[currentCategory]-1;
+    quizHistory[currentCategory][i]=[...currentQuiz];
+    quizAnswerHistory[currentCategory][i]=[...answers];
+}
+
+function loadQuiz(number){
+    const i=number-1;
+    if(!quizHistory[currentCategory][i]) return false;
+    currentQuiz=[...quizHistory[currentCategory][i]];
+    answers=quizAnswerHistory[currentCategory][i] || new Array(currentQuiz.length).fill(null);
+    currentIndex=0;
+    showScreen("quizScreen");
+    renderQuestion();
+    return true;
+}
+
 function makeQuiz(){
 
 
@@ -2473,6 +2495,10 @@ function makeQuiz(){
         shuffle(available)
         .slice(0,10);
 
+    const historyIndex=quizNumbers[currentCategory]-1;
+    quizHistory[currentCategory][historyIndex]=[...currentQuiz];
+    quizAnswerHistory[currentCategory][historyIndex]=new Array(currentQuiz.length).fill(null);
+
 
     /*
        Mark these questions as used.
@@ -2520,112 +2546,23 @@ function makeQuiz(){
 ===================================================== */
 
 function updateQuizInformation(){
-
-    const quizNumber=
-        quizNumbers[currentCategory];
-
-
-    const maxQuiz=
-        MAX_QUIZZES[currentCategory];
-
-
+    const quizNumber=quizNumbers[currentCategory];
+    const maxQuiz=MAX_QUIZZES[currentCategory];
     let icon="📚";
-
-
-    if(currentCategory==="Basics"){
-
-        icon="🟢";
-
-    }
-    else if(currentCategory==="Important"){
-
-        icon="⭐";
-
-    }
-    else if(currentCategory==="Advanced"){
-
-        icon="🔥";
-
-    }
-
-
-    document.getElementById(
-        "quizInfo"
-    ).textContent=
-        `${icon} ${currentCategory} • Quiz ${quizNumber} / ${maxQuiz}`;
-
-
-    /*
-       TOP RIGHT NEXT QUIZ BUTTON
-    */
-
-    const topNext=
-        document.getElementById(
-            "topNextQuizBtn"
-        );
-
-
-    if(
-        quizNumber>=maxQuiz
-    ){
-
-        topNext.textContent=
-            "Last Quiz ✓";
-
-        topNext.classList.add(
-            "last-quiz"
-        );
-
-    }
-    else{
-
-        topNext.textContent=
-            "Next Quiz →";
-
-        topNext.classList.remove(
-            "last-quiz"
-        );
-
-    }
-
-
-    /*
-       RESULT SCREEN BUTTON
-    */
-
-    const resultNext=
-        document.getElementById(
-            "resultNextQuizBtn"
-        );
-
-
-    if(
-        quizNumber>=maxQuiz
-    ){
-
-        resultNext.textContent=
-            "Last Quiz ✓";
-
-        resultNext.style.background=
-            "#64748b";
-
-    }
-    else{
-
-        resultNext.textContent=
-            "Next Quiz →";
-
-        resultNext.style.background=
-            "#2563eb";
-
-    }
-
+    if(currentCategory==="Basics") icon="🟢";
+    else if(currentCategory==="Important") icon="⭐";
+    else if(currentCategory==="Advanced") icon="🔥";
+    document.getElementById("quizInfo").textContent=`${icon} ${currentCategory} • Quiz ${quizNumber} / ${maxQuiz}`;
+    const previous=document.getElementById("topPreviousQuizBtn");
+    const next=document.getElementById("topNextQuizBtn");
+    previous.disabled=wrongPractice || quizNumber<=1;
+    next.disabled=quizNumber>=maxQuiz;
+    previous.textContent="← Previous Quiz";
+    next.textContent="Next Quiz →";
+    const resultNext=document.getElementById("resultNextQuizBtn");
+    if(quizNumber>=maxQuiz){resultNext.textContent="Last Quiz ✓";resultNext.style.background="#64748b";}
+    else{resultNext.textContent="Next Quiz →";resultNext.style.background="#2563eb";}
 }
-
-
-/* =====================================================
-                    RENDER QUESTION
-===================================================== */
 
 function renderQuestion(){
 
@@ -2767,8 +2704,7 @@ function selectAnswer(index){
 
 
     answers[currentIndex]=index;
-
-
+    quizAnswerHistory[currentCategory][quizNumbers[currentCategory]-1]=[...answers];
     showAnswer(index);
 
 }
@@ -3349,55 +3285,40 @@ function retryQuiz(){
                       NEXT QUIZ
 ===================================================== */
 
-function nextQuiz(){
-
-    /*
-       If we are in wrong-question revision,
-       return to the current quiz.
-    */
-
-    if(wrongPractice){
-
-        wrongPractice=false;
-
-        currentIndex=0;
-
-        answers=
-            new Array(
-                currentQuiz.length
-            ).fill(null);
-
-        renderQuestion();
-
-        return;
-
-    }
-
-
-    /*
-       VERY IMPORTANT:
-       If this is the last quiz,
-       do NOT create another quiz.
-    */
-
-    if(
-        quizNumbers[currentCategory]>=
-        MAX_QUIZZES[currentCategory]
-    ){
-
-        return;
-
-    }
-
-
-    makeQuiz();
-
+function previousQuiz(){
+    if(wrongPractice) return;
+    const current=quizNumbers[currentCategory];
+    if(current<=1) return;
+    saveCurrentQuizState();
+    const previous=current-1;
+    if(!quizHistory[currentCategory][previous-1]) return;
+    quizNumbers[currentCategory]=previous;
+    saveQuizNumbers();
+    loadQuiz(previous);
 }
 
+function nextQuiz(){
+    if(wrongPractice){
+        wrongPractice=false;
+        currentIndex=0;
+        answers=new Array(currentQuiz.length).fill(null);
+        renderQuestion();
+        return;
+    }
+    const current=quizNumbers[currentCategory];
+    const max=MAX_QUIZZES[currentCategory];
+    if(current>=max) return;
+    saveCurrentQuizState();
+    const next=current+1;
+    if(quizHistory[currentCategory][next-1]){
+        quizNumbers[currentCategory]=next;
+        saveQuizNumbers();
+        loadQuiz(next);
+        return;
+    }
+    makeQuiz();
+}
 
-/* =====================================================
-                        HOME
-===================================================== */
 
 function goHome(){
 
