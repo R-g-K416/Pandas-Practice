@@ -2271,8 +2271,25 @@ let currentQuizState=loadCurrentQuizState();
 
 function saveCurrentQuestionPosition(){
     if(wrongPractice || !currentQuiz.length) return;
-    currentQuizState[currentCategory]={quizNumber:quizNumbers[currentCategory],questionIndex:currentIndex};
-    sessionStorage.setItem(QUIZ_CURRENT_STATE_KEY,JSON.stringify(currentQuizState));
+
+    const quizNumber=quizNumbers[currentCategory];
+    if(!quizNumber) return;
+
+    if(!currentQuizState[currentCategory] ||
+       Array.isArray(currentQuizState[currentCategory]) ||
+       typeof currentQuizState[currentCategory] !== "object" ||
+       currentQuizState[currentCategory].quizNumber !== undefined){
+        currentQuizState[currentCategory]={};
+    }
+
+    currentQuizState[currentCategory][quizNumber]={
+        questionIndex:currentIndex
+    };
+
+    sessionStorage.setItem(
+        QUIZ_CURRENT_STATE_KEY,
+        JSON.stringify(currentQuizState)
+    );
 }
 
 function clearCurrentQuestionPosition(category){
@@ -2299,8 +2316,6 @@ function resetCategory(category){
     quizHistory[category]=[];
     quizAnswerHistory[category]=[];
     used[category]=[];
-    repetitionStats[category]={};
-    saveRepetitionStats();
     clearCurrentQuestionPosition(category);
     saveQuizNumbers();
     saveQuizHistory();
@@ -2341,274 +2356,6 @@ function saveUsed(){
         JSON.stringify(used)
     );
 
-}
-
-
-/* =====================================================
-              REPETITION / REVISION TRACKING
-===================================================== */
-
-/*
-   Repetition rules only. The question bank, UI and quiz flow
-   remain unchanged.
-
-   - The exact same question is NEVER shown again.
-   - Revision uses a DIFFERENT question from the same concept
-     family whenever one exists.
-   - A question answered incorrectly gets about an 18% chance
-     to trigger a related revision question later.
-   - Correct-question revision is intentionally very rare.
-   - Once a question has been used, it is retired permanently
-     from selection in that category.
-*/
-
-const REPETITION_KEY =
-    "PANDAS_MASTER_REPETITION_V3";
-
-const WRONG_REPEAT_CHANCE = 0.18;
-const CORRECT_REPEAT_CHANCE = 0.02;
-
-function loadRepetitionStats(){
-    try{
-        const saved=JSON.parse(
-            sessionStorage.getItem(REPETITION_KEY)
-        );
-
-        return saved || {
-            Basics:{},
-            Important:{},
-            Advanced:{},
-            All:{}
-        };
-    }catch{
-        return {
-            Basics:{},
-            Important:{},
-            Advanced:{},
-            All:{}
-        };
-    }
-}
-
-let repetitionStats=loadRepetitionStats();
-
-["Basics","Important","Advanced","All"].forEach(category=>{
-    if(!repetitionStats[category]){
-        repetitionStats[category]={};
-    }
-});
-
-function saveRepetitionStats(){
-    sessionStorage.setItem(
-        REPETITION_KEY,
-        JSON.stringify(repetitionStats)
-    );
-}
-
-function getQuestionSignature(q){
-    return [
-        q.question || "",
-        q.code || "",
-        ...(q.options || [])
-    ]
-    .join("|")
-    .toLowerCase()
-    .replace(/\s+/g," ")
-    .trim();
-}
-
-function getQuestionStats(category,q){
-    if(!repetitionStats[category][q.id]){
-        repetitionStats[category][q.id]={
-            seen:0,
-            wrong:0,
-            correct:0,
-            signature:getQuestionSignature(q),
-            lastResult:null
-        };
-    }
-
-    return repetitionStats[category][q.id];
-}
-
-function hasSeenExactQuestion(category,signature){
-    return Object.values(repetitionStats[category] || {}).some(
-        stat=>stat && stat.seen>0 && stat.signature===signature
-    );
-}
-
-function questionConcepts(q){
-    return Array.isArray(q.concepts)
-        ?q.concepts.map(c=>String(c).toLowerCase().trim())
-        :[];
-}
-
-function sharesConcept(a,b){
-    const aConcepts=new Set(questionConcepts(a));
-    return questionConcepts(b).some(c=>aConcepts.has(c));
-}
-
-function weightedRandom(items){
-    if(!items.length) return null;
-
-    const total=items.reduce(
-        (sum,item)=>sum+Math.max(0,item.weight),
-        0
-    );
-
-    if(total<=0){
-        return items[Math.floor(Math.random()*items.length)].question;
-    }
-
-    let target=Math.random()*total;
-
-    for(const item of items){
-        target-=Math.max(0,item.weight);
-        if(target<=0){
-            return item.question;
-        }
-    }
-
-    return items[items.length-1].question;
-}
-
-function buildRevisionCandidates(pool,category,selectedIds,selectedSignatures){
-    const wrongRevision=[];
-    const correctRevision=[];
-
-    /*
-       IMPORTANT: the candidate itself must still be fresh.
-       The revision is therefore a different question, not a
-       copy of the question the learner previously saw.
-    */
-    pool.forEach(q=>{
-        const stat=getQuestionStats(category,q);
-        const signature=getQuestionSignature(q);
-
-        if(stat.seen>0) return;
-        if(hasSeenExactQuestion(category,signature)) return;
-        if(selectedIds.has(q.id)) return;
-        if(selectedSignatures.has(signature)) return;
-
-        let hasWrongRelated=false;
-        let hasCorrectRelated=false;
-
-        pool.forEach(previous=>{
-            if(previous.id===q.id) return;
-
-            const previousStats=getQuestionStats(category,previous);
-            if(previousStats.seen<=0) return;
-            if(!sharesConcept(q,previous)) return;
-
-            if(previousStats.wrong>0){
-                hasWrongRelated=true;
-            }else if(previousStats.correct>0){
-                hasCorrectRelated=true;
-            }
-        });
-
-        if(hasWrongRelated){
-            wrongRevision.push({
-                question:q,
-                weight:100
-            });
-        }else if(hasCorrectRelated){
-            correctRevision.push({
-                question:q,
-                weight:100
-            });
-        }
-    });
-
-    return {wrongRevision,correctRevision};
-}
-
-function chooseNextQuestion(pool,category,selectedIds,selectedSignatures){
-
-    const fresh=pool.filter(q=>{
-        const stat=getQuestionStats(category,q);
-        const signature=getQuestionSignature(q);
-
-        return stat.seen===0 &&
-               !hasSeenExactQuestion(category,signature) &&
-               !selectedIds.has(q.id) &&
-               !selectedSignatures.has(signature);
-    });
-
-    const revision=buildRevisionCandidates(
-        pool,
-        category,
-        selectedIds,
-        selectedSignatures
-    );
-
-    /*
-       Wrong-question revision: approximately 18% chance.
-       This sits inside the requested 15-20% range.
-    */
-    if(revision.wrongRevision.length &&
-       Math.random()<WRONG_REPEAT_CHANCE){
-        return {
-            question:weightedRandom(revision.wrongRevision),
-            isRevision:true
-        };
-    }
-
-    /* Correct-question revision: very small chance. */
-    if(revision.correctRevision.length &&
-       Math.random()<CORRECT_REPEAT_CHANCE){
-        return {
-            question:weightedRandom(revision.correctRevision),
-            isRevision:true
-        };
-    }
-
-    if(fresh.length){
-        return {
-            question:fresh[Math.floor(Math.random()*fresh.length)],
-            isRevision:false
-        };
-    }
-
-    /* If fresh questions are exhausted, use related revision
-       questions that are still fresh themselves. */
-    if(revision.wrongRevision.length){
-        return {
-            question:weightedRandom(revision.wrongRevision),
-            isRevision:true
-        };
-    }
-
-    if(revision.correctRevision.length){
-        return {
-            question:weightedRandom(revision.correctRevision),
-            isRevision:true
-        };
-    }
-
-    return null;
-}
-
-function recordQuizResults(){
-    const category=currentCategory;
-
-    currentQuiz.forEach((q,index)=>{
-        const stat=getQuestionStats(category,q);
-        const isCorrect=answers[index]===q.answer;
-
-        /* A question is permanently retired after its first use. */
-        stat.seen=1;
-
-        if(isCorrect){
-            stat.correct=(stat.correct || 0)+1;
-            stat.lastResult="correct";
-        }else{
-            stat.wrong=(stat.wrong || 0)+1;
-            stat.lastResult="wrong";
-        }
-    });
-
-    saveRepetitionStats();
 }
 
 
@@ -2749,17 +2496,30 @@ function startQuiz(category){
 function saveCurrentQuizState(){
     if(wrongPractice || !currentQuiz.length) return;
 
-    const i=quizNumbers[currentCategory]-1;
+    const quizNumber=quizNumbers[currentCategory];
+    const i=quizNumber-1;
 
     if(i < 0) return;
 
     quizHistory[currentCategory][i]=[...currentQuiz];
     quizAnswerHistory[currentCategory][i]=[...answers];
 
-    currentQuizState[currentCategory]={quizNumber:quizNumbers[currentCategory],questionIndex:currentIndex};
+    if(!currentQuizState[currentCategory] ||
+       Array.isArray(currentQuizState[currentCategory]) ||
+       typeof currentQuizState[currentCategory] !== "object" ||
+       currentQuizState[currentCategory].quizNumber !== undefined){
+        currentQuizState[currentCategory]={};
+    }
+
+    currentQuizState[currentCategory][quizNumber]={
+        questionIndex:currentIndex
+    };
 
     saveQuizHistory();
-    sessionStorage.setItem(QUIZ_CURRENT_STATE_KEY,JSON.stringify(currentQuizState));
+    sessionStorage.setItem(
+        QUIZ_CURRENT_STATE_KEY,
+        JSON.stringify(currentQuizState)
+    );
 }
 
 function loadQuiz(number){
@@ -2779,9 +2539,26 @@ function loadQuiz(number){
         ? [...quizAnswerHistory[currentCategory][i]]
         : new Array(currentQuiz.length).fill(null);
 
-    const savedPosition=currentQuizState[currentCategory];
+    const categoryState=currentQuizState[currentCategory];
+    let savedPosition=null;
 
-    if(savedPosition && savedPosition.quizNumber===number && Number.isInteger(savedPosition.questionIndex) && savedPosition.questionIndex>=0 && savedPosition.questionIndex<currentQuiz.length){
+    // Each quiz keeps its own question position.
+    if(categoryState &&
+       typeof categoryState === "object" &&
+       !Array.isArray(categoryState)){
+        if(categoryState[number] &&
+           Number.isInteger(categoryState[number].questionIndex)){
+            savedPosition=categoryState[number];
+        }else if(categoryState.quizNumber===number &&
+                 Number.isInteger(categoryState.questionIndex)){
+            // Backward compatibility with the old single-position format.
+            savedPosition=categoryState;
+        }
+    }
+
+    if(savedPosition &&
+       savedPosition.questionIndex>=0 &&
+       savedPosition.questionIndex<currentQuiz.length){
         currentIndex=savedPosition.questionIndex;
     }else{
         currentIndex=0;
@@ -2813,59 +2590,81 @@ function shuffleAdvancedOptions(question){
 
 function makeQuiz(){
 
+
     /*
-       Increase quiz number. Existing quiz limits are unchanged.
+       Increase quiz number
     */
-    const nextQuizNumber=quizNumbers[currentCategory]+1;
 
-    if(nextQuizNumber>MAX_QUIZZES[currentCategory]){
-        return;
-    }
+    quizNumbers[currentCategory]++;
 
-    quizNumbers[currentCategory]=nextQuizNumber;
     saveQuizNumbers();
 
-    const pool=getPool(currentCategory);
+
+    let pool=
+        getPool(currentCategory);
+
 
     if(!used[currentCategory]){
+
         used[currentCategory]=[];
+
     }
 
-    const selectedIds=new Set();
-    const selectedSignatures=new Set();
-    const selected=[];
 
-    while(selected.length<10){
-
-        const choice=chooseNextQuestion(
-            pool,
-            currentCategory,
-            selectedIds,
-            selectedSignatures
+    let available=
+        pool.filter(
+            q=>
+            !used[currentCategory]
+            .includes(q.id)
         );
 
-        if(!choice){
-            break;
-        }
-
-        const q=choice.question;
-        const signature=getQuestionSignature(q);
-
-        if(selectedIds.has(q.id) || selectedSignatures.has(signature)){
-            continue;
-        }
-
-        selected.push(q);
-        selectedIds.add(q.id);
-        selectedSignatures.add(signature);
-    }
 
     /*
-       No old/exact questions are inserted as a filler. This is
-       the key change that removes forced repetition.
+       Avoid immediate repetition.
+
+       If enough unused questions exist,
+       use only unused questions.
+
+       If not enough remain,
+       complete the quiz using old questions.
     */
 
-    currentQuiz=shuffle(selected)
+    if(available.length < 10){
+
+        const oldQuestions=
+            pool.filter(
+                q=>
+                used[currentCategory]
+                .includes(q.id)
+            );
+
+
+        available=[
+            ...available,
+            ...shuffle(oldQuestions)
+        ];
+
+    }
+
+
+    /*
+       If everything has been used,
+       begin a new question cycle.
+    */
+
+    if(available.length===0){
+
+        used[currentCategory]=[];
+
+        available=[
+            ...pool
+        ];
+
+    }
+
+
+    currentQuiz=
+        shuffle(available)
         .slice(0,10)
         .map(q=>
             q.category==="Advanced"
@@ -2877,33 +2676,56 @@ function makeQuiz(){
     quizHistory[currentCategory][historyIndex]=[...currentQuiz];
     quizAnswerHistory[currentCategory][historyIndex]=new Array(currentQuiz.length).fill(null);
     saveQuizHistory();
+    saveQuizHistory();
 
-    /* Keep the existing used store for compatibility. */
+
+    /*
+       Mark these questions as used.
+    */
+
     currentQuiz.forEach(q=>{
-        if(!used[currentCategory].includes(q.id)){
+
+        if(
+            !used[currentCategory]
+            .includes(q.id)
+        ){
+
             used[currentCategory].push(q.id);
+
         }
+
     });
+
 
     saveUsed();
 
+
     currentIndex=0;
-    answers=new Array(currentQuiz.length).fill(null);
 
-    currentQuizState[currentCategory]={
-        quizNumber:quizNumbers[currentCategory],
-        questionIndex:0
-    };
 
-    sessionStorage.setItem(
-        QUIZ_CURRENT_STATE_KEY,
-        JSON.stringify(currentQuizState)
-    );
+    answers=
+        new Array(
+            currentQuiz.length
+        ).fill(null);
+
+    currentIndex=0;
+    if(!currentQuizState[currentCategory] ||
+       Array.isArray(currentQuizState[currentCategory]) ||
+       typeof currentQuizState[currentCategory] !== "object" ||
+       currentQuizState[currentCategory].quizNumber !== undefined){
+        currentQuizState[currentCategory]={};
+    }
+    currentQuizState[currentCategory][quizNumbers[currentCategory]]={questionIndex:0};
+    sessionStorage.setItem(QUIZ_CURRENT_STATE_KEY,JSON.stringify(currentQuizState));
 
     wrongQuestions=[];
 
+
     showScreen("quizScreen");
+
+
     renderQuestion();
+
 }
 
 
@@ -3357,8 +3179,6 @@ function finishQuiz(){
 
         }
     );
-
-    recordQuizResults();
 
 
     const total=
