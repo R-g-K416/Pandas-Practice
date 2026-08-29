@@ -2417,22 +2417,36 @@ function startQuiz(category){
 
 
     /*
-       Starting a fresh category
-       always begins from Quiz 1
-       if no quiz was previously completed.
+       If this category already has a saved quiz, reopen
+       the current quiz instead of automatically creating
+       the next one. A new quiz is created only through
+       the Next Quiz button.
+    */
 
-       If already played, continue with next quiz.
+    const current=quizNumbers[category] || 0;
+
+    if(
+        current > 0 &&
+        current <= MAX_QUIZZES[category] &&
+        quizHistory[category] &&
+        quizHistory[category][current-1]
+    ){
+
+        loadQuiz(current);
+        return;
+
+    }
+
+
+    /*
+       Category already completed.
+       Start again from Quiz 1 only when the user
+       explicitly starts after all quizzes are finished.
     */
 
     if(
-        quizNumbers[category] >=
-        MAX_QUIZZES[category]
+        current >= MAX_QUIZZES[category]
     ){
-
-        /*
-           Category already completed.
-           Start again from Quiz 1.
-        */
 
         quizNumbers[category]=0;
 
@@ -3458,6 +3472,9 @@ function nextQuiz(){
 
 
 function goHome(){
+
+    /* Save the quiz currently being viewed before leaving. */
+    saveCurrentQuizState();
 
     showScreen(
         "homeScreen"
