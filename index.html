@@ -122,25 +122,14 @@ button{
     min-height:48px;
 }
 
-.start-btn{
-    width:100%;
-
-    padding:11px;
-
-    border:0;
-    border-radius:9px;
-
-    background:#2563eb;
-    color:white;
-
-    font-weight:700;
-
-    margin-top:10px;
-}
-
-.start-btn:hover{
-    background:#1d4ed8;
-}
+.home-actions{display:flex;gap:9px;margin-top:10px;}
+.start-btn,.reset-btn{flex:1;padding:11px;border:0;border-radius:9px;font-weight:700;}
+.start-btn{background:#2563eb;color:white;}
+.start-btn:hover{background:#1d4ed8;}
+.reset-btn{background:#f1f5f9;color:#dc2626;border:1px solid #e2e8f0;}
+.reset-btn:hover{background:#fee2e2;}
+@media (max-width:800px){.categories{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:520px){.categories{grid-template-columns:1fr;}.home-actions{flex-direction:column;}}
 
 
 /* =====================================================
@@ -701,12 +690,7 @@ button{
                 and syntax.
             </p>
 
-            <button
-                class="start-btn"
-                onclick="startQuiz('Basics')"
-            >
-                Start Quiz
-            </button>
+            <div class="home-actions" id="BasicsActions"></div>
 
         </div>
 
@@ -727,12 +711,7 @@ button{
                 concepts and operations.
             </p>
 
-            <button
-                class="start-btn"
-                onclick="startQuiz('Important')"
-            >
-                Start Quiz
-            </button>
+            <div class="home-actions" id="ImportantActions"></div>
 
         </div>
 
@@ -753,12 +732,7 @@ button{
                 multiple concepts.
             </p>
 
-            <button
-                class="start-btn"
-                onclick="startQuiz('Advanced')"
-            >
-                Start Quiz
-            </button>
+            <div class="home-actions" id="AdvancedActions"></div>
 
         </div>
 
@@ -779,12 +753,7 @@ button{
                 bank with mixed difficulty.
             </p>
 
-            <button
-                class="start-btn"
-                onclick="startQuiz('All')"
-            >
-                Start Quiz
-            </button>
+            <div class="home-actions" id="AllActions"></div>
 
         </div>
 
@@ -2187,6 +2156,9 @@ const QUIZ_NUMBER_KEY=
 const QUIZ_HISTORY_KEY=
     "PANDAS_MASTER_QUIZ_HISTORY_V2";
 
+const QUIZ_CURRENT_STATE_KEY=
+    "PANDAS_MASTER_CURRENT_QUESTION_V1";
+
 
 function loadQuizNumbers(){
 
@@ -2288,6 +2260,52 @@ saveQuizNumbers();
 saveQuizHistory();
 
 
+function loadCurrentQuizState(){
+    try{
+        const saved=JSON.parse(sessionStorage.getItem(QUIZ_CURRENT_STATE_KEY));
+        return saved || {};
+    }catch{return {};}
+}
+
+let currentQuizState=loadCurrentQuizState();
+
+function saveCurrentQuestionPosition(){
+    if(wrongPractice || !currentQuiz.length) return;
+    currentQuizState[currentCategory]={quizNumber:quizNumbers[currentCategory],questionIndex:currentIndex};
+    sessionStorage.setItem(QUIZ_CURRENT_STATE_KEY,JSON.stringify(currentQuizState));
+}
+
+function clearCurrentQuestionPosition(category){
+    delete currentQuizState[category];
+    sessionStorage.setItem(QUIZ_CURRENT_STATE_KEY,JSON.stringify(currentQuizState));
+}
+
+function renderHomeActions(){
+    ["Basics","Important","Advanced","All"].forEach(category=>{
+        const container=document.getElementById(`${category}Actions`);
+        if(!container) return;
+        const hasProgress=(quizNumbers[category] || 0)>0;
+        if(!hasProgress){
+            container.innerHTML=`<button class="start-btn" onclick="startQuiz('${category}')">Start Quiz</button>`;
+        }else{
+            container.innerHTML=`<button class="start-btn" onclick="startQuiz('${category}')">Continue Quiz</button><button class="reset-btn" onclick="resetCategory('${category}')">Reset Progress</button>`;
+        }
+    });
+}
+
+function resetCategory(category){
+    if(!confirm(`Reset all ${category} quiz progress? This cannot be undone.`)) return;
+    quizNumbers[category]=0;
+    quizHistory[category]=[];
+    quizAnswerHistory[category]=[];
+    used[category]=[];
+    clearCurrentQuestionPosition(category);
+    saveQuizNumbers();
+    saveQuizHistory();
+    saveUsed();
+    renderHomeActions();
+}
+
 function getUsed(){
 
     try{
@@ -2364,6 +2382,10 @@ function shuffle(array){
 
 function showScreen(id){
 
+    if(id==="homeScreen"){
+        renderHomeActions();
+    }
+
     document
     .querySelectorAll(".screen")
     .forEach(
@@ -2438,25 +2460,12 @@ function startQuiz(category){
     }
 
 
-    /*
-       Category already completed.
-       Start again from Quiz 1 only when the user
-       explicitly starts after all quizzes are finished.
-    */
-
-    if(
-        current >= MAX_QUIZZES[category]
-    ){
-
-        quizNumbers[category]=0;
-
-        quizHistory[category]=[];
-        quizAnswerHistory[category]=[];
-        saveQuizHistory();
-        saveQuizNumbers();
-
+    /* Keep the completed quiz in the current site session.
+       Reset is available explicitly from the Home screen. */
+    if(current >= MAX_QUIZZES[category]){
+        loadQuiz(current);
+        return;
     }
-
 
     makeQuiz();
 
@@ -2477,7 +2486,10 @@ function saveCurrentQuizState(){
     quizHistory[currentCategory][i]=[...currentQuiz];
     quizAnswerHistory[currentCategory][i]=[...answers];
 
+    currentQuizState[currentCategory]={quizNumber:quizNumbers[currentCategory],questionIndex:currentIndex};
+
     saveQuizHistory();
+    sessionStorage.setItem(QUIZ_CURRENT_STATE_KEY,JSON.stringify(currentQuizState));
 }
 
 function loadQuiz(number){
@@ -2497,7 +2509,13 @@ function loadQuiz(number){
         ? [...quizAnswerHistory[currentCategory][i]]
         : new Array(currentQuiz.length).fill(null);
 
-    currentIndex=0;
+    const savedPosition=currentQuizState[currentCategory];
+
+    if(savedPosition && savedPosition.quizNumber===number && Number.isInteger(savedPosition.questionIndex) && savedPosition.questionIndex>=0 && savedPosition.questionIndex<currentQuiz.length){
+        currentIndex=savedPosition.questionIndex;
+    }else{
+        currentIndex=0;
+    }
 
     showScreen("quizScreen");
     renderQuestion();
@@ -2643,6 +2661,9 @@ function makeQuiz(){
             currentQuiz.length
         ).fill(null);
 
+    currentIndex=0;
+    currentQuizState[currentCategory]={quizNumber:quizNumbers[currentCategory],questionIndex:0};
+    sessionStorage.setItem(QUIZ_CURRENT_STATE_KEY,JSON.stringify(currentQuizState));
 
     wrongQuestions=[];
 
@@ -2819,6 +2840,7 @@ function selectAnswer(index){
 
     answers[currentIndex]=index;
     quizAnswerHistory[currentCategory][quizNumbers[currentCategory]-1]=[...answers];
+    saveCurrentQuizState();
     showAnswer(index);
 
 }
@@ -3032,6 +3054,7 @@ function nextQuestion(){
     ){
 
         currentIndex++;
+        saveCurrentQuizState();
 
         renderQuestion();
 
@@ -3056,6 +3079,7 @@ function previousQuestion(){
     ){
 
         currentIndex--;
+        saveCurrentQuizState();
 
         renderQuestion();
 
@@ -3378,6 +3402,8 @@ function retryQuiz(){
 
     currentIndex=0;
 
+    currentQuizState[currentCategory]={quizNumber:quizNumbers[currentCategory],questionIndex:0};
+    sessionStorage.setItem(QUIZ_CURRENT_STATE_KEY,JSON.stringify(currentQuizState));
 
     answers=
         new Array(
@@ -3501,6 +3527,7 @@ function escapeHTML(text){
                    INITIAL STATE
 ===================================================== */
 
+renderHomeActions();
 updateQuizInformation();
 
 </script>
