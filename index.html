@@ -162,6 +162,18 @@ button{
 }
 
 .quiz-navigation{display:flex;gap:10px;}
+.quiz-number-navigation{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.quiz-number-btn,.question-number-btn{min-width:44px;height:44px;border:0;border-radius:9px;background:#1f2937;color:white;font-size:16px;font-weight:700;padding:0 12px;}
+.quiz-number-btn:hover,.question-number-btn:hover{background:#374151;}
+ .quiz-number-btn.active,.question-number-btn.active{background:#64748b;}
+.question-number-btn.correct{background:#16a34a;color:white;}
+.question-number-btn.wrong{background:#dc2626;color:white;}
+.question-number-btn.correct.active,.question-number-btn.wrong.active{color:white;}
+.quiz-number-arrow,.question-number-arrow{min-width:44px;height:44px;border:0;border-radius:9px;background:#1f2937;color:white;font-size:22px;font-weight:700;}
+.quiz-number-arrow:hover,.question-number-arrow:hover{background:#374151;}
+.quiz-number-arrow:disabled,.question-number-arrow:disabled{opacity:.35;cursor:not-allowed;}
+.question-number-navigation{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;flex-wrap:wrap;}
+
 .top-btn:disabled{opacity:.35;cursor:not-allowed;}
 .top-btn:disabled:hover{background:white;}
 
@@ -787,7 +799,6 @@ button{
             <button id="topNextQuizBtn" class="top-btn" onclick="nextQuiz()">Next Quiz →</button>
         </div>
 
-
     </div>
 
 
@@ -821,12 +832,6 @@ button{
 
 
     <div class="question-card">
-
-
-        <div
-            id="questionNumber"
-            class="question-number"
-        ></div>
 
 
         <div
@@ -872,6 +877,8 @@ button{
 
 
         </div>
+
+        <div id="questionNumberNavigation" class="question-number-navigation"></div>
 
 
         <!-- Correct / Incorrect -->
@@ -2030,7 +2037,7 @@ concepts:["groupby","transform","mean"]
 {
 id:"A016",
 category:"Advanced",
-question:"What does this produce?",
+question:"What result does this sort-and-group operation produce?",
 code:`df.sort_values('Score', ascending=False)
   .groupby('Team')
   .head(2)`,
@@ -2066,7 +2073,7 @@ concepts:["groupby","nunique"]
 {
 id:"A018",
 category:"Advanced",
-question:"What does this expression do?",
+question:"What does this query expression do to the rows?",
 code:`df.query("Marks > 80 and Age < 25")`,
 options:[
 "Filters rows where both conditions are satisfied",
@@ -2079,7 +2086,444 @@ reason:"query evaluates the Boolean condition for each row.",
 correctReason:"query evaluates both conditions for every row and keeps rows only when both are true. Thus Marks must exceed 80 while Age must be below 25.",
 concepts:["query","Boolean filtering"]
 }
-
+,
+{"id":"B19","category":"Basics","question":"Which Pandas feature is primarily used to create a one-dimensional labeled array?","options":["pd.DataFrame","df.index","df.columns","pd.Series"],"answer":3,"reason":"pd.Series is the Pandas feature used to create a one-dimensional labeled array.","correctReason":"pd.Series is the Pandas feature used to create a one-dimensional labeled array.","concepts":["Series"]}
+,
+{"id":"B20","category":"Basics","question":"You need to create a one-dimensional labeled array. Which choice is the most appropriate Pandas feature?","options":["df.index","df.columns","pd.Series","pd.DataFrame"],"answer":2,"reason":"pd.Series is the Pandas feature used to create a one-dimensional labeled array.","correctReason":"pd.Series is the Pandas feature used to create a one-dimensional labeled array.","concepts":["Series"]}
+,
+{"id":"B21","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: creates a one-dimensional labeled array?","options":["df.columns","s=pd.Series([10,20,30])","pd.DataFrame","df.index"],"answer":1,"reason":"pd.Series is the Pandas feature used to create a one-dimensional labeled array.","correctReason":"pd.Series is the Pandas feature used to create a one-dimensional labeled array.","concepts":["Series"]}
+,
+{"id":"B22","category":"Basics","question":"Which Pandas feature is primarily used to create a two-dimensional labeled table?","options":["df.index","df.columns","pd.DataFrame","pd.Series"],"answer":2,"reason":"pd.DataFrame is the Pandas feature used to create a two-dimensional labeled table.","correctReason":"pd.DataFrame is the Pandas feature used to create a two-dimensional labeled table.","concepts":["DataFrame"]}
+,
+{"id":"B23","category":"Basics","question":"You need to create a two-dimensional labeled table. Which choice is the most appropriate Pandas feature?","options":["df.columns","pd.DataFrame","pd.Series","df.index"],"answer":1,"reason":"pd.DataFrame is the Pandas feature used to create a two-dimensional labeled table.","correctReason":"pd.DataFrame is the Pandas feature used to create a two-dimensional labeled table.","concepts":["DataFrame"]}
+,
+{"id":"B24","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: creates a two-dimensional labeled table?","options":["df=pd.DataFrame({\"A\":[1,2],\"B\":[3,4]})","pd.Series","df.index","df.columns"],"answer":0,"reason":"pd.DataFrame is the Pandas feature used to create a two-dimensional labeled table.","correctReason":"pd.DataFrame is the Pandas feature used to create a two-dimensional labeled table.","concepts":["DataFrame"]}
+,
+{"id":"B25","category":"Basics","question":"Which Pandas feature is primarily used to accesses the row index labels?","options":["df.columns","df.index","pd.Series","pd.DataFrame"],"answer":1,"reason":"df.index is the Pandas feature used to accesses the row index labels.","correctReason":"df.index is the Pandas feature used to accesses the row index labels.","concepts":["Index"]}
+,
+{"id":"B26","category":"Basics","question":"You need to accesses the row index labels. Which choice is the most appropriate Pandas feature?","options":["df.index","pd.Series","pd.DataFrame","df.columns"],"answer":0,"reason":"df.index is the Pandas feature used to accesses the row index labels.","correctReason":"df.index is the Pandas feature used to accesses the row index labels.","concepts":["Index"]}
+,
+{"id":"B27","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: accesses the row index labels?","options":["pd.Series","pd.DataFrame","df.columns","idx=df.index"],"answer":3,"reason":"df.index is the Pandas feature used to accesses the row index labels.","correctReason":"df.index is the Pandas feature used to accesses the row index labels.","concepts":["Index"]}
+,
+{"id":"B28","category":"Basics","question":"Which Pandas feature is primarily used to accesses the column labels?","options":["df.columns","pd.Series","pd.DataFrame","df.index"],"answer":0,"reason":"df.columns is the Pandas feature used to accesses the column labels.","correctReason":"df.columns is the Pandas feature used to accesses the column labels.","concepts":["Columns"]}
+,
+{"id":"B29","category":"Basics","question":"You need to accesses the column labels. Which choice is the most appropriate Pandas feature?","options":["pd.Series","pd.DataFrame","df.index","df.columns"],"answer":3,"reason":"df.columns is the Pandas feature used to accesses the column labels.","correctReason":"df.columns is the Pandas feature used to accesses the column labels.","concepts":["Columns"]}
+,
+{"id":"B30","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: accesses the column labels?","options":["pd.DataFrame","df.index","cols=df.columns","pd.Series"],"answer":2,"reason":"df.columns is the Pandas feature used to accesses the column labels.","correctReason":"df.columns is the Pandas feature used to accesses the column labels.","concepts":["Columns"]}
+,
+{"id":"B31","category":"Basics","question":"Which Pandas feature is primarily used to returns the number of rows and columns as a tuple?","options":["pd.Series","pd.DataFrame","df.index","df.shape"],"answer":3,"reason":"df.shape is the Pandas feature used to returns the number of rows and columns as a tuple.","correctReason":"df.shape is the Pandas feature used to returns the number of rows and columns as a tuple.","concepts":["Shape"]}
+,
+{"id":"B32","category":"Basics","question":"You need to returns the number of rows and columns as a tuple. Which choice is the most appropriate Pandas feature?","options":["pd.DataFrame","df.index","df.shape","pd.Series"],"answer":2,"reason":"df.shape is the Pandas feature used to returns the number of rows and columns as a tuple.","correctReason":"df.shape is the Pandas feature used to returns the number of rows and columns as a tuple.","concepts":["Shape"]}
+,
+{"id":"B33","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: returns the number of rows and columns as a tuple?","options":["df.index","shape=df.shape","pd.Series","pd.DataFrame"],"answer":1,"reason":"df.shape is the Pandas feature used to returns the number of rows and columns as a tuple.","correctReason":"df.shape is the Pandas feature used to returns the number of rows and columns as a tuple.","concepts":["Shape"]}
+,
+{"id":"B34","category":"Basics","question":"Which Pandas feature is primarily used to returns the total number of elements?","options":["pd.DataFrame","df.index","df.size","pd.Series"],"answer":2,"reason":"df.size is the Pandas feature used to returns the total number of elements.","correctReason":"df.size is the Pandas feature used to returns the total number of elements.","concepts":["Size"]}
+,
+{"id":"B35","category":"Basics","question":"You need to returns the total number of elements. Which choice is the most appropriate Pandas feature?","options":["df.index","df.size","pd.Series","pd.DataFrame"],"answer":1,"reason":"df.size is the Pandas feature used to returns the total number of elements.","correctReason":"df.size is the Pandas feature used to returns the total number of elements.","concepts":["Size"]}
+,
+{"id":"B36","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: returns the total number of elements?","options":["n=df.size","pd.Series","pd.DataFrame","df.index"],"answer":0,"reason":"df.size is the Pandas feature used to returns the total number of elements.","correctReason":"df.size is the Pandas feature used to returns the total number of elements.","concepts":["Size"]}
+,
+{"id":"B37","category":"Basics","question":"Which Pandas feature is primarily used to returns the number of dimensions?","options":["df.index","df.ndim","pd.Series","pd.DataFrame"],"answer":1,"reason":"df.ndim is the Pandas feature used to returns the number of dimensions.","correctReason":"df.ndim is the Pandas feature used to returns the number of dimensions.","concepts":["Ndim"]}
+,
+{"id":"B38","category":"Basics","question":"You need to returns the number of dimensions. Which choice is the most appropriate Pandas feature?","options":["df.ndim","pd.Series","pd.DataFrame","df.index"],"answer":0,"reason":"df.ndim is the Pandas feature used to returns the number of dimensions.","correctReason":"df.ndim is the Pandas feature used to returns the number of dimensions.","concepts":["Ndim"]}
+,
+{"id":"B39","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: returns the number of dimensions?","options":["pd.Series","pd.DataFrame","df.index","d=df.ndim"],"answer":3,"reason":"df.ndim is the Pandas feature used to returns the number of dimensions.","correctReason":"df.ndim is the Pandas feature used to returns the number of dimensions.","concepts":["Ndim"]}
+,
+{"id":"B40","category":"Basics","question":"Which Pandas feature is primarily used to returns the first rows of a DataFrame?","options":["df.head()","pd.Series","pd.DataFrame","df.index"],"answer":0,"reason":"df.head() is the Pandas feature used to returns the first rows of a DataFrame.","correctReason":"df.head() is the Pandas feature used to returns the first rows of a DataFrame.","concepts":["Head"]}
+,
+{"id":"B41","category":"Basics","question":"You need to returns the first rows of a DataFrame. Which choice is the most appropriate Pandas feature?","options":["pd.Series","pd.DataFrame","df.index","df.head()"],"answer":3,"reason":"df.head() is the Pandas feature used to returns the first rows of a DataFrame.","correctReason":"df.head() is the Pandas feature used to returns the first rows of a DataFrame.","concepts":["Head"]}
+,
+{"id":"B42","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: returns the first rows of a DataFrame?","options":["pd.DataFrame","df.index","df.head(3)","pd.Series"],"answer":2,"reason":"df.head() is the Pandas feature used to returns the first rows of a DataFrame.","correctReason":"df.head() is the Pandas feature used to returns the first rows of a DataFrame.","concepts":["Head"]}
+,
+{"id":"B43","category":"Basics","question":"Which Pandas feature is primarily used to returns the last rows of a DataFrame?","options":["pd.Series","pd.DataFrame","df.index","df.tail()"],"answer":3,"reason":"df.tail() is the Pandas feature used to returns the last rows of a DataFrame.","correctReason":"df.tail() is the Pandas feature used to returns the last rows of a DataFrame.","concepts":["Tail"]}
+,
+{"id":"B44","category":"Basics","question":"You need to returns the last rows of a DataFrame. Which choice is the most appropriate Pandas feature?","options":["pd.DataFrame","df.index","df.tail()","pd.Series"],"answer":2,"reason":"df.tail() is the Pandas feature used to returns the last rows of a DataFrame.","correctReason":"df.tail() is the Pandas feature used to returns the last rows of a DataFrame.","concepts":["Tail"]}
+,
+{"id":"B45","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: returns the last rows of a DataFrame?","options":["df.index","df.tail(3)","pd.Series","pd.DataFrame"],"answer":1,"reason":"df.tail() is the Pandas feature used to returns the last rows of a DataFrame.","correctReason":"df.tail() is the Pandas feature used to returns the last rows of a DataFrame.","concepts":["Tail"]}
+,
+{"id":"B46","category":"Basics","question":"Which Pandas feature is primarily used to prints a concise summary including columns, non-null counts, and dtypes?","options":["pd.DataFrame","df.index","df.info()","pd.Series"],"answer":2,"reason":"df.info() is the Pandas feature used to prints a concise summary including columns, non-null counts, and dtypes.","correctReason":"df.info() is the Pandas feature used to prints a concise summary including columns, non-null counts, and dtypes.","concepts":["Info"]}
+,
+{"id":"B47","category":"Basics","question":"You need to prints a concise summary including columns, non-null counts, and dtypes. Which choice is the most appropriate Pandas feature?","options":["df.index","df.info()","pd.Series","pd.DataFrame"],"answer":1,"reason":"df.info() is the Pandas feature used to prints a concise summary including columns, non-null counts, and dtypes.","correctReason":"df.info() is the Pandas feature used to prints a concise summary including columns, non-null counts, and dtypes.","concepts":["Info"]}
+,
+{"id":"B48","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: prints a concise summary including columns, non-null counts, and dtypes?","options":["df.info()","pd.Series","pd.DataFrame","df.index"],"answer":0,"reason":"df.info() is the Pandas feature used to prints a concise summary including columns, non-null counts, and dtypes.","correctReason":"df.info() is the Pandas feature used to prints a concise summary including columns, non-null counts, and dtypes.","concepts":["Info"]}
+,
+{"id":"B49","category":"Basics","question":"Which Pandas feature is primarily used to returns descriptive statistics for numeric columns by default?","options":["df.index","df.describe()","pd.Series","pd.DataFrame"],"answer":1,"reason":"df.describe() is the Pandas feature used to returns descriptive statistics for numeric columns by default.","correctReason":"df.describe() is the Pandas feature used to returns descriptive statistics for numeric columns by default.","concepts":["Describe"]}
+,
+{"id":"B50","category":"Basics","question":"You need to returns descriptive statistics for numeric columns by default. Which choice is the most appropriate Pandas feature?","options":["df.describe()","pd.Series","pd.DataFrame","df.index"],"answer":0,"reason":"df.describe() is the Pandas feature used to returns descriptive statistics for numeric columns by default.","correctReason":"df.describe() is the Pandas feature used to returns descriptive statistics for numeric columns by default.","concepts":["Describe"]}
+,
+{"id":"B51","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: returns descriptive statistics for numeric columns by default?","options":["pd.Series","pd.DataFrame","df.index","df.describe()"],"answer":3,"reason":"df.describe() is the Pandas feature used to returns descriptive statistics for numeric columns by default.","correctReason":"df.describe() is the Pandas feature used to returns descriptive statistics for numeric columns by default.","concepts":["Describe"]}
+,
+{"id":"B52","category":"Basics","question":"Which Pandas feature is primarily used to returns the data type of each column?","options":["df.dtypes","pd.Series","pd.DataFrame","df.index"],"answer":0,"reason":"df.dtypes is the Pandas feature used to returns the data type of each column.","correctReason":"df.dtypes is the Pandas feature used to returns the data type of each column.","concepts":["Dtypes"]}
+,
+{"id":"B53","category":"Basics","question":"You need to returns the data type of each column. Which choice is the most appropriate Pandas feature?","options":["pd.Series","pd.DataFrame","df.index","df.dtypes"],"answer":3,"reason":"df.dtypes is the Pandas feature used to returns the data type of each column.","correctReason":"df.dtypes is the Pandas feature used to returns the data type of each column.","concepts":["Dtypes"]}
+,
+{"id":"B54","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: returns the data type of each column?","options":["pd.DataFrame","df.index","types=df.dtypes","pd.Series"],"answer":2,"reason":"df.dtypes is the Pandas feature used to returns the data type of each column.","correctReason":"df.dtypes is the Pandas feature used to returns the data type of each column.","concepts":["Dtypes"]}
+,
+{"id":"B55","category":"Basics","question":"Which Pandas feature is primarily used to selects rows/columns by labels?","options":["pd.Series","pd.DataFrame","df.index","df.loc"],"answer":3,"reason":"df.loc is the Pandas feature used to selects rows/columns by labels.","correctReason":"df.loc is the Pandas feature used to selects rows/columns by labels.","concepts":["loc"]}
+,
+{"id":"B56","category":"Basics","question":"You need to selects rows/columns by labels. Which choice is the most appropriate Pandas feature?","options":["pd.DataFrame","df.index","df.loc","pd.Series"],"answer":2,"reason":"df.loc is the Pandas feature used to selects rows/columns by labels.","correctReason":"df.loc is the Pandas feature used to selects rows/columns by labels.","concepts":["loc"]}
+,
+{"id":"B57","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: selects rows/columns by labels?","options":["df.index","df.loc[2,\"sales\"]","pd.Series","pd.DataFrame"],"answer":1,"reason":"df.loc is the Pandas feature used to selects rows/columns by labels.","correctReason":"df.loc is the Pandas feature used to selects rows/columns by labels.","concepts":["loc"]}
+,
+{"id":"B58","category":"Basics","question":"Which Pandas feature is primarily used to selects rows/columns by integer position?","options":["pd.DataFrame","df.index","df.iloc","pd.Series"],"answer":2,"reason":"df.iloc is the Pandas feature used to selects rows/columns by integer position.","correctReason":"df.iloc is the Pandas feature used to selects rows/columns by integer position.","concepts":["iloc"]}
+,
+{"id":"B59","category":"Basics","question":"You need to selects rows/columns by integer position. Which choice is the most appropriate Pandas feature?","options":["df.index","df.iloc","pd.Series","pd.DataFrame"],"answer":1,"reason":"df.iloc is the Pandas feature used to selects rows/columns by integer position.","correctReason":"df.iloc is the Pandas feature used to selects rows/columns by integer position.","concepts":["iloc"]}
+,
+{"id":"B60","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: selects rows/columns by integer position?","options":["df.iloc[2,1]","pd.Series","pd.DataFrame","df.index"],"answer":0,"reason":"df.iloc is the Pandas feature used to selects rows/columns by integer position.","correctReason":"df.iloc is the Pandas feature used to selects rows/columns by integer position.","concepts":["iloc"]}
+,
+{"id":"B61","category":"Basics","question":"Which Pandas feature is primarily used to filters rows using a Boolean condition?","options":["df.index","df[df[\"age\"] > 18]","pd.Series","pd.DataFrame"],"answer":1,"reason":"df[df[\"age\"] > 18] is the Pandas feature used to filters rows using a Boolean condition.","correctReason":"df[df[\"age\"] > 18] is the Pandas feature used to filters rows using a Boolean condition.","concepts":["Boolean filtering"]}
+,
+{"id":"B62","category":"Basics","question":"You need to filters rows using a Boolean condition. Which choice is the most appropriate Pandas feature?","options":["df[df[\"age\"] > 18]","pd.Series","pd.DataFrame","df.index"],"answer":0,"reason":"df[df[\"age\"] > 18] is the Pandas feature used to filters rows using a Boolean condition.","correctReason":"df[df[\"age\"] > 18] is the Pandas feature used to filters rows using a Boolean condition.","concepts":["Boolean filtering"]}
+,
+{"id":"B63","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: filters rows using a Boolean condition?","options":["pd.Series","pd.DataFrame","df.index","adults=df[df[\"age\"] > 18]"],"answer":3,"reason":"df[df[\"age\"] > 18] is the Pandas feature used to filters rows using a Boolean condition.","correctReason":"df[df[\"age\"] > 18] is the Pandas feature used to filters rows using a Boolean condition.","concepts":["Boolean filtering"]}
+,
+{"id":"B64","category":"Basics","question":"Which Pandas feature is primarily used to returns a DataFrame with new or modified columns?","options":["df.assign","pd.Series","pd.DataFrame","df.index"],"answer":0,"reason":"df.assign is the Pandas feature used to returns a DataFrame with new or modified columns.","correctReason":"df.assign is the Pandas feature used to returns a DataFrame with new or modified columns.","concepts":["Assign"]}
+,
+{"id":"B65","category":"Basics","question":"You need to returns a DataFrame with new or modified columns. Which choice is the most appropriate Pandas feature?","options":["pd.Series","pd.DataFrame","df.index","df.assign"],"answer":3,"reason":"df.assign is the Pandas feature used to returns a DataFrame with new or modified columns.","correctReason":"df.assign is the Pandas feature used to returns a DataFrame with new or modified columns.","concepts":["Assign"]}
+,
+{"id":"B66","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: returns a DataFrame with new or modified columns?","options":["pd.DataFrame","df.index","out=df.assign(total=df[\"a\"]+df[\"b\"])","pd.Series"],"answer":2,"reason":"df.assign is the Pandas feature used to returns a DataFrame with new or modified columns.","correctReason":"df.assign is the Pandas feature used to returns a DataFrame with new or modified columns.","concepts":["Assign"]}
+,
+{"id":"B67","category":"Basics","question":"Which Pandas feature is primarily used to renames index or column labels?","options":["pd.Series","pd.DataFrame","df.index","df.rename"],"answer":3,"reason":"df.rename is the Pandas feature used to renames index or column labels.","correctReason":"df.rename is the Pandas feature used to renames index or column labels.","concepts":["Rename"]}
+,
+{"id":"B68","category":"Basics","question":"You need to renames index or column labels. Which choice is the most appropriate Pandas feature?","options":["pd.DataFrame","df.index","df.rename","pd.Series"],"answer":2,"reason":"df.rename is the Pandas feature used to renames index or column labels.","correctReason":"df.rename is the Pandas feature used to renames index or column labels.","concepts":["Rename"]}
+,
+{"id":"B69","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: renames index or column labels?","options":["df.index","out=df.rename(columns={\"old\":\"new\"})","pd.Series","pd.DataFrame"],"answer":1,"reason":"df.rename is the Pandas feature used to renames index or column labels.","correctReason":"df.rename is the Pandas feature used to renames index or column labels.","concepts":["Rename"]}
+,
+{"id":"B70","category":"Basics","question":"Which Pandas feature is primarily used to removes specified rows or columns?","options":["pd.DataFrame","df.index","df.drop","pd.Series"],"answer":2,"reason":"df.drop is the Pandas feature used to removes specified rows or columns.","correctReason":"df.drop is the Pandas feature used to removes specified rows or columns.","concepts":["Drop"]}
+,
+{"id":"B71","category":"Basics","question":"You need to removes specified rows or columns. Which choice is the most appropriate Pandas feature?","options":["df.index","df.drop","pd.Series","pd.DataFrame"],"answer":1,"reason":"df.drop is the Pandas feature used to removes specified rows or columns.","correctReason":"df.drop is the Pandas feature used to removes specified rows or columns.","concepts":["Drop"]}
+,
+{"id":"B72","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: removes specified rows or columns?","options":["out=df.drop(columns=[\"temp\"])","pd.Series","pd.DataFrame","df.index"],"answer":0,"reason":"df.drop is the Pandas feature used to removes specified rows or columns.","correctReason":"df.drop is the Pandas feature used to removes specified rows or columns.","concepts":["Drop"]}
+,
+{"id":"B73","category":"Basics","question":"Which Pandas feature is primarily used to sorts rows by one or more column values?","options":["df.index","df.sort_values","pd.Series","pd.DataFrame"],"answer":1,"reason":"df.sort_values is the Pandas feature used to sorts rows by one or more column values.","correctReason":"df.sort_values is the Pandas feature used to sorts rows by one or more column values.","concepts":["Sort values"]}
+,
+{"id":"B74","category":"Basics","question":"You need to sorts rows by one or more column values. Which choice is the most appropriate Pandas feature?","options":["df.sort_values","pd.Series","pd.DataFrame","df.index"],"answer":0,"reason":"df.sort_values is the Pandas feature used to sorts rows by one or more column values.","correctReason":"df.sort_values is the Pandas feature used to sorts rows by one or more column values.","concepts":["Sort values"]}
+,
+{"id":"B75","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: sorts rows by one or more column values?","options":["pd.Series","pd.DataFrame","df.index","out=df.sort_values(\"score\")"],"answer":3,"reason":"df.sort_values is the Pandas feature used to sorts rows by one or more column values.","correctReason":"df.sort_values is the Pandas feature used to sorts rows by one or more column values.","concepts":["Sort values"]}
+,
+{"id":"B76","category":"Basics","question":"Which Pandas feature is primarily used to counts the frequency of each distinct value?","options":["s.value_counts()","pd.Series","pd.DataFrame","df.index"],"answer":0,"reason":"s.value_counts() is the Pandas feature used to counts the frequency of each distinct value.","correctReason":"s.value_counts() is the Pandas feature used to counts the frequency of each distinct value.","concepts":["Value counts"]}
+,
+{"id":"B77","category":"Basics","question":"You need to counts the frequency of each distinct value. Which choice is the most appropriate Pandas feature?","options":["pd.Series","pd.DataFrame","df.index","s.value_counts()"],"answer":3,"reason":"s.value_counts() is the Pandas feature used to counts the frequency of each distinct value.","correctReason":"s.value_counts() is the Pandas feature used to counts the frequency of each distinct value.","concepts":["Value counts"]}
+,
+{"id":"B78","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: counts the frequency of each distinct value?","options":["pd.DataFrame","df.index","counts=s.value_counts()","pd.Series"],"answer":2,"reason":"s.value_counts() is the Pandas feature used to counts the frequency of each distinct value.","correctReason":"s.value_counts() is the Pandas feature used to counts the frequency of each distinct value.","concepts":["Value counts"]}
+,
+{"id":"B79","category":"Basics","question":"Which Pandas feature is primarily used to returns the distinct values in a Series?","options":["pd.Series","pd.DataFrame","df.index","s.unique()"],"answer":3,"reason":"s.unique() is the Pandas feature used to returns the distinct values in a Series.","correctReason":"s.unique() is the Pandas feature used to returns the distinct values in a Series.","concepts":["Unique"]}
+,
+{"id":"B80","category":"Basics","question":"You need to returns the distinct values in a Series. Which choice is the most appropriate Pandas feature?","options":["pd.DataFrame","df.index","s.unique()","pd.Series"],"answer":2,"reason":"s.unique() is the Pandas feature used to returns the distinct values in a Series.","correctReason":"s.unique() is the Pandas feature used to returns the distinct values in a Series.","concepts":["Unique"]}
+,
+{"id":"B81","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: returns the distinct values in a Series?","options":["df.index","vals=s.unique()","pd.Series","pd.DataFrame"],"answer":1,"reason":"s.unique() is the Pandas feature used to returns the distinct values in a Series.","correctReason":"s.unique() is the Pandas feature used to returns the distinct values in a Series.","concepts":["Unique"]}
+,
+{"id":"B82","category":"Basics","question":"Which Pandas feature is primarily used to returns the number of distinct values?","options":["pd.DataFrame","df.index","s.nunique()","pd.Series"],"answer":2,"reason":"s.nunique() is the Pandas feature used to returns the number of distinct values.","correctReason":"s.nunique() is the Pandas feature used to returns the number of distinct values.","concepts":["Nunique"]}
+,
+{"id":"B83","category":"Basics","question":"You need to returns the number of distinct values. Which choice is the most appropriate Pandas feature?","options":["df.index","s.nunique()","pd.Series","pd.DataFrame"],"answer":1,"reason":"s.nunique() is the Pandas feature used to returns the number of distinct values.","correctReason":"s.nunique() is the Pandas feature used to returns the number of distinct values.","concepts":["Nunique"]}
+,
+{"id":"B84","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: returns the number of distinct values?","options":["n=s.nunique()","pd.Series","pd.DataFrame","df.index"],"answer":0,"reason":"s.nunique() is the Pandas feature used to returns the number of distinct values.","correctReason":"s.nunique() is the Pandas feature used to returns the number of distinct values.","concepts":["Nunique"]}
+,
+{"id":"B85","category":"Basics","question":"Which Pandas feature is primarily used to detects missing values and returns a Boolean mask?","options":["df.index","df.isna()","pd.Series","pd.DataFrame"],"answer":1,"reason":"df.isna() is the Pandas feature used to detects missing values and returns a Boolean mask.","correctReason":"df.isna() is the Pandas feature used to detects missing values and returns a Boolean mask.","concepts":["Isna"]}
+,
+{"id":"B86","category":"Basics","question":"You need to detects missing values and returns a Boolean mask. Which choice is the most appropriate Pandas feature?","options":["df.isna()","pd.Series","pd.DataFrame","df.index"],"answer":0,"reason":"df.isna() is the Pandas feature used to detects missing values and returns a Boolean mask.","correctReason":"df.isna() is the Pandas feature used to detects missing values and returns a Boolean mask.","concepts":["Isna"]}
+,
+{"id":"B87","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: detects missing values and returns a Boolean mask?","options":["pd.Series","pd.DataFrame","df.index","mask=df.isna()"],"answer":3,"reason":"df.isna() is the Pandas feature used to detects missing values and returns a Boolean mask.","correctReason":"df.isna() is the Pandas feature used to detects missing values and returns a Boolean mask.","concepts":["Isna"]}
+,
+{"id":"B88","category":"Basics","question":"Which Pandas feature is primarily used to replaces missing values with specified values or methods?","options":["df.fillna","pd.Series","pd.DataFrame","df.index"],"answer":0,"reason":"df.fillna is the Pandas feature used to replaces missing values with specified values or methods.","correctReason":"df.fillna is the Pandas feature used to replaces missing values with specified values or methods.","concepts":["Fillna"]}
+,
+{"id":"B89","category":"Basics","question":"You need to replaces missing values with specified values or methods. Which choice is the most appropriate Pandas feature?","options":["pd.Series","pd.DataFrame","df.index","df.fillna"],"answer":3,"reason":"df.fillna is the Pandas feature used to replaces missing values with specified values or methods.","correctReason":"df.fillna is the Pandas feature used to replaces missing values with specified values or methods.","concepts":["Fillna"]}
+,
+{"id":"B90","category":"Basics","question":"Which code correctly demonstrates the Pandas feature for this task: replaces missing values with specified values or methods?","options":["pd.DataFrame","df.index","out=df.fillna(0)","pd.Series"],"answer":2,"reason":"df.fillna is the Pandas feature used to replaces missing values with specified values or methods.","correctReason":"df.fillna is the Pandas feature used to replaces missing values with specified values or methods.","concepts":["Fillna"]}
+,
+{"id":"I21","category":"Important","question":"Which Pandas feature is primarily used to groups rows so aggregate or transform operations can be applied per group?","options":["grouped.agg","grouped.transform","df.apply","df.groupby"],"answer":3,"reason":"df.groupby is the Pandas feature used to groups rows so aggregate or transform operations can be applied per group.","correctReason":"df.groupby is the Pandas feature used to groups rows so aggregate or transform operations can be applied per group.","concepts":["GroupBy"]}
+,
+{"id":"I22","category":"Important","question":"You need to groups rows so aggregate or transform operations can be applied per group. Which choice is the most appropriate Pandas feature?","options":["grouped.transform","df.apply","df.groupby","grouped.agg"],"answer":2,"reason":"df.groupby is the Pandas feature used to groups rows so aggregate or transform operations can be applied per group.","correctReason":"df.groupby is the Pandas feature used to groups rows so aggregate or transform operations can be applied per group.","concepts":["GroupBy"]}
+,
+{"id":"I23","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: groups rows so aggregate or transform operations can be applied per group?","options":["df.apply","g=df.groupby(\"dept\")","grouped.agg","grouped.transform"],"answer":1,"reason":"df.groupby is the Pandas feature used to groups rows so aggregate or transform operations can be applied per group.","correctReason":"df.groupby is the Pandas feature used to groups rows so aggregate or transform operations can be applied per group.","concepts":["GroupBy"]}
+,
+{"id":"I24","category":"Important","question":"Which Pandas feature is primarily used to applies one or more aggregation functions?","options":["grouped.transform","df.apply","grouped.agg","df.groupby"],"answer":2,"reason":"grouped.agg is the Pandas feature used to applies one or more aggregation functions.","correctReason":"grouped.agg is the Pandas feature used to applies one or more aggregation functions.","concepts":["Agg"]}
+,
+{"id":"I25","category":"Important","question":"You need to applies one or more aggregation functions. Which choice is the most appropriate Pandas feature?","options":["df.apply","grouped.agg","df.groupby","grouped.transform"],"answer":1,"reason":"grouped.agg is the Pandas feature used to applies one or more aggregation functions.","correctReason":"grouped.agg is the Pandas feature used to applies one or more aggregation functions.","concepts":["Agg"]}
+,
+{"id":"I26","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: applies one or more aggregation functions?","options":["out=df.groupby(\"dept\").agg(avg_salary=(\"salary\",\"mean\"))","df.groupby","grouped.transform","df.apply"],"answer":0,"reason":"grouped.agg is the Pandas feature used to applies one or more aggregation functions.","correctReason":"grouped.agg is the Pandas feature used to applies one or more aggregation functions.","concepts":["Agg"]}
+,
+{"id":"I27","category":"Important","question":"Which Pandas feature is primarily used to returns results aligned to the original row index?","options":["df.apply","grouped.transform","df.groupby","grouped.agg"],"answer":1,"reason":"grouped.transform is the Pandas feature used to returns results aligned to the original row index.","correctReason":"grouped.transform is the Pandas feature used to returns results aligned to the original row index.","concepts":["Transform"]}
+,
+{"id":"I28","category":"Important","question":"You need to returns results aligned to the original row index. Which choice is the most appropriate Pandas feature?","options":["grouped.transform","df.groupby","grouped.agg","df.apply"],"answer":0,"reason":"grouped.transform is the Pandas feature used to returns results aligned to the original row index.","correctReason":"grouped.transform is the Pandas feature used to returns results aligned to the original row index.","concepts":["Transform"]}
+,
+{"id":"I29","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: returns results aligned to the original row index?","options":["df.groupby","grouped.agg","df.apply","out=df.groupby(\"dept\")[\"salary\"].transform(\"mean\")"],"answer":3,"reason":"grouped.transform is the Pandas feature used to returns results aligned to the original row index.","correctReason":"grouped.transform is the Pandas feature used to returns results aligned to the original row index.","concepts":["Transform"]}
+,
+{"id":"I30","category":"Important","question":"Which Pandas feature is primarily used to applies a function along an axis?","options":["df.apply","df.groupby","grouped.agg","grouped.transform"],"answer":0,"reason":"df.apply is the Pandas feature used to applies a function along an axis.","correctReason":"df.apply is the Pandas feature used to applies a function along an axis.","concepts":["Apply"]}
+,
+{"id":"I31","category":"Important","question":"You need to applies a function along an axis. Which choice is the most appropriate Pandas feature?","options":["df.groupby","grouped.agg","grouped.transform","df.apply"],"answer":3,"reason":"df.apply is the Pandas feature used to applies a function along an axis.","correctReason":"df.apply is the Pandas feature used to applies a function along an axis.","concepts":["Apply"]}
+,
+{"id":"I32","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: applies a function along an axis?","options":["grouped.agg","grouped.transform","out=df.apply(lambda s:s.max()-s.min())","df.groupby"],"answer":2,"reason":"df.apply is the Pandas feature used to applies a function along an axis.","correctReason":"df.apply is the Pandas feature used to applies a function along an axis.","concepts":["Apply"]}
+,
+{"id":"I33","category":"Important","question":"Which Pandas feature is primarily used to maps each Series value through a mapping or function?","options":["df.groupby","grouped.agg","grouped.transform","s.map"],"answer":3,"reason":"s.map is the Pandas feature used to maps each Series value through a mapping or function.","correctReason":"s.map is the Pandas feature used to maps each Series value through a mapping or function.","concepts":["Map"]}
+,
+{"id":"I34","category":"Important","question":"You need to maps each Series value through a mapping or function. Which choice is the most appropriate Pandas feature?","options":["grouped.agg","grouped.transform","s.map","df.groupby"],"answer":2,"reason":"s.map is the Pandas feature used to maps each Series value through a mapping or function.","correctReason":"s.map is the Pandas feature used to maps each Series value through a mapping or function.","concepts":["Map"]}
+,
+{"id":"I35","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: maps each Series value through a mapping or function?","options":["grouped.transform","out=s.map({\"A\":1,\"B\":2})","df.groupby","grouped.agg"],"answer":1,"reason":"s.map is the Pandas feature used to maps each Series value through a mapping or function.","correctReason":"s.map is the Pandas feature used to maps each Series value through a mapping or function.","concepts":["Map"]}
+,
+{"id":"I36","category":"Important","question":"Which Pandas feature is primarily used to combines DataFrames using matching key columns or indexes?","options":["grouped.agg","grouped.transform","pd.merge","df.groupby"],"answer":2,"reason":"pd.merge is the Pandas feature used to combines DataFrames using matching key columns or indexes.","correctReason":"pd.merge is the Pandas feature used to combines DataFrames using matching key columns or indexes.","concepts":["Merge"]}
+,
+{"id":"I37","category":"Important","question":"You need to combines DataFrames using matching key columns or indexes. Which choice is the most appropriate Pandas feature?","options":["grouped.transform","pd.merge","df.groupby","grouped.agg"],"answer":1,"reason":"pd.merge is the Pandas feature used to combines DataFrames using matching key columns or indexes.","correctReason":"pd.merge is the Pandas feature used to combines DataFrames using matching key columns or indexes.","concepts":["Merge"]}
+,
+{"id":"I38","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: combines DataFrames using matching key columns or indexes?","options":["out=pd.merge(left,right,on=\"id\")","df.groupby","grouped.agg","grouped.transform"],"answer":0,"reason":"pd.merge is the Pandas feature used to combines DataFrames using matching key columns or indexes.","correctReason":"pd.merge is the Pandas feature used to combines DataFrames using matching key columns or indexes.","concepts":["Merge"]}
+,
+{"id":"I39","category":"Important","question":"Which Pandas feature is primarily used to concatenates pandas objects along an axis?","options":["grouped.transform","pd.concat","df.groupby","grouped.agg"],"answer":1,"reason":"pd.concat is the Pandas feature used to concatenates pandas objects along an axis.","correctReason":"pd.concat is the Pandas feature used to concatenates pandas objects along an axis.","concepts":["Concat"]}
+,
+{"id":"I40","category":"Important","question":"You need to concatenates pandas objects along an axis. Which choice is the most appropriate Pandas feature?","options":["pd.concat","df.groupby","grouped.agg","grouped.transform"],"answer":0,"reason":"pd.concat is the Pandas feature used to concatenates pandas objects along an axis.","correctReason":"pd.concat is the Pandas feature used to concatenates pandas objects along an axis.","concepts":["Concat"]}
+,
+{"id":"I41","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: concatenates pandas objects along an axis?","options":["df.groupby","grouped.agg","grouped.transform","out=pd.concat([df1,df2],axis=0)"],"answer":3,"reason":"pd.concat is the Pandas feature used to concatenates pandas objects along an axis.","correctReason":"pd.concat is the Pandas feature used to concatenates pandas objects along an axis.","concepts":["Concat"]}
+,
+{"id":"I42","category":"Important","question":"Which Pandas feature is primarily used to joins another DataFrame using index or specified key columns?","options":["df.join","df.groupby","grouped.agg","grouped.transform"],"answer":0,"reason":"df.join is the Pandas feature used to joins another DataFrame using index or specified key columns.","correctReason":"df.join is the Pandas feature used to joins another DataFrame using index or specified key columns.","concepts":["Join"]}
+,
+{"id":"I43","category":"Important","question":"You need to joins another DataFrame using index or specified key columns. Which choice is the most appropriate Pandas feature?","options":["df.groupby","grouped.agg","grouped.transform","df.join"],"answer":3,"reason":"df.join is the Pandas feature used to joins another DataFrame using index or specified key columns.","correctReason":"df.join is the Pandas feature used to joins another DataFrame using index or specified key columns.","concepts":["Join"]}
+,
+{"id":"I44","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: joins another DataFrame using index or specified key columns?","options":["grouped.agg","grouped.transform","out=left.join(right,lsuffix=\"_l\",rsuffix=\"_r\")","df.groupby"],"answer":2,"reason":"df.join is the Pandas feature used to joins another DataFrame using index or specified key columns.","correctReason":"df.join is the Pandas feature used to joins another DataFrame using index or specified key columns.","concepts":["Join"]}
+,
+{"id":"I45","category":"Important","question":"Which Pandas feature is primarily used to reshapes data from long to wide when index/column combinations are unique?","options":["df.groupby","grouped.agg","grouped.transform","df.pivot"],"answer":3,"reason":"df.pivot is the Pandas feature used to reshapes data from long to wide when index/column combinations are unique.","correctReason":"df.pivot is the Pandas feature used to reshapes data from long to wide when index/column combinations are unique.","concepts":["Pivot"]}
+,
+{"id":"I46","category":"Important","question":"You need to reshapes data from long to wide when index/column combinations are unique. Which choice is the most appropriate Pandas feature?","options":["grouped.agg","grouped.transform","df.pivot","df.groupby"],"answer":2,"reason":"df.pivot is the Pandas feature used to reshapes data from long to wide when index/column combinations are unique.","correctReason":"df.pivot is the Pandas feature used to reshapes data from long to wide when index/column combinations are unique.","concepts":["Pivot"]}
+,
+{"id":"I47","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: reshapes data from long to wide when index/column combinations are unique?","options":["grouped.transform","wide=df.pivot(index=\"date\",columns=\"city\",values=\"sales\")","df.groupby","grouped.agg"],"answer":1,"reason":"df.pivot is the Pandas feature used to reshapes data from long to wide when index/column combinations are unique.","correctReason":"df.pivot is the Pandas feature used to reshapes data from long to wide when index/column combinations are unique.","concepts":["Pivot"]}
+,
+{"id":"I48","category":"Important","question":"Which Pandas feature is primarily used to create a spreadsheet-style pivot with aggregation?","options":["grouped.agg","grouped.transform","pd.pivot_table","df.groupby"],"answer":2,"reason":"pd.pivot_table is the Pandas feature used to create a spreadsheet-style pivot with aggregation.","correctReason":"pd.pivot_table is the Pandas feature used to create a spreadsheet-style pivot with aggregation.","concepts":["Pivot table"]}
+,
+{"id":"I49","category":"Important","question":"You need to create a spreadsheet-style pivot with aggregation. Which choice is the most appropriate Pandas feature?","options":["grouped.transform","pd.pivot_table","df.groupby","grouped.agg"],"answer":1,"reason":"pd.pivot_table is the Pandas feature used to create a spreadsheet-style pivot with aggregation.","correctReason":"pd.pivot_table is the Pandas feature used to create a spreadsheet-style pivot with aggregation.","concepts":["Pivot table"]}
+,
+{"id":"I50","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: creates a spreadsheet-style pivot with aggregation?","options":["pt=pd.pivot_table(df,index=\"dept\",values=\"sales\",aggfunc=\"sum\")","df.groupby","grouped.agg","grouped.transform"],"answer":0,"reason":"pd.pivot_table is the Pandas feature used to create a spreadsheet-style pivot with aggregation.","correctReason":"pd.pivot_table is the Pandas feature used to create a spreadsheet-style pivot with aggregation.","concepts":["Pivot table"]}
+,
+{"id":"I51","category":"Important","question":"Which Pandas feature is primarily used to converts wide-form columns into a long-form variable/value layout?","options":["grouped.transform","pd.melt","df.groupby","grouped.agg"],"answer":1,"reason":"pd.melt is the Pandas feature used to converts wide-form columns into a long-form variable/value layout.","correctReason":"pd.melt is the Pandas feature used to converts wide-form columns into a long-form variable/value layout.","concepts":["Melt"]}
+,
+{"id":"I52","category":"Important","question":"You need to converts wide-form columns into a long-form variable/value layout. Which choice is the most appropriate Pandas feature?","options":["pd.melt","df.groupby","grouped.agg","grouped.transform"],"answer":0,"reason":"pd.melt is the Pandas feature used to converts wide-form columns into a long-form variable/value layout.","correctReason":"pd.melt is the Pandas feature used to converts wide-form columns into a long-form variable/value layout.","concepts":["Melt"]}
+,
+{"id":"I53","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: converts wide-form columns into a long-form variable/value layout?","options":["df.groupby","grouped.agg","grouped.transform","long=pd.melt(df,id_vars=[\"id\"])"],"answer":3,"reason":"pd.melt is the Pandas feature used to converts wide-form columns into a long-form variable/value layout.","correctReason":"pd.melt is the Pandas feature used to converts wide-form columns into a long-form variable/value layout.","concepts":["Melt"]}
+,
+{"id":"I54","category":"Important","question":"Which Pandas feature is primarily used to encodes categorical values into indicator columns?","options":["pd.get_dummies","df.groupby","grouped.agg","grouped.transform"],"answer":0,"reason":"pd.get_dummies is the Pandas feature used to encodes categorical values into indicator columns.","correctReason":"pd.get_dummies is the Pandas feature used to encodes categorical values into indicator columns.","concepts":["Get dummies"]}
+,
+{"id":"I55","category":"Important","question":"You need to encodes categorical values into indicator columns. Which choice is the most appropriate Pandas feature?","options":["df.groupby","grouped.agg","grouped.transform","pd.get_dummies"],"answer":3,"reason":"pd.get_dummies is the Pandas feature used to encodes categorical values into indicator columns.","correctReason":"pd.get_dummies is the Pandas feature used to encodes categorical values into indicator columns.","concepts":["Get dummies"]}
+,
+{"id":"I56","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: encodes categorical values into indicator columns?","options":["grouped.agg","grouped.transform","x=pd.get_dummies(df[\"color\"])","df.groupby"],"answer":2,"reason":"pd.get_dummies is the Pandas feature used to encodes categorical values into indicator columns.","correctReason":"pd.get_dummies is the Pandas feature used to encodes categorical values into indicator columns.","concepts":["Get dummies"]}
+,
+{"id":"I57","category":"Important","question":"Which Pandas feature is primarily used to casts data to specified pandas or NumPy dtypes?","options":["df.groupby","grouped.agg","grouped.transform","df.astype"],"answer":3,"reason":"df.astype is the Pandas feature used to casts data to specified pandas or NumPy dtypes.","correctReason":"df.astype is the Pandas feature used to casts data to specified pandas or NumPy dtypes.","concepts":["Astype"]}
+,
+{"id":"I58","category":"Important","question":"You need to casts data to specified pandas or NumPy dtypes. Which choice is the most appropriate Pandas feature?","options":["grouped.agg","grouped.transform","df.astype","df.groupby"],"answer":2,"reason":"df.astype is the Pandas feature used to casts data to specified pandas or NumPy dtypes.","correctReason":"df.astype is the Pandas feature used to casts data to specified pandas or NumPy dtypes.","concepts":["Astype"]}
+,
+{"id":"I59","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: casts data to specified pandas or NumPy dtypes?","options":["grouped.transform","out=df.astype({\"age\":\"int64\"})","df.groupby","grouped.agg"],"answer":1,"reason":"df.astype is the Pandas feature used to casts data to specified pandas or NumPy dtypes.","correctReason":"df.astype is the Pandas feature used to casts data to specified pandas or NumPy dtypes.","concepts":["Astype"]}
+,
+{"id":"I60","category":"Important","question":"Which Pandas feature is primarily used to replaces specified values or patterns?","options":["grouped.agg","grouped.transform","df.replace","df.groupby"],"answer":2,"reason":"df.replace is the Pandas feature used to replaces specified values or patterns.","correctReason":"df.replace is the Pandas feature used to replaces specified values or patterns.","concepts":["Replace"]}
+,
+{"id":"I61","category":"Important","question":"You need to replaces specified values or patterns. Which choice is the most appropriate Pandas feature?","options":["grouped.transform","df.replace","df.groupby","grouped.agg"],"answer":1,"reason":"df.replace is the Pandas feature used to replaces specified values or patterns.","correctReason":"df.replace is the Pandas feature used to replaces specified values or patterns.","concepts":["Replace"]}
+,
+{"id":"I62","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: replaces specified values or patterns?","options":["out=df.replace({\"N/A\":None})","df.groupby","grouped.agg","grouped.transform"],"answer":0,"reason":"df.replace is the Pandas feature used to replaces specified values or patterns.","correctReason":"df.replace is the Pandas feature used to replaces specified values or patterns.","concepts":["Replace"]}
+,
+{"id":"I63","category":"Important","question":"Which Pandas feature is primarily used to marks duplicate rows with a Boolean Series?","options":["grouped.transform","df.duplicated","df.groupby","grouped.agg"],"answer":1,"reason":"df.duplicated is the Pandas feature used to marks duplicate rows with a Boolean Series.","correctReason":"df.duplicated is the Pandas feature used to marks duplicate rows with a Boolean Series.","concepts":["Duplicated"]}
+,
+{"id":"I64","category":"Important","question":"You need to marks duplicate rows with a Boolean Series. Which choice is the most appropriate Pandas feature?","options":["df.duplicated","df.groupby","grouped.agg","grouped.transform"],"answer":0,"reason":"df.duplicated is the Pandas feature used to marks duplicate rows with a Boolean Series.","correctReason":"df.duplicated is the Pandas feature used to marks duplicate rows with a Boolean Series.","concepts":["Duplicated"]}
+,
+{"id":"I65","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: marks duplicate rows with a Boolean Series?","options":["df.groupby","grouped.agg","grouped.transform","mask=df.duplicated()"],"answer":3,"reason":"df.duplicated is the Pandas feature used to marks duplicate rows with a Boolean Series.","correctReason":"df.duplicated is the Pandas feature used to marks duplicate rows with a Boolean Series.","concepts":["Duplicated"]}
+,
+{"id":"I66","category":"Important","question":"Which Pandas feature is primarily used to removes duplicate rows?","options":["df.drop_duplicates","df.groupby","grouped.agg","grouped.transform"],"answer":0,"reason":"df.drop_duplicates is the Pandas feature used to removes duplicate rows.","correctReason":"df.drop_duplicates is the Pandas feature used to removes duplicate rows.","concepts":["Drop duplicates"]}
+,
+{"id":"I67","category":"Important","question":"You need to removes duplicate rows. Which choice is the most appropriate Pandas feature?","options":["df.groupby","grouped.agg","grouped.transform","df.drop_duplicates"],"answer":3,"reason":"df.drop_duplicates is the Pandas feature used to removes duplicate rows.","correctReason":"df.drop_duplicates is the Pandas feature used to removes duplicate rows.","concepts":["Drop duplicates"]}
+,
+{"id":"I68","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: removes duplicate rows?","options":["grouped.agg","grouped.transform","out=df.drop_duplicates(subset=[\"email\"])","df.groupby"],"answer":2,"reason":"df.drop_duplicates is the Pandas feature used to removes duplicate rows.","correctReason":"df.drop_duplicates is the Pandas feature used to removes duplicate rows.","concepts":["Drop duplicates"]}
+,
+{"id":"I69","category":"Important","question":"Which Pandas feature is primarily used to provides vectorized string operations for Series values?","options":["df.groupby","grouped.agg","grouped.transform","s.str"],"answer":3,"reason":"s.str is the Pandas feature used to provides vectorized string operations for Series values.","correctReason":"s.str is the Pandas feature used to provides vectorized string operations for Series values.","concepts":["String accessor"]}
+,
+{"id":"I70","category":"Important","question":"You need to provides vectorized string operations for Series values. Which choice is the most appropriate Pandas feature?","options":["grouped.agg","grouped.transform","s.str","df.groupby"],"answer":2,"reason":"s.str is the Pandas feature used to provides vectorized string operations for Series values.","correctReason":"s.str is the Pandas feature used to provides vectorized string operations for Series values.","concepts":["String accessor"]}
+,
+{"id":"I71","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: provides vectorized string operations for Series values?","options":["grouped.transform","out=s.str.lower()","df.groupby","grouped.agg"],"answer":1,"reason":"s.str is the Pandas feature used to provides vectorized string operations for Series values.","correctReason":"s.str is the Pandas feature used to provides vectorized string operations for Series values.","concepts":["String accessor"]}
+,
+{"id":"I72","category":"Important","question":"Which Pandas feature is primarily used to converts date-like values to pandas datetime objects?","options":["grouped.agg","grouped.transform","pd.to_datetime","df.groupby"],"answer":2,"reason":"pd.to_datetime is the Pandas feature used to converts date-like values to pandas datetime objects.","correctReason":"pd.to_datetime is the Pandas feature used to converts date-like values to pandas datetime objects.","concepts":["To datetime"]}
+,
+{"id":"I73","category":"Important","question":"You need to converts date-like values to pandas datetime objects. Which choice is the most appropriate Pandas feature?","options":["grouped.transform","pd.to_datetime","df.groupby","grouped.agg"],"answer":1,"reason":"pd.to_datetime is the Pandas feature used to converts date-like values to pandas datetime objects.","correctReason":"pd.to_datetime is the Pandas feature used to converts date-like values to pandas datetime objects.","concepts":["To datetime"]}
+,
+{"id":"I74","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: converts date-like values to pandas datetime objects?","options":["dates=pd.to_datetime(df[\"date\"])","df.groupby","grouped.agg","grouped.transform"],"answer":0,"reason":"pd.to_datetime is the Pandas feature used to converts date-like values to pandas datetime objects.","correctReason":"pd.to_datetime is the Pandas feature used to converts date-like values to pandas datetime objects.","concepts":["To datetime"]}
+,
+{"id":"I75","category":"Important","question":"Which Pandas feature is primarily used to provides vectorized datetime properties and methods?","options":["grouped.transform","s.dt","df.groupby","grouped.agg"],"answer":1,"reason":"s.dt is the Pandas feature used to provides vectorized datetime properties and methods.","correctReason":"s.dt is the Pandas feature used to provides vectorized datetime properties and methods.","concepts":["Datetime accessor"]}
+,
+{"id":"I76","category":"Important","question":"You need to provides vectorized datetime properties and methods. Which choice is the most appropriate Pandas feature?","options":["s.dt","df.groupby","grouped.agg","grouped.transform"],"answer":0,"reason":"s.dt is the Pandas feature used to provides vectorized datetime properties and methods.","correctReason":"s.dt is the Pandas feature used to provides vectorized datetime properties and methods.","concepts":["Datetime accessor"]}
+,
+{"id":"I77","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: provides vectorized datetime properties and methods?","options":["df.groupby","grouped.agg","grouped.transform","years=dates.dt.year"],"answer":3,"reason":"s.dt is the Pandas feature used to provides vectorized datetime properties and methods.","correctReason":"s.dt is the Pandas feature used to provides vectorized datetime properties and methods.","concepts":["Datetime accessor"]}
+,
+{"id":"I78","category":"Important","question":"Which Pandas feature is primarily used to groups time-series data into fixed time-frequency bins?","options":["df.resample","df.groupby","grouped.agg","grouped.transform"],"answer":0,"reason":"df.resample is the Pandas feature used to groups time-series data into fixed time-frequency bins.","correctReason":"df.resample is the Pandas feature used to groups time-series data into fixed time-frequency bins.","concepts":["Resample"]}
+,
+{"id":"I79","category":"Important","question":"You need to groups time-series data into fixed time-frequency bins. Which choice is the most appropriate Pandas feature?","options":["df.groupby","grouped.agg","grouped.transform","df.resample"],"answer":3,"reason":"df.resample is the Pandas feature used to groups time-series data into fixed time-frequency bins.","correctReason":"df.resample is the Pandas feature used to groups time-series data into fixed time-frequency bins.","concepts":["Resample"]}
+,
+{"id":"I80","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: groups time-series data into fixed time-frequency bins?","options":["grouped.agg","grouped.transform","monthly=df.resample(\"M\").sum()","df.groupby"],"answer":2,"reason":"df.resample is the Pandas feature used to groups time-series data into fixed time-frequency bins.","correctReason":"df.resample is the Pandas feature used to groups time-series data into fixed time-frequency bins.","concepts":["Resample"]}
+,
+{"id":"I81","category":"Important","question":"Which Pandas feature is primarily used to create a rolling window for calculations such as moving averages?","options":["df.groupby","grouped.agg","grouped.transform","s.rolling"],"answer":3,"reason":"s.rolling is the Pandas feature used to create a rolling window for calculations such as moving averages.","correctReason":"s.rolling is the Pandas feature used to create a rolling window for calculations such as moving averages.","concepts":["Rolling"]}
+,
+{"id":"I82","category":"Important","question":"You need to create a rolling window for calculations such as moving averages. Which choice is the most appropriate Pandas feature?","options":["grouped.agg","grouped.transform","s.rolling","df.groupby"],"answer":2,"reason":"s.rolling is the Pandas feature used to create a rolling window for calculations such as moving averages.","correctReason":"s.rolling is the Pandas feature used to create a rolling window for calculations such as moving averages.","concepts":["Rolling"]}
+,
+{"id":"I83","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: creates a rolling window for calculations such as moving averages?","options":["grouped.transform","ma=s.rolling(7).mean()","df.groupby","grouped.agg"],"answer":1,"reason":"s.rolling is the Pandas feature used to create a rolling window for calculations such as moving averages.","correctReason":"s.rolling is the Pandas feature used to create a rolling window for calculations such as moving averages.","concepts":["Rolling"]}
+,
+{"id":"I84","category":"Important","question":"Which Pandas feature is primarily used to computes ranks of values?","options":["grouped.agg","grouped.transform","s.rank","df.groupby"],"answer":2,"reason":"s.rank is the Pandas feature used to computes ranks of values.","correctReason":"s.rank is the Pandas feature used to computes ranks of values.","concepts":["Rank"]}
+,
+{"id":"I85","category":"Important","question":"You need to computes ranks of values. Which choice is the most appropriate Pandas feature?","options":["grouped.transform","s.rank","df.groupby","grouped.agg"],"answer":1,"reason":"s.rank is the Pandas feature used to computes ranks of values.","correctReason":"s.rank is the Pandas feature used to computes ranks of values.","concepts":["Rank"]}
+,
+{"id":"I86","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: computes ranks of values?","options":["r=s.rank(method=\"average\")","df.groupby","grouped.agg","grouped.transform"],"answer":0,"reason":"s.rank is the Pandas feature used to computes ranks of values.","correctReason":"s.rank is the Pandas feature used to computes ranks of values.","concepts":["Rank"]}
+,
+{"id":"I87","category":"Important","question":"Which Pandas feature is primarily used to bins continuous values into discrete intervals?","options":["grouped.transform","pd.cut","df.groupby","grouped.agg"],"answer":1,"reason":"pd.cut is the Pandas feature used to bins continuous values into discrete intervals.","correctReason":"pd.cut is the Pandas feature used to bins continuous values into discrete intervals.","concepts":["Cut"]}
+,
+{"id":"I88","category":"Important","question":"You need to bins continuous values into discrete intervals. Which choice is the most appropriate Pandas feature?","options":["pd.cut","df.groupby","grouped.agg","grouped.transform"],"answer":0,"reason":"pd.cut is the Pandas feature used to bins continuous values into discrete intervals.","correctReason":"pd.cut is the Pandas feature used to bins continuous values into discrete intervals.","concepts":["Cut"]}
+,
+{"id":"I89","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: bins continuous values into discrete intervals?","options":["df.groupby","grouped.agg","grouped.transform","bins=pd.cut(df[\"age\"],[0,18,65,120])"],"answer":3,"reason":"pd.cut is the Pandas feature used to bins continuous values into discrete intervals.","correctReason":"pd.cut is the Pandas feature used to bins continuous values into discrete intervals.","concepts":["Cut"]}
+,
+{"id":"I90","category":"Important","question":"Which Pandas feature is primarily used to filters rows using a string expression?","options":["df.query","df.groupby","grouped.agg","grouped.transform"],"answer":0,"reason":"df.query is the Pandas feature used to filters rows using a string expression.","correctReason":"df.query is the Pandas feature used to filters rows using a string expression.","concepts":["Query"]}
+,
+{"id":"I91","category":"Important","question":"You need to filters rows using a string expression. Which choice is the most appropriate Pandas feature?","options":["df.groupby","grouped.agg","grouped.transform","df.query"],"answer":3,"reason":"df.query is the Pandas feature used to filters rows using a string expression.","correctReason":"df.query is the Pandas feature used to filters rows using a string expression.","concepts":["Query"]}
+,
+{"id":"I92","category":"Important","question":"Which code correctly demonstrates the Pandas feature for this task: filters rows using a string expression?","options":["grouped.agg","grouped.transform","out=df.query(\"age >= 18\")","df.groupby"],"answer":2,"reason":"df.query is the Pandas feature used to filters rows using a string expression.","correctReason":"df.query is the Pandas feature used to filters rows using a string expression.","concepts":["Query"]}
+,
+{"id":"A19","category":"Advanced","question":"Which Pandas feature is primarily used to represents multiple levels of row or column labels?","options":["df.stack","s.unstack","df.xs","pd.MultiIndex"],"answer":3,"reason":"pd.MultiIndex is the Pandas feature used to represents multiple levels of row or column labels.","correctReason":"pd.MultiIndex is the Pandas feature used to represents multiple levels of row or column labels.","concepts":["MultiIndex"]}
+,
+{"id":"A20","category":"Advanced","question":"You need to represents multiple levels of row or column labels. Which choice is the most appropriate Pandas feature?","options":["s.unstack","df.xs","pd.MultiIndex","df.stack"],"answer":2,"reason":"pd.MultiIndex is the Pandas feature used to represents multiple levels of row or column labels.","correctReason":"pd.MultiIndex is the Pandas feature used to represents multiple levels of row or column labels.","concepts":["MultiIndex"]}
+,
+{"id":"A21","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: represents multiple levels of row or column labels?","options":["df.xs","idx=pd.MultiIndex.from_product([[\"A\",\"B\"],[1,2]])","df.stack","s.unstack"],"answer":1,"reason":"pd.MultiIndex is the Pandas feature used to represents multiple levels of row or column labels.","correctReason":"pd.MultiIndex is the Pandas feature used to represents multiple levels of row or column labels.","concepts":["MultiIndex"]}
+,
+{"id":"A22","category":"Advanced","question":"Which Pandas feature is primarily used to moves a column level into the row index?","options":["s.unstack","df.xs","df.stack","pd.MultiIndex"],"answer":2,"reason":"df.stack is the Pandas feature used to moves a column level into the row index.","correctReason":"df.stack is the Pandas feature used to moves a column level into the row index.","concepts":["Stack"]}
+,
+{"id":"A23","category":"Advanced","question":"You need to moves a column level into the row index. Which choice is the most appropriate Pandas feature?","options":["df.xs","df.stack","pd.MultiIndex","s.unstack"],"answer":1,"reason":"df.stack is the Pandas feature used to moves a column level into the row index.","correctReason":"df.stack is the Pandas feature used to moves a column level into the row index.","concepts":["Stack"]}
+,
+{"id":"A24","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: moves a column level into the row index?","options":["out=df.stack()","pd.MultiIndex","s.unstack","df.xs"],"answer":0,"reason":"df.stack is the Pandas feature used to moves a column level into the row index.","correctReason":"df.stack is the Pandas feature used to moves a column level into the row index.","concepts":["Stack"]}
+,
+{"id":"A25","category":"Advanced","question":"Which Pandas feature is primarily used to moves an index level into columns?","options":["df.xs","s.unstack","pd.MultiIndex","df.stack"],"answer":1,"reason":"s.unstack is the Pandas feature used to moves an index level into columns.","correctReason":"s.unstack is the Pandas feature used to moves an index level into columns.","concepts":["Unstack"]}
+,
+{"id":"A26","category":"Advanced","question":"You need to moves an index level into columns. Which choice is the most appropriate Pandas feature?","options":["s.unstack","pd.MultiIndex","df.stack","df.xs"],"answer":0,"reason":"s.unstack is the Pandas feature used to moves an index level into columns.","correctReason":"s.unstack is the Pandas feature used to moves an index level into columns.","concepts":["Unstack"]}
+,
+{"id":"A27","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: moves an index level into columns?","options":["pd.MultiIndex","df.stack","df.xs","out=s.unstack()"],"answer":3,"reason":"s.unstack is the Pandas feature used to moves an index level into columns.","correctReason":"s.unstack is the Pandas feature used to moves an index level into columns.","concepts":["Unstack"]}
+,
+{"id":"A28","category":"Advanced","question":"Which Pandas feature is primarily used to selects a cross-section from a MultiIndex?","options":["df.xs","pd.MultiIndex","df.stack","s.unstack"],"answer":0,"reason":"df.xs is the Pandas feature used to selects a cross-section from a MultiIndex.","correctReason":"df.xs is the Pandas feature used to selects a cross-section from a MultiIndex.","concepts":["XS"]}
+,
+{"id":"A29","category":"Advanced","question":"You need to selects a cross-section from a MultiIndex. Which choice is the most appropriate Pandas feature?","options":["pd.MultiIndex","df.stack","s.unstack","df.xs"],"answer":3,"reason":"df.xs is the Pandas feature used to selects a cross-section from a MultiIndex.","correctReason":"df.xs is the Pandas feature used to selects a cross-section from a MultiIndex.","concepts":["XS"]}
+,
+{"id":"A30","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: selects a cross-section from a MultiIndex?","options":["df.stack","s.unstack","out=df.xs(\"A\",level=\"group\")","pd.MultiIndex"],"answer":2,"reason":"df.xs is the Pandas feature used to selects a cross-section from a MultiIndex.","correctReason":"df.xs is the Pandas feature used to selects a cross-section from a MultiIndex.","concepts":["XS"]}
+,
+{"id":"A31","category":"Advanced","question":"Which Pandas feature is primarily used to conforms an object to a new index or column labels?","options":["pd.MultiIndex","df.stack","s.unstack","df.reindex"],"answer":3,"reason":"df.reindex is the Pandas feature used to conforms an object to a new index or column labels.","correctReason":"df.reindex is the Pandas feature used to conforms an object to a new index or column labels.","concepts":["Reindex"]}
+,
+{"id":"A32","category":"Advanced","question":"You need to conforms an object to a new index or column labels. Which choice is the most appropriate Pandas feature?","options":["df.stack","s.unstack","df.reindex","pd.MultiIndex"],"answer":2,"reason":"df.reindex is the Pandas feature used to conforms an object to a new index or column labels.","correctReason":"df.reindex is the Pandas feature used to conforms an object to a new index or column labels.","concepts":["Reindex"]}
+,
+{"id":"A33","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: conforms an object to a new index or column labels?","options":["s.unstack","out=df.reindex([2,0,1])","pd.MultiIndex","df.stack"],"answer":1,"reason":"df.reindex is the Pandas feature used to conforms an object to a new index or column labels.","correctReason":"df.reindex is the Pandas feature used to conforms an object to a new index or column labels.","concepts":["Reindex"]}
+,
+{"id":"A34","category":"Advanced","question":"Which Pandas feature is primarily used to aligns two objects to a common index and columns?","options":["df.stack","s.unstack","df.align","pd.MultiIndex"],"answer":2,"reason":"df.align is the Pandas feature used to aligns two objects to a common index and columns.","correctReason":"df.align is the Pandas feature used to aligns two objects to a common index and columns.","concepts":["Align"]}
+,
+{"id":"A35","category":"Advanced","question":"You need to aligns two objects to a common index and columns. Which choice is the most appropriate Pandas feature?","options":["s.unstack","df.align","pd.MultiIndex","df.stack"],"answer":1,"reason":"df.align is the Pandas feature used to aligns two objects to a common index and columns.","correctReason":"df.align is the Pandas feature used to aligns two objects to a common index and columns.","concepts":["Align"]}
+,
+{"id":"A36","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: aligns two objects to a common index and columns?","options":["a,b=df1.align(df2)","pd.MultiIndex","df.stack","s.unstack"],"answer":0,"reason":"df.align is the Pandas feature used to aligns two objects to a common index and columns.","correctReason":"df.align is the Pandas feature used to aligns two objects to a common index and columns.","concepts":["Align"]}
+,
+{"id":"A37","category":"Advanced","question":"Which Pandas feature is primarily used to matches on nearest ordered keys, commonly for time-series data?","options":["s.unstack","pd.merge_asof","pd.MultiIndex","df.stack"],"answer":1,"reason":"pd.merge_asof is the Pandas feature used to matches on nearest ordered keys, commonly for time-series data.","correctReason":"pd.merge_asof is the Pandas feature used to matches on nearest ordered keys, commonly for time-series data.","concepts":["Merge asof"]}
+,
+{"id":"A38","category":"Advanced","question":"You need to matches on nearest ordered keys, commonly for time-series data. Which choice is the most appropriate Pandas feature?","options":["pd.merge_asof","pd.MultiIndex","df.stack","s.unstack"],"answer":0,"reason":"pd.merge_asof is the Pandas feature used to matches on nearest ordered keys, commonly for time-series data.","correctReason":"pd.merge_asof is the Pandas feature used to matches on nearest ordered keys, commonly for time-series data.","concepts":["Merge asof"]}
+,
+{"id":"A39","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: matches on nearest ordered keys, commonly for time-series data?","options":["pd.MultiIndex","df.stack","s.unstack","out=pd.merge_asof(trades,quotes,on=\"time\",by=\"symbol\")"],"answer":3,"reason":"pd.merge_asof is the Pandas feature used to matches on nearest ordered keys, commonly for time-series data.","correctReason":"pd.merge_asof is the Pandas feature used to matches on nearest ordered keys, commonly for time-series data.","concepts":["Merge asof"]}
+,
+{"id":"A40","category":"Advanced","question":"Which Pandas feature is primarily used to performs an ordered merge and can fill forward values?","options":["pd.merge_ordered","pd.MultiIndex","df.stack","s.unstack"],"answer":0,"reason":"pd.merge_ordered is the Pandas feature used to performs an ordered merge and can fill forward values.","correctReason":"pd.merge_ordered is the Pandas feature used to performs an ordered merge and can fill forward values.","concepts":["Merge ordered"]}
+,
+{"id":"A41","category":"Advanced","question":"You need to performs an ordered merge and can fill forward values. Which choice is the most appropriate Pandas feature?","options":["pd.MultiIndex","df.stack","s.unstack","pd.merge_ordered"],"answer":3,"reason":"pd.merge_ordered is the Pandas feature used to performs an ordered merge and can fill forward values.","correctReason":"pd.merge_ordered is the Pandas feature used to performs an ordered merge and can fill forward values.","concepts":["Merge ordered"]}
+,
+{"id":"A42","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: performs an ordered merge and can fill forward values?","options":["df.stack","s.unstack","out=pd.merge_ordered(a,b,on=\"date\",fill_method=\"ffill\")","pd.MultiIndex"],"answer":2,"reason":"pd.merge_ordered is the Pandas feature used to performs an ordered merge and can fill forward values.","correctReason":"pd.merge_ordered is the Pandas feature used to performs an ordered merge and can fill forward values.","concepts":["Merge ordered"]}
+,
+{"id":"A43","category":"Advanced","question":"Which Pandas feature is primarily used to stores categorical data using a categorical dtype?","options":["pd.MultiIndex","df.stack","s.unstack","astype category"],"answer":3,"reason":"astype category is the Pandas feature used to stores categorical data using a categorical dtype.","correctReason":"astype category is the Pandas feature used to stores categorical data using a categorical dtype.","concepts":["Categorical dtype"]}
+,
+{"id":"A44","category":"Advanced","question":"You need to stores categorical data using a categorical dtype. Which choice is the most appropriate Pandas feature?","options":["df.stack","s.unstack","astype category","pd.MultiIndex"],"answer":2,"reason":"astype category is the Pandas feature used to stores categorical data using a categorical dtype.","correctReason":"astype category is the Pandas feature used to stores categorical data using a categorical dtype.","concepts":["Categorical dtype"]}
+,
+{"id":"A45","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: stores categorical data using a categorical dtype?","options":["s.unstack","s=df[\"status\"].astype(\"category\")","pd.MultiIndex","df.stack"],"answer":1,"reason":"astype category is the Pandas feature used to stores categorical data using a categorical dtype.","correctReason":"astype category is the Pandas feature used to stores categorical data using a categorical dtype.","concepts":["Categorical dtype"]}
+,
+{"id":"A46","category":"Advanced","question":"Which Pandas feature is primarily used to allows integer data with missing values using pandas nullable integers?","options":["df.stack","s.unstack","Int64 dtype","pd.MultiIndex"],"answer":2,"reason":"Int64 dtype is the Pandas feature used to allows integer data with missing values using pandas nullable integers.","correctReason":"Int64 dtype is the Pandas feature used to allows integer data with missing values using pandas nullable integers.","concepts":["Nullable integer"]}
+,
+{"id":"A47","category":"Advanced","question":"You need to allows integer data with missing values using pandas nullable integers. Which choice is the most appropriate Pandas feature?","options":["s.unstack","Int64 dtype","pd.MultiIndex","df.stack"],"answer":1,"reason":"Int64 dtype is the Pandas feature used to allows integer data with missing values using pandas nullable integers.","correctReason":"Int64 dtype is the Pandas feature used to allows integer data with missing values using pandas nullable integers.","concepts":["Nullable integer"]}
+,
+{"id":"A48","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: allows integer data with missing values using pandas nullable integers?","options":["s=pd.Series([1,None],dtype=\"Int64\")","pd.MultiIndex","df.stack","s.unstack"],"answer":0,"reason":"Int64 dtype is the Pandas feature used to allows integer data with missing values using pandas nullable integers.","correctReason":"Int64 dtype is the Pandas feature used to allows integer data with missing values using pandas nullable integers.","concepts":["Nullable integer"]}
+,
+{"id":"A49","category":"Advanced","question":"Which Pandas feature is primarily used to evaluates expressions involving DataFrame columns?","options":["s.unstack","df.eval","pd.MultiIndex","df.stack"],"answer":1,"reason":"df.eval is the Pandas feature used to evaluates expressions involving DataFrame columns.","correctReason":"df.eval is the Pandas feature used to evaluates expressions involving DataFrame columns.","concepts":["Eval"]}
+,
+{"id":"A50","category":"Advanced","question":"You need to evaluates expressions involving DataFrame columns. Which choice is the most appropriate Pandas feature?","options":["df.eval","pd.MultiIndex","df.stack","s.unstack"],"answer":0,"reason":"df.eval is the Pandas feature used to evaluates expressions involving DataFrame columns.","correctReason":"df.eval is the Pandas feature used to evaluates expressions involving DataFrame columns.","concepts":["Eval"]}
+,
+{"id":"A51","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: evaluates expressions involving DataFrame columns?","options":["pd.MultiIndex","df.stack","s.unstack","df.eval(\"total = price * qty\",inplace=True)"],"answer":3,"reason":"df.eval is the Pandas feature used to evaluates expressions involving DataFrame columns.","correctReason":"df.eval is the Pandas feature used to evaluates expressions involving DataFrame columns.","concepts":["Eval"]}
+,
+{"id":"A52","category":"Advanced","question":"Which Pandas feature is primarily used to passes an object through a function in a composable pipeline?","options":["df.pipe","pd.MultiIndex","df.stack","s.unstack"],"answer":0,"reason":"df.pipe is the Pandas feature used to passes an object through a function in a composable pipeline.","correctReason":"df.pipe is the Pandas feature used to passes an object through a function in a composable pipeline.","concepts":["Pipe"]}
+,
+{"id":"A53","category":"Advanced","question":"You need to passes an object through a function in a composable pipeline. Which choice is the most appropriate Pandas feature?","options":["pd.MultiIndex","df.stack","s.unstack","df.pipe"],"answer":3,"reason":"df.pipe is the Pandas feature used to passes an object through a function in a composable pipeline.","correctReason":"df.pipe is the Pandas feature used to passes an object through a function in a composable pipeline.","concepts":["Pipe"]}
+,
+{"id":"A54","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: passes an object through a function in a composable pipeline?","options":["df.stack","s.unstack","out=df.pipe(clean_data)","pd.MultiIndex"],"answer":2,"reason":"df.pipe is the Pandas feature used to passes an object through a function in a composable pipeline.","correctReason":"df.pipe is the Pandas feature used to passes an object through a function in a composable pipeline.","concepts":["Pipe"]}
+,
+{"id":"A55","category":"Advanced","question":"Which Pandas feature is primarily used to turns list-like values in a column into separate rows?","options":["pd.MultiIndex","df.stack","s.unstack","df.explode"],"answer":3,"reason":"df.explode is the Pandas feature used to turns list-like values in a column into separate rows.","correctReason":"df.explode is the Pandas feature used to turns list-like values in a column into separate rows.","concepts":["Explode"]}
+,
+{"id":"A56","category":"Advanced","question":"You need to turns list-like values in a column into separate rows. Which choice is the most appropriate Pandas feature?","options":["df.stack","s.unstack","df.explode","pd.MultiIndex"],"answer":2,"reason":"df.explode is the Pandas feature used to turns list-like values in a column into separate rows.","correctReason":"df.explode is the Pandas feature used to turns list-like values in a column into separate rows.","concepts":["Explode"]}
+,
+{"id":"A57","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: turns list-like values in a column into separate rows?","options":["s.unstack","out=df.explode(\"items\")","pd.MultiIndex","df.stack"],"answer":1,"reason":"df.explode is the Pandas feature used to turns list-like values in a column into separate rows.","correctReason":"df.explode is the Pandas feature used to turns list-like values in a column into separate rows.","concepts":["Explode"]}
+,
+{"id":"A58","category":"Advanced","question":"Which Pandas feature is primarily used to flattens semi-structured nested JSON into tabular data?","options":["df.stack","s.unstack","pd.json_normalize","pd.MultiIndex"],"answer":2,"reason":"pd.json_normalize is the Pandas feature used to flattens semi-structured nested JSON into tabular data.","correctReason":"pd.json_normalize is the Pandas feature used to flattens semi-structured nested JSON into tabular data.","concepts":["JSON normalize"]}
+,
+{"id":"A59","category":"Advanced","question":"You need to flattens semi-structured nested JSON into tabular data. Which choice is the most appropriate Pandas feature?","options":["s.unstack","pd.json_normalize","pd.MultiIndex","df.stack"],"answer":1,"reason":"pd.json_normalize is the Pandas feature used to flattens semi-structured nested JSON into tabular data.","correctReason":"pd.json_normalize is the Pandas feature used to flattens semi-structured nested JSON into tabular data.","concepts":["JSON normalize"]}
+,
+{"id":"A60","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: flattens semi-structured nested JSON into tabular data?","options":["out=pd.json_normalize(records)","pd.MultiIndex","df.stack","s.unstack"],"answer":0,"reason":"pd.json_normalize is the Pandas feature used to flattens semi-structured nested JSON into tabular data.","correctReason":"pd.json_normalize is the Pandas feature used to flattens semi-structured nested JSON into tabular data.","concepts":["JSON normalize"]}
+,
+{"id":"A61","category":"Advanced","question":"Which Pandas feature is primarily used to reads a SQL query or table into a DataFrame?","options":["s.unstack","pd.read_sql","pd.MultiIndex","df.stack"],"answer":1,"reason":"pd.read_sql is the Pandas feature used to reads a SQL query or table into a DataFrame.","correctReason":"pd.read_sql is the Pandas feature used to reads a SQL query or table into a DataFrame.","concepts":["Read SQL"]}
+,
+{"id":"A62","category":"Advanced","question":"You need to reads a SQL query or table into a DataFrame. Which choice is the most appropriate Pandas feature?","options":["pd.read_sql","pd.MultiIndex","df.stack","s.unstack"],"answer":0,"reason":"pd.read_sql is the Pandas feature used to reads a SQL query or table into a DataFrame.","correctReason":"pd.read_sql is the Pandas feature used to reads a SQL query or table into a DataFrame.","concepts":["Read SQL"]}
+,
+{"id":"A63","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: reads a SQL query or table into a DataFrame?","options":["pd.MultiIndex","df.stack","s.unstack","df=pd.read_sql(\"SELECT * FROM sales\",con)"],"answer":3,"reason":"pd.read_sql is the Pandas feature used to reads a SQL query or table into a DataFrame.","correctReason":"pd.read_sql is the Pandas feature used to reads a SQL query or table into a DataFrame.","concepts":["Read SQL"]}
+,
+{"id":"A64","category":"Advanced","question":"Which Pandas feature is primarily used to writes a DataFrame to a SQL database table?","options":["df.to_sql","pd.MultiIndex","df.stack","s.unstack"],"answer":0,"reason":"df.to_sql is the Pandas feature used to writes a DataFrame to a SQL database table.","correctReason":"df.to_sql is the Pandas feature used to writes a DataFrame to a SQL database table.","concepts":["To SQL"]}
+,
+{"id":"A65","category":"Advanced","question":"You need to writes a DataFrame to a SQL database table. Which choice is the most appropriate Pandas feature?","options":["pd.MultiIndex","df.stack","s.unstack","df.to_sql"],"answer":3,"reason":"df.to_sql is the Pandas feature used to writes a DataFrame to a SQL database table.","correctReason":"df.to_sql is the Pandas feature used to writes a DataFrame to a SQL database table.","concepts":["To SQL"]}
+,
+{"id":"A66","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: writes a DataFrame to a SQL database table?","options":["df.stack","s.unstack","df.to_sql(\"sales\",con,if_exists=\"append\",index=False)","pd.MultiIndex"],"answer":2,"reason":"df.to_sql is the Pandas feature used to writes a DataFrame to a SQL database table.","correctReason":"df.to_sql is the Pandas feature used to writes a DataFrame to a SQL database table.","concepts":["To SQL"]}
+,
+{"id":"A67","category":"Advanced","question":"Which Pandas feature is primarily used to reads a large CSV incrementally in chunks?","options":["pd.MultiIndex","df.stack","s.unstack","pd.read_csv chunksize"],"answer":3,"reason":"pd.read_csv chunksize is the Pandas feature used to reads a large CSV incrementally in chunks.","correctReason":"pd.read_csv chunksize is the Pandas feature used to reads a large CSV incrementally in chunks.","concepts":["Chunksize"]}
+,
+{"id":"A68","category":"Advanced","question":"You need to reads a large CSV incrementally in chunks. Which choice is the most appropriate Pandas feature?","options":["df.stack","s.unstack","pd.read_csv chunksize","pd.MultiIndex"],"answer":2,"reason":"pd.read_csv chunksize is the Pandas feature used to reads a large CSV incrementally in chunks.","correctReason":"pd.read_csv chunksize is the Pandas feature used to reads a large CSV incrementally in chunks.","concepts":["Chunksize"]}
+,
+{"id":"A69","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: reads a large CSV incrementally in chunks?","options":["s.unstack","for chunk in pd.read_csv(\"big.csv\",chunksize=10000): pass","pd.MultiIndex","df.stack"],"answer":1,"reason":"pd.read_csv chunksize is the Pandas feature used to reads a large CSV incrementally in chunks.","correctReason":"pd.read_csv chunksize is the Pandas feature used to reads a large CSV incrementally in chunks.","concepts":["Chunksize"]}
+,
+{"id":"A70","category":"Advanced","question":"Which Pandas feature is primarily used to reports memory consumed by index and columns?","options":["df.stack","s.unstack","df.memory_usage","pd.MultiIndex"],"answer":2,"reason":"df.memory_usage is the Pandas feature used to reports memory consumed by index and columns.","correctReason":"df.memory_usage is the Pandas feature used to reports memory consumed by index and columns.","concepts":["Memory usage"]}
+,
+{"id":"A71","category":"Advanced","question":"You need to reports memory consumed by index and columns. Which choice is the most appropriate Pandas feature?","options":["s.unstack","df.memory_usage","pd.MultiIndex","df.stack"],"answer":1,"reason":"df.memory_usage is the Pandas feature used to reports memory consumed by index and columns.","correctReason":"df.memory_usage is the Pandas feature used to reports memory consumed by index and columns.","concepts":["Memory usage"]}
+,
+{"id":"A72","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: reports memory consumed by index and columns?","options":["m=df.memory_usage(deep=True)","pd.MultiIndex","df.stack","s.unstack"],"answer":0,"reason":"df.memory_usage is the Pandas feature used to reports memory consumed by index and columns.","correctReason":"df.memory_usage is the Pandas feature used to reports memory consumed by index and columns.","concepts":["Memory usage"]}
+,
+{"id":"A73","category":"Advanced","question":"Which Pandas feature is primarily used to counts Python object memory more accurately for object/string columns?","options":["s.unstack","memory_usage deep","pd.MultiIndex","df.stack"],"answer":1,"reason":"memory_usage deep is the Pandas feature used to counts Python object memory more accurately for object/string columns.","correctReason":"memory_usage deep is the Pandas feature used to counts Python object memory more accurately for object/string columns.","concepts":["Deep memory"]}
+,
+{"id":"A74","category":"Advanced","question":"You need to counts Python object memory more accurately for object/string columns. Which choice is the most appropriate Pandas feature?","options":["memory_usage deep","pd.MultiIndex","df.stack","s.unstack"],"answer":0,"reason":"memory_usage deep is the Pandas feature used to counts Python object memory more accurately for object/string columns.","correctReason":"memory_usage deep is the Pandas feature used to counts Python object memory more accurately for object/string columns.","concepts":["Deep memory"]}
+,
+{"id":"A75","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: counts Python object memory more accurately for object/string columns?","options":["pd.MultiIndex","df.stack","s.unstack","m=df[\"name\"].memory_usage(deep=True)"],"answer":3,"reason":"memory_usage deep is the Pandas feature used to counts Python object memory more accurately for object/string columns.","correctReason":"memory_usage deep is the Pandas feature used to counts Python object memory more accurately for object/string columns.","concepts":["Deep memory"]}
+,
+{"id":"A76","category":"Advanced","question":"Which Pandas feature is primarily used to create an independent copy by default with deep=True?","options":["df.copy","pd.MultiIndex","df.stack","s.unstack"],"answer":0,"reason":"df.copy is the Pandas feature used to create an independent copy by default with deep=True.","correctReason":"df.copy is the Pandas feature used to create an independent copy by default with deep=True.","concepts":["Copy deep"]}
+,
+{"id":"A77","category":"Advanced","question":"You need to create an independent copy by default with deep=True. Which choice is the most appropriate Pandas feature?","options":["pd.MultiIndex","df.stack","s.unstack","df.copy"],"answer":3,"reason":"df.copy is the Pandas feature used to create an independent copy by default with deep=True.","correctReason":"df.copy is the Pandas feature used to create an independent copy by default with deep=True.","concepts":["Copy deep"]}
+,
+{"id":"A78","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: creates an independent copy by default with deep=True?","options":["df.stack","s.unstack","new=df.copy()","pd.MultiIndex"],"answer":2,"reason":"df.copy is the Pandas feature used to create an independent copy by default with deep=True.","correctReason":"df.copy is the Pandas feature used to create an independent copy by default with deep=True.","concepts":["Copy deep"]}
+,
+{"id":"A79","category":"Advanced","question":"Which Pandas feature is primarily used to performs column-wise operations without a Python loop over rows?","options":["pd.MultiIndex","df.stack","s.unstack","vectorized arithmetic"],"answer":3,"reason":"vectorized arithmetic is the Pandas feature used to performs column-wise operations without a Python loop over rows.","correctReason":"vectorized arithmetic is the Pandas feature used to performs column-wise operations without a Python loop over rows.","concepts":["Vectorization"]}
+,
+{"id":"A80","category":"Advanced","question":"You need to performs column-wise operations without a Python loop over rows. Which choice is the most appropriate Pandas feature?","options":["df.stack","s.unstack","vectorized arithmetic","pd.MultiIndex"],"answer":2,"reason":"vectorized arithmetic is the Pandas feature used to performs column-wise operations without a Python loop over rows.","correctReason":"vectorized arithmetic is the Pandas feature used to performs column-wise operations without a Python loop over rows.","concepts":["Vectorization"]}
+,
+{"id":"A81","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: performs column-wise operations without a Python loop over rows?","options":["s.unstack","df[\"total\"]=df[\"price\"]*df[\"qty\"]","pd.MultiIndex","df.stack"],"answer":1,"reason":"vectorized arithmetic is the Pandas feature used to performs column-wise operations without a Python loop over rows.","correctReason":"vectorized arithmetic is the Pandas feature used to performs column-wise operations without a Python loop over rows.","concepts":["Vectorization"]}
+,
+{"id":"A82","category":"Advanced","question":"Which Pandas feature is primarily used to applies rolling windows separately within groups?","options":["df.stack","s.unstack","grouped.rolling","pd.MultiIndex"],"answer":2,"reason":"grouped.rolling is the Pandas feature used to applies rolling windows separately within groups.","correctReason":"grouped.rolling is the Pandas feature used to applies rolling windows separately within groups.","concepts":["Groupby rolling"]}
+,
+{"id":"A83","category":"Advanced","question":"You need to applies rolling windows separately within groups. Which choice is the most appropriate Pandas feature?","options":["s.unstack","grouped.rolling","pd.MultiIndex","df.stack"],"answer":1,"reason":"grouped.rolling is the Pandas feature used to applies rolling windows separately within groups.","correctReason":"grouped.rolling is the Pandas feature used to applies rolling windows separately within groups.","concepts":["Groupby rolling"]}
+,
+{"id":"A84","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: applies rolling windows separately within groups?","options":["out=df.groupby(\"id\")[\"value\"].rolling(3).mean()","pd.MultiIndex","df.stack","s.unstack"],"answer":0,"reason":"grouped.rolling is the Pandas feature used to applies rolling windows separately within groups.","correctReason":"grouped.rolling is the Pandas feature used to applies rolling windows separately within groups.","concepts":["Groupby rolling"]}
+,
+{"id":"A85","category":"Advanced","question":"Which Pandas feature is primarily used to computes expanding-window calculations using all observations up to each row?","options":["s.unstack","s.expanding","pd.MultiIndex","df.stack"],"answer":1,"reason":"s.expanding is the Pandas feature used to computes expanding-window calculations using all observations up to each row.","correctReason":"s.expanding is the Pandas feature used to computes expanding-window calculations using all observations up to each row.","concepts":["Expanding"]}
+,
+{"id":"A86","category":"Advanced","question":"You need to computes expanding-window calculations using all observations up to each row. Which choice is the most appropriate Pandas feature?","options":["s.expanding","pd.MultiIndex","df.stack","s.unstack"],"answer":0,"reason":"s.expanding is the Pandas feature used to computes expanding-window calculations using all observations up to each row.","correctReason":"s.expanding is the Pandas feature used to computes expanding-window calculations using all observations up to each row.","concepts":["Expanding"]}
+,
+{"id":"A87","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: computes expanding-window calculations using all observations up to each row?","options":["pd.MultiIndex","df.stack","s.unstack","out=s.expanding().mean()"],"answer":3,"reason":"s.expanding is the Pandas feature used to computes expanding-window calculations using all observations up to each row.","correctReason":"s.expanding is the Pandas feature used to computes expanding-window calculations using all observations up to each row.","concepts":["Expanding"]}
+,
+{"id":"A88","category":"Advanced","question":"Which Pandas feature is primarily used to computes exponentially weighted statistics?","options":["s.ewm","pd.MultiIndex","df.stack","s.unstack"],"answer":0,"reason":"s.ewm is the Pandas feature used to computes exponentially weighted statistics.","correctReason":"s.ewm is the Pandas feature used to computes exponentially weighted statistics.","concepts":["EWM"]}
+,
+{"id":"A89","category":"Advanced","question":"You need to computes exponentially weighted statistics. Which choice is the most appropriate Pandas feature?","options":["pd.MultiIndex","df.stack","s.unstack","s.ewm"],"answer":3,"reason":"s.ewm is the Pandas feature used to computes exponentially weighted statistics.","correctReason":"s.ewm is the Pandas feature used to computes exponentially weighted statistics.","concepts":["EWM"]}
+,
+{"id":"A90","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: computes exponentially weighted statistics?","options":["df.stack","s.unstack","out=s.ewm(span=10).mean()","pd.MultiIndex"],"answer":2,"reason":"s.ewm is the Pandas feature used to computes exponentially weighted statistics.","correctReason":"s.ewm is the Pandas feature used to computes exponentially weighted statistics.","concepts":["EWM"]}
+,
+{"id":"A91","category":"Advanced","question":"Which Pandas feature is primarily used to attaches a timezone to timezone-naive timestamps without shifting wall time?","options":["pd.MultiIndex","df.stack","s.unstack","tz_localize"],"answer":3,"reason":"tz_localize is the Pandas feature used to attaches a timezone to timezone-naive timestamps without shifting wall time.","correctReason":"tz_localize is the Pandas feature used to attaches a timezone to timezone-naive timestamps without shifting wall time.","concepts":["Timezone localization"]}
+,
+{"id":"A92","category":"Advanced","question":"You need to attaches a timezone to timezone-naive timestamps without shifting wall time. Which choice is the most appropriate Pandas feature?","options":["df.stack","s.unstack","tz_localize","pd.MultiIndex"],"answer":2,"reason":"tz_localize is the Pandas feature used to attaches a timezone to timezone-naive timestamps without shifting wall time.","correctReason":"tz_localize is the Pandas feature used to attaches a timezone to timezone-naive timestamps without shifting wall time.","concepts":["Timezone localization"]}
+,
+{"id":"A93","category":"Advanced","question":"Which code correctly demonstrates the Pandas feature for this task: attaches a timezone to timezone-naive timestamps without shifting wall time?","options":["s.unstack","idx=idx.tz_localize(\"UTC\")","pd.MultiIndex","df.stack"],"answer":1,"reason":"tz_localize is the Pandas feature used to attaches a timezone to timezone-naive timestamps without shifting wall time.","correctReason":"tz_localize is the Pandas feature used to attaches a timezone to timezone-naive timestamps without shifting wall time.","concepts":["Timezone localization"]}
 ];
 
 
@@ -2095,13 +2539,13 @@ concepts:["query","Boolean filtering"]
 
 const MAX_QUIZZES = {
 
-    Basics:3,
+    Basics:9,
 
-    Important:5,
+    Important:9,
 
-    Advanced:6,
+    Advanced:9,
 
-    All:10
+    All:27
 
 };
 
@@ -2147,17 +2591,20 @@ let quizNumbers={
 ===================================================== */
 
 const STORAGE_KEY=
-    "PANDAS_MASTER_USED_V5";
+    "PANDAS_MASTER_USED_V6";
 
 
 const QUIZ_NUMBER_KEY=
-    "PANDAS_MASTER_QUIZ_NUMBERS_V5";
+    "PANDAS_MASTER_QUIZ_NUMBERS_V6";
 
 const QUIZ_HISTORY_KEY=
-    "PANDAS_MASTER_QUIZ_HISTORY_V2";
+    "PANDAS_MASTER_QUIZ_HISTORY_V3";
 
 const QUIZ_CURRENT_STATE_KEY=
-    "PANDAS_MASTER_CURRENT_QUESTION_V1";
+    "PANDAS_MASTER_CURRENT_QUESTION_V2";
+
+const QUESTION_PERFORMANCE_KEY=
+    "PANDAS_MASTER_QUESTION_PERFORMANCE_V1";
 
 
 function loadQuizNumbers(){
@@ -2271,25 +2718,9 @@ let currentQuizState=loadCurrentQuizState();
 
 function saveCurrentQuestionPosition(){
     if(wrongPractice || !currentQuiz.length) return;
-
-    const quizNumber=quizNumbers[currentCategory];
-    if(!quizNumber) return;
-
-    if(!currentQuizState[currentCategory] ||
-       Array.isArray(currentQuizState[currentCategory]) ||
-       typeof currentQuizState[currentCategory] !== "object" ||
-       currentQuizState[currentCategory].quizNumber !== undefined){
-        currentQuizState[currentCategory]={};
-    }
-
-    currentQuizState[currentCategory][quizNumber]={
-        questionIndex:currentIndex
-    };
-
-    sessionStorage.setItem(
-        QUIZ_CURRENT_STATE_KEY,
-        JSON.stringify(currentQuizState)
-    );
+    if(!currentQuizState[currentCategory]) currentQuizState[currentCategory]={};
+    currentQuizState[currentCategory][quizNumbers[currentCategory]]=currentIndex;
+    sessionStorage.setItem(QUIZ_CURRENT_STATE_KEY,JSON.stringify(currentQuizState));
 }
 
 function clearCurrentQuestionPosition(category){
@@ -2362,6 +2793,23 @@ function saveUsed(){
 /* =====================================================
                         SHUFFLE
 ===================================================== */
+
+let questionPerformance={Basics:{},Important:{},Advanced:{},All:{}};
+
+function loadQuestionPerformance(){
+    try{
+        const saved=JSON.parse(sessionStorage.getItem(QUESTION_PERFORMANCE_KEY));
+        if(saved) questionPerformance={...questionPerformance,...saved};
+    }catch{
+        questionPerformance={Basics:{},Important:{},Advanced:{},All:{}};
+    }
+}
+
+function saveQuestionPerformance(){
+    sessionStorage.setItem(QUESTION_PERFORMANCE_KEY,JSON.stringify(questionPerformance));
+}
+
+loadQuestionPerformance();
 
 function shuffle(array){
 
@@ -2495,78 +2943,37 @@ function startQuiz(category){
 
 function saveCurrentQuizState(){
     if(wrongPractice || !currentQuiz.length) return;
-
     const quizNumber=quizNumbers[currentCategory];
     const i=quizNumber-1;
-
-    if(i < 0) return;
-
+    if(i<0) return;
     quizHistory[currentCategory][i]=[...currentQuiz];
     quizAnswerHistory[currentCategory][i]=[...answers];
-
-    if(!currentQuizState[currentCategory] ||
-       Array.isArray(currentQuizState[currentCategory]) ||
-       typeof currentQuizState[currentCategory] !== "object" ||
-       currentQuizState[currentCategory].quizNumber !== undefined){
-        currentQuizState[currentCategory]={};
-    }
-
-    currentQuizState[currentCategory][quizNumber]={
-        questionIndex:currentIndex
-    };
-
+    if(!currentQuizState[currentCategory]) currentQuizState[currentCategory]={};
+    currentQuizState[currentCategory][quizNumber]=currentIndex;
     saveQuizHistory();
-    sessionStorage.setItem(
-        QUIZ_CURRENT_STATE_KEY,
-        JSON.stringify(currentQuizState)
-    );
+    sessionStorage.setItem(QUIZ_CURRENT_STATE_KEY,JSON.stringify(currentQuizState));
 }
 
 function loadQuiz(number){
     const i=number-1;
-
-    if(
-        i < 0 ||
-        !quizHistory[currentCategory][i]
-    ){
-        return false;
-    }
-
+    if(i<0 || !quizHistory[currentCategory][i]) return false;
     currentQuiz=[...quizHistory[currentCategory][i]];
-
-    answers =
-        quizAnswerHistory[currentCategory][i]
+    answers=quizAnswerHistory[currentCategory][i]
         ? [...quizAnswerHistory[currentCategory][i]]
         : new Array(currentQuiz.length).fill(null);
-
-    const categoryState=currentQuizState[currentCategory];
     let savedPosition=null;
-
-    // Each quiz keeps its own question position.
-    if(categoryState &&
-       typeof categoryState === "object" &&
-       !Array.isArray(categoryState)){
-        if(categoryState[number] &&
-           Number.isInteger(categoryState[number].questionIndex)){
+    const categoryState=currentQuizState[currentCategory];
+    if(categoryState){
+        if(!Array.isArray(categoryState) && Number.isInteger(categoryState[number])){
             savedPosition=categoryState[number];
-        }else if(categoryState.quizNumber===number &&
-                 Number.isInteger(categoryState.questionIndex)){
-            // Backward compatibility with the old single-position format.
-            savedPosition=categoryState;
+        }else if(categoryState.quizNumber===number && Number.isInteger(categoryState.questionIndex)){
+            savedPosition=categoryState.questionIndex;
         }
     }
-
-    if(savedPosition &&
-       savedPosition.questionIndex>=0 &&
-       savedPosition.questionIndex<currentQuiz.length){
-        currentIndex=savedPosition.questionIndex;
-    }else{
-        currentIndex=0;
-    }
-
+    currentIndex=(Number.isInteger(savedPosition) && savedPosition>=0 && savedPosition<currentQuiz.length)
+        ? savedPosition : 0;
     showScreen("quizScreen");
     renderQuestion();
-
     return true;
 }
 
@@ -2589,149 +2996,91 @@ function shuffleAdvancedOptions(question){
 
 
 function makeQuiz(){
-
-
-    /*
-       Increase quiz number
-    */
-
     quizNumbers[currentCategory]++;
-
     saveQuizNumbers();
 
+    const pool=getPool(currentCategory);
+    if(!used[currentCategory]) used[currentCategory]=[];
+    if(!questionPerformance[currentCategory]) questionPerformance[currentCategory]={};
+    const stats=questionPerformance[currentCategory];
 
-    let pool=
-        getPool(currentCategory);
+    const selected=[];
+    const selectedIds=new Set();
+    const seenIds=new Set(used[currentCategory]);
 
+    const fresh=shuffle(pool.filter(q=>!seenIds.has(q.id)));
+    const wrongRevision=shuffle(pool.filter(q=>
+        seenIds.has(q.id) &&
+        (stats[q.id]?.wrong||0)>0 &&
+        (stats[q.id]?.attempts||0)<2
+    ));
 
-    if(!used[currentCategory]){
+    let freshIndex=0;
+    let revisionIndex=0;
 
-        used[currentCategory]=[];
+    // About 8% revision priority for previously wrong questions.
+    // Previously correct questions have zero repeat priority.
+    while(selected.length<10){
+        const canRevise=revisionIndex<wrongRevision.length;
+        const canUseFresh=freshIndex<fresh.length;
 
+        if(!canRevise && !canUseFresh) break;
+
+        let chooseRevision=false;
+        if(canRevise && canUseFresh){
+            chooseRevision=Math.random()<0.08;
+        }else if(canRevise && !canUseFresh){
+            // Use an eligible wrong revision only when it is necessary to
+            // complete the quiz; never use a previously-correct question.
+            chooseRevision=true;
+        }
+
+        const q=chooseRevision
+            ?wrongRevision[revisionIndex++]
+            :fresh[freshIndex++];
+
+        if(q && !selectedIds.has(q.id)){
+            selected.push(q);
+            selectedIds.add(q.id);
+        }
     }
 
-
-    let available=
-        pool.filter(
-            q=>
-            !used[currentCategory]
-            .includes(q.id)
-        );
-
-
-    /*
-       Avoid immediate repetition.
-
-       If enough unused questions exist,
-       use only unused questions.
-
-       If not enough remain,
-       complete the quiz using old questions.
-    */
-
-    if(available.length < 10){
-
-        const oldQuestions=
-            pool.filter(
-                q=>
-                used[currentCategory]
-                .includes(q.id)
-            );
-
-
-        available=[
-            ...available,
-            ...shuffle(oldQuestions)
-        ];
-
+    if(selected.length<10){
+        quizNumbers[currentCategory]--;
+        saveQuizNumbers();
+        alert("Not enough eligible questions are available for another complete quiz in this level. Please add more questions or variants to continue.");
+        return;
     }
 
-
-    /*
-       If everything has been used,
-       begin a new question cycle.
-    */
-
-    if(available.length===0){
-
-        used[currentCategory]=[];
-
-        available=[
-            ...pool
-        ];
-
-    }
-
-
-    currentQuiz=
-        shuffle(available)
-        .slice(0,10)
-        .map(q=>
-            q.category==="Advanced"
-            ?shuffleAdvancedOptions(q)
-            :q
-        );
+    currentQuiz=shuffle(selected).map(q=>
+        q.category==="Advanced" ? shuffleAdvancedOptions(q) : q
+    );
 
     const historyIndex=quizNumbers[currentCategory]-1;
     quizHistory[currentCategory][historyIndex]=[...currentQuiz];
     quizAnswerHistory[currentCategory][historyIndex]=new Array(currentQuiz.length).fill(null);
     saveQuizHistory();
-    saveQuizHistory();
-
-
-    /*
-       Mark these questions as used.
-    */
 
     currentQuiz.forEach(q=>{
-
-        if(
-            !used[currentCategory]
-            .includes(q.id)
-        ){
-
-            used[currentCategory].push(q.id);
-
-        }
-
+        if(!stats[q.id]) stats[q.id]={attempts:0,wrong:0};
+        stats[q.id].attempts=(stats[q.id].attempts||0)+1;
+        if(!used[currentCategory].includes(q.id)) used[currentCategory].push(q.id);
     });
 
-
     saveUsed();
-
-
-    currentIndex=0;
-
-
-    answers=
-        new Array(
-            currentQuiz.length
-        ).fill(null);
+    saveQuestionPerformance();
 
     currentIndex=0;
-    if(!currentQuizState[currentCategory] ||
-       Array.isArray(currentQuizState[currentCategory]) ||
-       typeof currentQuizState[currentCategory] !== "object" ||
-       currentQuizState[currentCategory].quizNumber !== undefined){
-        currentQuizState[currentCategory]={};
-    }
-    currentQuizState[currentCategory][quizNumbers[currentCategory]]={questionIndex:0};
-    sessionStorage.setItem(QUIZ_CURRENT_STATE_KEY,JSON.stringify(currentQuizState));
-
+    answers=new Array(currentQuiz.length).fill(null);
     wrongQuestions=[];
 
+    if(!currentQuizState[currentCategory]) currentQuizState[currentCategory]={};
+    currentQuizState[currentCategory][quizNumbers[currentCategory]]=0;
+    sessionStorage.setItem(QUIZ_CURRENT_STATE_KEY,JSON.stringify(currentQuizState));
 
     showScreen("quizScreen");
-
-
     renderQuestion();
-
 }
-
-
-/* =====================================================
-                    QUIZ INFORMATION
-===================================================== */
 
 function updateQuizInformation(){
     const quizNumber=quizNumbers[currentCategory];
@@ -2765,12 +3114,6 @@ function renderQuestion(){
         "questionCounter"
     ).textContent=
         `Question ${currentIndex+1} / ${currentQuiz.length}`;
-
-
-    document.getElementById(
-        "questionNumber"
-    ).textContent=
-        `Question ${currentIndex+1}`;
 
 
     document.getElementById(
@@ -2856,6 +3199,8 @@ function renderQuestion(){
 
 
     updateNavigation();
+    renderQuestionNumberNavigation();
+    renderQuizNumberNavigation();
 
 
     /*
@@ -2881,27 +3226,19 @@ function renderQuestion(){
 ===================================================== */
 
 function selectAnswer(index){
-
-    if(
-        answers[currentIndex]!==null
-    ){
-
-        return;
-
-    }
-
-
+    if(answers[currentIndex]!==null) return;
     answers[currentIndex]=index;
+    const q=currentQuiz[currentIndex];
+    if(!questionPerformance[currentCategory]) questionPerformance[currentCategory]={};
+    if(!questionPerformance[currentCategory][q.id]){
+        questionPerformance[currentCategory][q.id]={attempts:1,wrong:0};
+    }
+    if(index!==q.answer) questionPerformance[currentCategory][q.id].wrong++;
+    saveQuestionPerformance();
     quizAnswerHistory[currentCategory][quizNumbers[currentCategory]-1]=[...answers];
     saveCurrentQuizState();
     showAnswer(index);
-
 }
-
-
-/* =====================================================
-                    SHOW ANSWER
-===================================================== */
 
 function showAnswer(selected){
 
@@ -3052,6 +3389,128 @@ function resetFeedback(){
     ).style.display=
         "block";
 
+}
+
+
+/* =====================================================
+                  NUMBER NAVIGATION
+===================================================== */
+
+function getVisibleRange(total,current,maxVisible=7){
+    if(total<=maxVisible) return {start:0,end:total-1};
+
+    const half=Math.floor(maxVisible/2);
+    let start=current-half;
+    let end=start+maxVisible-1;
+
+    if(start<0){
+        start=0;
+        end=maxVisible-1;
+    }
+
+    if(end>=total){
+        end=total-1;
+        start=total-maxVisible;
+    }
+
+    return {start,end};
+}
+
+function renderQuestionNumberNavigation(){
+    const container=document.getElementById("questionNumberNavigation");
+    if(!container) return;
+
+    const total=currentQuiz.length;
+    container.innerHTML="";
+    if(total<=0) return;
+
+    // Show the complete question numbering. This automatically works
+    // for 10, 50, 100, or any other number of questions.
+    for(let i=0;i<total;i++){
+        const btn=document.createElement("button");
+        btn.className="question-number-btn";
+
+        if(i===currentIndex){
+            btn.classList.add("active");
+        }
+
+        // Once a question has been answered, colour its number according
+        // to the saved answer. Unanswered questions keep the normal style.
+        if(answers[i]!==null && answers[i]!==undefined){
+            if(answers[i]===currentQuiz[i].answer){
+                btn.classList.add("correct");
+            }else{
+                btn.classList.add("wrong");
+            }
+        }
+
+        btn.textContent=String(i+1);
+        btn.onclick=()=>{
+            saveCurrentQuizState();
+            currentIndex=i;
+            renderQuestion();
+        };
+        container.appendChild(btn);
+    }
+}
+
+function renderQuizNumberNavigation(){
+    const container=document.getElementById("quizNumberNavigation");
+    if(!container) return;
+
+    const currentQuizNumber=quizNumbers[currentCategory] || 0;
+    const history=quizHistory[currentCategory] || [];
+    const total=history.reduce((count,item)=>item ? count+1 : count,0);
+    container.innerHTML="";
+
+    // Keep the existing Previous/Next Quiz buttons for Quiz 1-4.
+    // Numbered quiz navigation appears automatically from Quiz 5 onward.
+    if(total<5 || wrongPractice || currentQuizNumber<1) return;
+
+    const current=currentQuizNumber-1;
+    const range=getVisibleRange(total,current,7);
+
+    const left=document.createElement("button");
+    left.className="quiz-number-arrow";
+    left.textContent="←";
+    left.title="Previous quizzes";
+    left.disabled=range.start===0;
+    left.onclick=()=>{
+        const target=Math.max(1,range.start+1);
+        saveCurrentQuizState();
+        quizNumbers[currentCategory]=target;
+        saveQuizNumbers();
+        loadQuiz(target);
+    };
+    container.appendChild(left);
+
+    for(let i=range.start;i<=range.end;i++){
+        const quizNo=i+1;
+        const btn=document.createElement("button");
+        btn.className="quiz-number-btn"+(quizNo===currentQuizNumber?" active":"");
+        btn.textContent=String(quizNo);
+        btn.onclick=()=>{
+            saveCurrentQuizState();
+            quizNumbers[currentCategory]=quizNo;
+            saveQuizNumbers();
+            loadQuiz(quizNo);
+        };
+        container.appendChild(btn);
+    }
+
+    const right=document.createElement("button");
+    right.className="quiz-number-arrow";
+    right.textContent="→";
+    right.title="Next quizzes";
+    right.disabled=range.end===total-1;
+    right.onclick=()=>{
+        const target=Math.min(total,range.end+2);
+        saveCurrentQuizState();
+        quizNumbers[currentCategory]=target;
+        saveQuizNumbers();
+        loadQuiz(target);
+    };
+    container.appendChild(right);
 }
 
 
